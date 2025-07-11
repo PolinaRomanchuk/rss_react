@@ -1,25 +1,13 @@
-import { useState } from 'react';
-import './App.css';
+import { StrictMode } from 'react';
+import { createRoot } from 'react-dom/client';
+import Main from './components/main/Main.tsx';
+import './global.css';
 
-function App() {
-  const [count, setCount] = useState(0);
+const root = document.getElementById('root');
+if (!root) throw new Error('No root');
 
-  return (
-    <>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  );
-}
-
-export default App;
+createRoot(root).render(
+  <StrictMode>
+    <Main />
+  </StrictMode>
+);
