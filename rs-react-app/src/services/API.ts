@@ -19,27 +19,28 @@ export async function fetchPokemonByName(name: string): Promise<PokemonData> {
         },
       ],
     };
-  } catch (error) {
-    void error;
-    return {
-      pokemons: [],
-    };
+  } catch (error: unknown) {
+    throw new Error('Error', { cause: error });
   }
 }
 
 export async function fetchAllPokemons(): Promise<PokemonData> {
-  const response = await fetch(`${URL}?limit=10`);
-  const data = await response.json();
+  try {
+    const response = await fetch(`${URL}?limit=10`);
+    const data = await response.json();
 
-  const results = await Promise.all(
-    data.results.map(async (pokemon: { name: string; url: string }) => {
-      const res = await fetch(pokemon.url);
-      const info = await res.json();
-      return {
-        pokemonName: info.name,
-        description: `Height: ${info.height}, Weight: ${info.weight}`,
-      };
-    })
-  );
-  return { pokemons: results };
+    const results = await Promise.all(
+      data.results.map(async (pokemon: { name: string; url: string }) => {
+        const res = await fetch(pokemon.url);
+        const info = await res.json();
+        return {
+          pokemonName: info.name,
+          description: `Height: ${info.height}, Weight: ${info.weight}`,
+        };
+      })
+    );
+    return { pokemons: results };
+  } catch (error: unknown) {
+    throw new Error('Error', { cause: error });
+  }
 }

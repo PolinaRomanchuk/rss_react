@@ -6,6 +6,7 @@ import CardList from '../cardList/CardList';
 class Main extends React.Component {
   state = {
     searchInput: localStorage.getItem('searchInput')?.trim() || '',
+    error: false,
   };
 
   handleSearch = (value: string) => {
@@ -14,12 +15,22 @@ class Main extends React.Component {
   };
 
   render() {
+    if (this.state.error) {
+      throw new Error('Error example');
+    }
     return (
       <main className="main">
         <Search onSearch={this.handleSearch} />
         <CardList name={this.state.searchInput} />
         <div className="main_button-container">
-          <button className="main_error-button">error</button>
+          <button
+            className="main_error-button"
+            onClick={() => {
+              this.setState({ error: true });
+            }}
+          >
+            error
+          </button>
         </div>
       </main>
     );

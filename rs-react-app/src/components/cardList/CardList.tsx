@@ -12,12 +12,14 @@ interface CardListProps {
 interface PokemonState {
   pokemons: { pokemonName: string; description: string }[];
   loading: boolean;
+  error: boolean;
 }
 
 class CardList extends React.Component<CardListProps, PokemonState> {
   state: PokemonState = {
     pokemons: [],
     loading: false,
+    error: false,
   };
 
   async componentDidMount() {
@@ -47,20 +49,22 @@ class CardList extends React.Component<CardListProps, PokemonState> {
           loading: false,
         });
       }
-    } catch (error) {
+    } catch (error: unknown) {
+      this.setState({ error: true });
+      localStorage.setItem('searchInput', '');
       void error;
-      this.setState({
-        pokemons: [],
-        loading: false,
-      });
     }
   };
 
   render() {
+    if (this.state.error) {
+      throw new Error('Error getting pokemon');
+    }
     return (
       <div className="card-list">
         {this.state.loading && <img src={loadingGif} alt="Loading..." />}
-        {this.state.pokemons.length > 0 &&
+        {!this.state.loading &&
+          this.state.pokemons.length > 0 &&
           this.state.pokemons.map((pokemon) => (
             <Card
               name={pokemon.pokemonName}
