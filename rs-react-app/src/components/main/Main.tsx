@@ -9,6 +9,9 @@ class Main extends React.Component {
       <main className="main">
         <Search />
         <CardList />
+        <div className="main_button-container">
+          <button className="main_error-button">error</button>
+        </div>
       </main>
     );
   }
