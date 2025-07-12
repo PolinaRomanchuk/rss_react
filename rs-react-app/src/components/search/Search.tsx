@@ -1,7 +1,11 @@
 import React from 'react';
 import '../search/search.css';
 
-class Search extends React.Component {
+interface SearchProps {
+  onSearch: (value: string) => void;
+}
+
+class Search extends React.Component<SearchProps> {
   state = {
     searchInput: '',
   };
@@ -20,7 +24,7 @@ class Search extends React.Component {
   };
 
   handleSearch = () => {
-    localStorage.setItem('searchInput', this.state.searchInput);
+    this.props.onSearch(this.state.searchInput);
   };
 
   render() {
@@ -30,6 +34,7 @@ class Search extends React.Component {
           className="search_input"
           value={this.state.searchInput}
           onChange={this.handleSearchInputChange}
+          placeholder="enter full name, eg bulbasaur"
         />
         <button className="search_button" onClick={this.handleSearch}>
           search
