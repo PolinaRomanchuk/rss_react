@@ -6,9 +6,9 @@ class CardList extends React.Component {
   render() {
     return (
       <div className="card-list">
-        <Card />
-        <Card />
-        <Card />
+        <Card name={'name1'} description={'desc1'} />
+        <Card name={'name2'} description={'desc2'} />
+        <Card name={'name3'} description={'desc3'} />
       </div>
     );
   }
