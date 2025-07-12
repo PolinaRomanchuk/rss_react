@@ -1,27 +1,45 @@
+const URL = 'https://pokeapi.co/api/v2/pokemon';
+
 interface PokemonData {
-  pokemonName: string;
-  description: string;
+  pokemons: { pokemonName: string; description: string }[];
 }
 
-export async function fetchPokemon(
-  url: string,
-  name: string
-): Promise<PokemonData> {
+export async function fetchPokemonByName(name: string): Promise<PokemonData> {
   try {
-    const response = await fetch(`${url}/${name.toLowerCase()}`);
+    const response = await fetch(`${URL}/${name.toLowerCase()}`);
     if (!response.ok) {
       throw new Error('Error fetching pokemon');
     }
     const data = await response.json();
     return {
-      pokemonName: data.name,
-      description: `Height: ${data.height}, Weight: ${data.weight}`,
+      pokemons: [
+        {
+          pokemonName: data.name,
+          description: `Height: ${data.height}, Weight: ${data.weight}`,
+        },
+      ],
     };
   } catch (error) {
     void error;
     return {
-      pokemonName: '',
-      description: '',
+      pokemons: [],
     };
   }
+}
+
+export async function fetchAllPokemons(): Promise<PokemonData> {
+  const response = await fetch(`${URL}?limit=10`);
+  const data = await response.json();
+
+  const results = await Promise.all(
+    data.results.map(async (pokemon: { name: string; url: string }) => {
+      const res = await fetch(pokemon.url);
+      const info = await res.json();
+      return {
+        pokemonName: info.name,
+        description: `Height: ${info.height}, Weight: ${info.weight}`,
+      };
+    })
+  );
+  return { pokemons: results };
 }

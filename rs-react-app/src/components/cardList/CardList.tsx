@@ -1,7 +1,7 @@
 import React from 'react';
 import Card from '../card/Card';
 import './card-list.css';
-import { fetchPokemon } from '../../services/API';
+import { fetchAllPokemons, fetchPokemonByName } from '../../services/API';
 
 import loadingGif from '../../assets/Loading animation.gif';
 
@@ -10,24 +10,18 @@ interface CardListProps {
 }
 
 interface PokemonState {
-  url: string;
-  pokemonName: string;
-  description: string;
+  pokemons: { pokemonName: string; description: string }[];
   loading: boolean;
 }
 
 class CardList extends React.Component<CardListProps, PokemonState> {
   state: PokemonState = {
-    url: 'https://pokeapi.co/api/v2/pokemon',
-    pokemonName: '',
-    description: '',
+    pokemons: [],
     loading: false,
   };
 
   async componentDidMount() {
-    if (this.props.name) {
-      this.loadPokemon();
-    }
+    this.loadPokemon();
   }
 
   async componentDidUpdate(prevProps: CardListProps) {
@@ -40,18 +34,23 @@ class CardList extends React.Component<CardListProps, PokemonState> {
     this.setState({ loading: true });
 
     try {
-      const result = await fetchPokemon(this.state.url, this.props.name);
-
-      this.setState({
-        pokemonName: result.pokemonName,
-        description: result.description,
-        loading: false,
-      });
+      if (this.props.name) {
+        const result = await fetchPokemonByName(this.props.name);
+        this.setState({
+          pokemons: result.pokemons,
+          loading: false,
+        });
+      } else {
+        const result = await fetchAllPokemons();
+        this.setState({
+          pokemons: result.pokemons,
+          loading: false,
+        });
+      }
     } catch (error) {
       void error;
       this.setState({
-        pokemonName: '',
-        description: '',
+        pokemons: [],
         loading: false,
       });
     }
@@ -61,12 +60,14 @@ class CardList extends React.Component<CardListProps, PokemonState> {
     return (
       <div className="card-list">
         {this.state.loading && <img src={loadingGif} alt="Loading..." />}
-        {this.state.pokemonName && (
-          <Card
-            name={this.state.pokemonName}
-            description={this.state.description}
-          />
-        )}
+        {this.state.pokemons.length > 0 &&
+          this.state.pokemons.map((pokemon) => (
+            <Card
+              name={pokemon.pokemonName}
+              description={pokemon.description}
+              key={pokemon.pokemonName}
+            />
+          ))}
       </div>
     );
   }
