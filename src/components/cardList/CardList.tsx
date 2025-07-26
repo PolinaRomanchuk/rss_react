@@ -20,7 +20,7 @@ const CardList = ({ searchName }: CardListProps): ReactElement => {
   const [currentPage, setCurrentPage] = useState(pageFromUrl);
 
   useEffect(() => {
-    if (pageFromUrl >= 1 && pageFromUrl < totalpage) {
+    if (pageFromUrl >= 1 || pageFromUrl < totalpage) {
       setCurrentPage(pageFromUrl);
     } else {
       setCurrentPage(1);
@@ -47,6 +47,10 @@ const CardList = ({ searchName }: CardListProps): ReactElement => {
 
   useEffect(() => {
     loadPokemon();
+    if (searchName) {
+      setCurrentPage(1);
+      setSearchParams({ page: '1' });
+    }
   }, [searchName]);
 
   const startIndex = (currentPage - 1) * productsPerPage;
