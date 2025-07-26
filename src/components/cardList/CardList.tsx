@@ -3,20 +3,33 @@ import Card from '../card/Card';
 import './card-list.css';
 import { fetchAllPokemons, fetchPokemonByName } from '../../services/API';
 import { getTotalPages, productsPerPage } from '../../services/pagination';
-
 import loadingGif from '../../assets/Loading animation.gif';
 import type { Pokemon } from '../../type/pokemon';
+import { useSearchParams } from 'react-router';
 
 const CardList = (): ReactElement => {
   const [pokemons, setPokemons] = useState<Pokemon[]>();
-  const [currentPage, setCurrentPage] = useState(1);
   const [totalpage, setTotalPage] = useState(1);
+
+  const [searchParams, setSearchParams] = useSearchParams();
+  const pageFromUrl = Number(searchParams.get('page')) || 1;
+  const [currentPage, setCurrentPage] = useState(pageFromUrl);
+
+  useEffect(() => {
+    if (pageFromUrl >= 1 && pageFromUrl < totalpage) {
+      setCurrentPage(pageFromUrl);
+    } else {
+      setCurrentPage(1);
+      setSearchParams({ page: '1' });
+    }
+  }, [pageFromUrl, setSearchParams, totalpage]);
 
   const loadPokemon = async (name?: string) => {
     try {
       if (name) {
         const result = await fetchPokemonByName(name);
         setPokemons(result);
+        setTotalPage(1);
       } else {
         const result = await fetchAllPokemons();
         setPokemons(result);
@@ -37,6 +50,10 @@ const CardList = (): ReactElement => {
     ? pokemons.slice(startIndex, startIndex + productsPerPage)
     : [];
 
+  const goToPage = (page: number) => {
+    setSearchParams({ page: String(page) });
+  };
+
   return (
     <>
       <div className="card-list">
@@ -56,9 +73,7 @@ const CardList = (): ReactElement => {
         <div className="pagination_container">
           <button
             className="pagination_button"
-            onClick={() =>
-              setCurrentPage((previous) => Math.max(previous - 1, 1))
-            }
+            onClick={() => goToPage(Math.max(currentPage - 1, 1))}
             disabled={currentPage === 1}
           >
             {'<'}
@@ -66,9 +81,7 @@ const CardList = (): ReactElement => {
           <span>{currentPage}</span>
           <button
             className="pagination_button"
-            onClick={() =>
-              setCurrentPage((previous) => Math.min(previous + 1, totalpage))
-            }
+            onClick={() => goToPage(Math.min(currentPage + 1, totalpage))}
             disabled={currentPage === totalpage}
           >
             {'>'}
