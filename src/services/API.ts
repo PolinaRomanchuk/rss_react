@@ -1,32 +1,28 @@
+import type { Pokemon } from '../type/pokemon';
+
 const URL = 'https://pokeapi.co/api/v2/pokemon';
 
-interface PokemonData {
-  pokemons: { pokemonName: string; description: string }[];
-}
-
-export async function fetchPokemonByName(name: string): Promise<PokemonData> {
+export async function fetchPokemonByName(name: string): Promise<Pokemon[]> {
   try {
     const response = await fetch(`${URL}/${name.toLowerCase()}`);
     if (!response.ok) {
       throw new Error('Error fetching pokemon');
     }
     const data = await response.json();
-    return {
-      pokemons: [
-        {
-          pokemonName: data.name,
-          description: `Height: ${data.height}, Weight: ${data.weight}`,
-        },
-      ],
-    };
+    return [
+      {
+        name: data.name,
+        description: `Height: ${data.height}, Weight: ${data.weight}`,
+      },
+    ];
   } catch (error: unknown) {
     throw new Error('Error', { cause: error });
   }
 }
 
-export async function fetchAllPokemons(): Promise<PokemonData> {
+export async function fetchAllPokemons(): Promise<Pokemon[]> {
   try {
-    const response = await fetch(`${URL}?limit=10`);
+    const response = await fetch(`${URL}?limit=30`);
     const data = await response.json();
 
     const results = await Promise.all(
@@ -34,12 +30,12 @@ export async function fetchAllPokemons(): Promise<PokemonData> {
         const res = await fetch(pokemon.url);
         const info = await res.json();
         return {
-          pokemonName: info.name,
+          name: info.name,
           description: `Height: ${info.height}, Weight: ${info.weight}`,
         };
       })
     );
-    return { pokemons: results };
+    return results;
   } catch (error: unknown) {
     throw new Error('Error', { cause: error });
   }

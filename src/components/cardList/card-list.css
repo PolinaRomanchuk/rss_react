@@ -7,3 +7,8 @@
   width: 90%;
   gap: 20px;
 }
+
+.pagination_container{
+  display: flex;
+  gap: 10px;
+}

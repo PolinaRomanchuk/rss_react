@@ -1,80 +1,82 @@
-import React from 'react';
+import { useEffect, useState, type ReactElement } from 'react';
 import Card from '../card/Card';
 import './card-list.css';
 import { fetchAllPokemons, fetchPokemonByName } from '../../services/API';
+import { getTotalPages, productsPerPage } from '../../services/pagination';
 
 import loadingGif from '../../assets/Loading animation.gif';
+import type { Pokemon } from '../../type/pokemon';
 
-interface CardListProps {
-  name: string;
-}
+const CardList = (): ReactElement => {
+  const [pokemons, setPokemons] = useState<Pokemon[]>();
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalpage, setTotalPage] = useState(1);
 
-interface PokemonState {
-  pokemons: { pokemonName: string; description: string }[];
-  loading: boolean;
-  error: boolean;
-}
-
-class CardList extends React.Component<CardListProps, PokemonState> {
-  state: PokemonState = {
-    pokemons: [],
-    loading: false,
-    error: false,
-  };
-
-  async componentDidMount() {
-    this.loadPokemon();
-  }
-
-  async componentDidUpdate(prevProps: CardListProps) {
-    if (this.props.name !== prevProps.name) {
-      this.loadPokemon();
-    }
-  }
-
-  loadPokemon = async () => {
-    this.setState({ loading: true });
-
+  const loadPokemon = async (name?: string) => {
     try {
-      if (this.props.name) {
-        const result = await fetchPokemonByName(this.props.name);
-        this.setState({
-          pokemons: result.pokemons,
-          loading: false,
-        });
+      if (name) {
+        const result = await fetchPokemonByName(name);
+        setPokemons(result);
       } else {
         const result = await fetchAllPokemons();
-        this.setState({
-          pokemons: result.pokemons,
-          loading: false,
-        });
+        setPokemons(result);
+        setTotalPage(getTotalPages(result.length));
       }
     } catch (error: unknown) {
-      this.setState({ error: true });
       localStorage.setItem('searchInput', '');
       void error;
     }
   };
 
-  render() {
-    if (this.state.error) {
-      throw new Error('Error getting pokemon');
-    }
-    return (
+  useEffect(() => {
+    loadPokemon();
+  }, []);
+
+  const startIndex = (currentPage - 1) * productsPerPage;
+  const paginatedPokemons = pokemons
+    ? pokemons.slice(startIndex, startIndex + productsPerPage)
+    : [];
+
+  return (
+    <>
       <div className="card-list">
-        {this.state.loading && <img src={loadingGif} alt="Loading..." />}
-        {!this.state.loading &&
-          this.state.pokemons.length > 0 &&
-          this.state.pokemons.map((pokemon) => (
+        {!pokemons && <img src={loadingGif} alt="Loading..." />}
+        {pokemons &&
+          pokemons.length > 0 &&
+          paginatedPokemons.map((pokemon) => (
             <Card
-              name={pokemon.pokemonName}
+              name={pokemon.name}
               description={pokemon.description}
-              key={pokemon.pokemonName}
+              key={pokemon.name}
             />
           ))}
       </div>
-    );
-  }
-}
+
+      {pokemons && pokemons.length > 1 && (
+        <div className="pagination_container">
+          <button
+            className="pagination_button"
+            onClick={() =>
+              setCurrentPage((previous) => Math.max(previous - 1, 1))
+            }
+            disabled={currentPage === 1}
+          >
+            {'<'}
+          </button>
+          <span>{currentPage}</span>
+          <button
+            className="pagination_button"
+            onClick={() =>
+              setCurrentPage((previous) => Math.min(previous + 1, totalpage))
+            }
+            disabled={currentPage === totalpage}
+          >
+            {'>'}
+          </button>
+        </div>
+      )}
+    </>
+  );
+};
 
 export default CardList;
