@@ -13,6 +13,7 @@ export async function fetchPokemonByName(name: string): Promise<Pokemon[]> {
       {
         name: data.name,
         description: `Height: ${data.height}, Weight: ${data.weight}`,
+        image: data.sprites.front_default,
       },
     ];
   } catch (error: unknown) {
@@ -32,6 +33,7 @@ export async function fetchAllPokemons(): Promise<Pokemon[]> {
         return {
           name: info.name,
           description: `Height: ${info.height}, Weight: ${info.weight}`,
+          image: info.sprites.front_default,
         };
       })
     );

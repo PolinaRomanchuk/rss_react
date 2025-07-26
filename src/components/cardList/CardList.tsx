@@ -6,6 +6,7 @@ import { getTotalPages, productsPerPage } from '../../services/pagination';
 import loadingGif from '../../assets/Loading animation.gif';
 import type { Pokemon } from '../../type/pokemon';
 import { useSearchParams } from 'react-router';
+import Details from '../details/Details';
 
 interface CardListProps {
   searchName?: string;
@@ -18,6 +19,7 @@ const CardList = ({ searchName }: CardListProps): ReactElement => {
   const [searchParams, setSearchParams] = useSearchParams();
   const pageFromUrl = Number(searchParams.get('page')) || 1;
   const [currentPage, setCurrentPage] = useState(pageFromUrl);
+  const detailName = searchParams.get('details');
 
   useEffect(() => {
     if (pageFromUrl >= 1 || pageFromUrl < totalpage) {
@@ -66,36 +68,53 @@ const CardList = ({ searchName }: CardListProps): ReactElement => {
     <>
       <div className="card-list">
         {!pokemons && <img src={loadingGif} alt="Loading..." />}
-        {pokemons &&
-          pokemons.length > 0 &&
-          paginatedPokemons.map((pokemon) => (
-            <Card
-              name={pokemon.name}
-              description={pokemon.description}
-              key={pokemon.name}
-            />
-          ))}
-      </div>
+        <div className="card-list-with-pagination">
+          <div className="cards">
+            {pokemons &&
+              pokemons.length > 0 &&
+              paginatedPokemons.map((pokemon) => (
+                <Card
+                  name={pokemon.name}
+                  description={pokemon.description}
+                  key={pokemon.name}
+                  onClick={() => {
+                    searchParams.set('details', pokemon.name);
+                    setSearchParams(searchParams);
+                  }}
+                />
+              ))}
+          </div>
 
-      {pokemons && pokemons.length > 1 && (
-        <div className="pagination_container">
-          <button
-            className="pagination_button"
-            onClick={() => goToPage(Math.max(currentPage - 1, 1))}
-            disabled={currentPage === 1}
-          >
-            {'<'}
-          </button>
-          <span>{currentPage}</span>
-          <button
-            className="pagination_button"
-            onClick={() => goToPage(Math.min(currentPage + 1, totalpage))}
-            disabled={currentPage === totalpage}
-          >
-            {'>'}
-          </button>
+          {pokemons && pokemons.length > 1 && (
+            <div className="pagination_container">
+              <button
+                className="pagination_button"
+                onClick={() => goToPage(Math.max(currentPage - 1, 1))}
+                disabled={currentPage === 1}
+              >
+                {'<'}
+              </button>
+              <span>{currentPage}</span>
+              <button
+                className="pagination_button"
+                onClick={() => goToPage(Math.min(currentPage + 1, totalpage))}
+                disabled={currentPage === totalpage}
+              >
+                {'>'}
+              </button>
+            </div>
+          )}
         </div>
-      )}
+        {detailName && (
+          <Details
+            name={detailName}
+            onClose={() => {
+              searchParams.delete('details');
+              setSearchParams(searchParams);
+            }}
+          />
+        )}
+      </div>
     </>
   );
 };
