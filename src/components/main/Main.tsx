@@ -1,40 +1,41 @@
-import React from 'react';
+import { useState, type ReactElement } from 'react';
 import Search from '../search/Search';
 import './main.css';
 import CardList from '../cardList/CardList';
+import Header from '../header/Header';
+import { useLocalStorage } from '../../utils/useLocalStorage';
 
-class Main extends React.Component {
-  state = {
-    searchInput: localStorage.getItem('searchInput')?.trim() || '',
-    error: false,
+const Main = (): ReactElement => {
+  const [searchInput, setSearchInput] = useLocalStorage<string>(
+    'searchInput',
+    ''
+  );
+  const [hasError, setHasError] = useState(false);
+
+  const handleSearch = (value: string) => {
+    setSearchInput(value);
   };
+  if (hasError) {
+    throw new Error('Error example');
+  }
 
-  handleSearch = (value: string) => {
-    localStorage.setItem('searchInput', value);
-    this.setState({ searchInput: value });
-  };
-
-  render() {
-    if (this.state.error) {
-      throw new Error('Error example');
-    }
-    return (
+  return (
+    <>
+      <Header />
       <main className="main">
-        <Search onSearch={this.handleSearch} />
-        <CardList name={this.state.searchInput} />
+        <Search onSearch={handleSearch} />
+        <CardList searchName={searchInput} />
         <div className="main_button-container">
           <button
             className="main_error-button"
-            onClick={() => {
-              this.setState({ error: true });
-            }}
+            onClick={() => setHasError(true)}
           >
             error
           </button>
         </div>
       </main>
-    );
-  }
-}
+    </>
+  );
+};
 
 export default Main;

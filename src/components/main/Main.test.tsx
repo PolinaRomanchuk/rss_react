@@ -1,6 +1,7 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import Main from '../main/Main';
 import { expect, vi } from 'vitest';
+import { MemoryRouter } from 'react-router';
 
 vi.mock('../search/Search', () => ({
   default: ({ onSearch }: { onSearch: (value: string) => void }) => (
@@ -13,8 +14,8 @@ vi.mock('../search/Search', () => ({
 }));
 
 vi.mock('../cardList/CardList', () => ({
-  default: ({ name }: { name: string }) => (
-    <div data-testid="card-list">Card list for {name}</div>
+  default: ({ searchName }: { searchName: string }) => (
+    <div data-testid="card-list">Card list for {searchName}</div>
   ),
 }));
 
@@ -24,19 +25,29 @@ describe('Main component', () => {
   });
 
   it('render Search, CardList and error button', () => {
-    render(<Main />);
+    render(
+      <MemoryRouter>
+        <Main />
+      </MemoryRouter>
+    );
     expect(screen.getByTestId('search-input')).toBeInTheDocument();
     expect(screen.getByTestId('card-list')).toHaveTextContent('Card list for');
     expect(screen.getByRole('button', { name: /error/i })).toBeInTheDocument();
   });
 
   it('update searchInput', () => {
-    render(<Main />);
+    render(
+      <MemoryRouter>
+        <Main />
+      </MemoryRouter>
+    );
     const input = screen.getByTestId('search-input');
     fireEvent.change(input, { target: { value: 'Pikachu' } });
     expect(screen.getByTestId('card-list')).toHaveTextContent(
       'Card list for Pikachu'
     );
-    expect(localStorage.getItem('searchInput')).toBe('Pikachu');
+    expect(JSON.parse(localStorage.getItem('searchInput') ?? '')).toBe(
+      'Pikachu'
+    );
   });
 });

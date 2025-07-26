@@ -1,80 +1,122 @@
-import React from 'react';
+import { useEffect, useState, type ReactElement } from 'react';
 import Card from '../card/Card';
 import './card-list.css';
 import { fetchAllPokemons, fetchPokemonByName } from '../../services/API';
-
+import { getTotalPages, productsPerPage } from '../../services/pagination';
 import loadingGif from '../../assets/Loading animation.gif';
+import type { Pokemon } from '../../type/pokemon';
+import { useSearchParams } from 'react-router';
+import Details from '../details/Details';
 
 interface CardListProps {
-  name: string;
+  searchName?: string;
 }
 
-interface PokemonState {
-  pokemons: { pokemonName: string; description: string }[];
-  loading: boolean;
-  error: boolean;
-}
+const CardList = ({ searchName }: CardListProps): ReactElement => {
+  const [pokemons, setPokemons] = useState<Pokemon[]>();
+  const [totalpage, setTotalPage] = useState(1);
 
-class CardList extends React.Component<CardListProps, PokemonState> {
-  state: PokemonState = {
-    pokemons: [],
-    loading: false,
-    error: false,
-  };
+  const [searchParams, setSearchParams] = useSearchParams();
+  const pageFromUrl = Number(searchParams.get('page')) || 1;
+  const [currentPage, setCurrentPage] = useState(pageFromUrl);
+  const detailName = searchParams.get('details');
 
-  async componentDidMount() {
-    this.loadPokemon();
-  }
-
-  async componentDidUpdate(prevProps: CardListProps) {
-    if (this.props.name !== prevProps.name) {
-      this.loadPokemon();
+  useEffect(() => {
+    if (pageFromUrl >= 1 || pageFromUrl < totalpage) {
+      setCurrentPage(pageFromUrl);
+    } else {
+      setCurrentPage(1);
+      setSearchParams({ page: '1' });
     }
-  }
+  }, [pageFromUrl, setSearchParams, totalpage]);
 
-  loadPokemon = async () => {
-    this.setState({ loading: true });
-
+  const loadPokemon = async () => {
     try {
-      if (this.props.name) {
-        const result = await fetchPokemonByName(this.props.name);
-        this.setState({
-          pokemons: result.pokemons,
-          loading: false,
-        });
+      if (searchName) {
+        const result = await fetchPokemonByName(searchName);
+        setPokemons(result);
+        setTotalPage(1);
       } else {
         const result = await fetchAllPokemons();
-        this.setState({
-          pokemons: result.pokemons,
-          loading: false,
-        });
+        setPokemons(result);
+        setTotalPage(getTotalPages(result.length));
       }
     } catch (error: unknown) {
-      this.setState({ error: true });
       localStorage.setItem('searchInput', '');
       void error;
     }
   };
 
-  render() {
-    if (this.state.error) {
-      throw new Error('Error getting pokemon');
+  useEffect(() => {
+    loadPokemon();
+    if (searchName) {
+      setCurrentPage(1);
+      setSearchParams({ page: '1' });
     }
-    return (
+  }, [searchName]);
+
+  const startIndex = (currentPage - 1) * productsPerPage;
+  const paginatedPokemons = pokemons
+    ? pokemons.slice(startIndex, startIndex + productsPerPage)
+    : [];
+
+  const goToPage = (page: number) => {
+    setSearchParams({ page: String(page) });
+  };
+
+  return (
+    <>
       <div className="card-list">
-        {this.state.loading && <img src={loadingGif} alt="Loading..." />}
-        {!this.state.loading &&
-          this.state.pokemons.length > 0 &&
-          this.state.pokemons.map((pokemon) => (
-            <Card
-              name={pokemon.pokemonName}
-              description={pokemon.description}
-              key={pokemon.pokemonName}
-            />
-          ))}
+        {!pokemons && <img src={loadingGif} alt="Loading..." />}
+        <div className="card-list-with-pagination">
+          <div className="cards">
+            {pokemons &&
+              pokemons.length > 0 &&
+              paginatedPokemons.map((pokemon) => (
+                <Card
+                  name={pokemon.name}
+                  description={pokemon.description}
+                  key={pokemon.name}
+                  onClick={() => {
+                    searchParams.set('details', pokemon.name);
+                    setSearchParams(searchParams);
+                  }}
+                />
+              ))}
+          </div>
+
+          {pokemons && pokemons.length > 1 && (
+            <div className="pagination_container">
+              <button
+                className="pagination_button"
+                onClick={() => goToPage(Math.max(currentPage - 1, 1))}
+                disabled={currentPage === 1}
+              >
+                {'<'}
+              </button>
+              <span>{currentPage}</span>
+              <button
+                className="pagination_button"
+                onClick={() => goToPage(Math.min(currentPage + 1, totalpage))}
+                disabled={currentPage === totalpage}
+              >
+                {'>'}
+              </button>
+            </div>
+          )}
+        </div>
+        {detailName && (
+          <Details
+            name={detailName}
+            onClose={() => {
+              searchParams.delete('details');
+              setSearchParams(searchParams);
+            }}
+          />
+        )}
       </div>
-    );
-  }
-}
+    </>
+  );
+};
 
 export default CardList;

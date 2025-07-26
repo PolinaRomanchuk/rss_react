@@ -16,20 +16,22 @@ describe('API functions', () => {
             name: 'pikachu',
             height: 4,
             weight: 60,
+            sprites: {
+              front_default: 'pikachu.png',
+            },
           }),
         })
       );
 
       const result = await fetchPokemonByName('Pikachu');
 
-      expect(result).toEqual({
-        pokemons: [
-          {
-            pokemonName: 'pikachu',
-            description: 'Height: 4, Weight: 60',
-          },
-        ],
-      });
+      expect(result).toEqual([
+        {
+          name: 'pikachu',
+          description: 'Height: 4, Weight: 60',
+          image: 'pikachu.png',
+        },
+      ]);
     });
 
     it('throw error', async () => {
@@ -54,8 +56,18 @@ describe('API functions', () => {
       };
 
       const mockDetails = [
-        { name: 'bulbasaur', height: 7, weight: 69 },
-        { name: 'pikachu', height: 4, weight: 60 },
+        {
+          name: 'bulbasaur',
+          height: 7,
+          weight: 69,
+          sprites: { front_default: 'bulbasaur.png' },
+        },
+        {
+          name: 'pikachu',
+          height: 4,
+          weight: 60,
+          sprites: { front_default: 'pikachu.png' },
+        },
       ];
 
       const fetchMock = vi
@@ -68,18 +80,18 @@ describe('API functions', () => {
 
       const result = await fetchAllPokemons();
 
-      expect(result).toEqual({
-        pokemons: [
-          {
-            pokemonName: 'bulbasaur',
-            description: 'Height: 7, Weight: 69',
-          },
-          {
-            pokemonName: 'pikachu',
-            description: 'Height: 4, Weight: 60',
-          },
-        ],
-      });
+      expect(result).toEqual([
+        {
+          name: 'bulbasaur',
+          description: 'Height: 7, Weight: 69',
+          image: 'bulbasaur.png',
+        },
+        {
+          name: 'pikachu',
+          description: 'Height: 4, Weight: 60',
+          image: 'pikachu.png',
+        },
+      ]);
 
       expect(fetchMock).toHaveBeenCalledTimes(3);
     });

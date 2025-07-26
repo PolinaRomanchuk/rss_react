@@ -1,9 +1,32 @@
 .card-list {
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  flex-direction: row;
   justify-content: flex-start;
   height: 80%;
   width: 90%;
+  gap: 50px;
+}
+
+.pagination_container {
+  display: flex;
+  gap: 10px;
+}
+
+.card-list-with-pagination {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  height: 100%;
+  width: 100%;
+}
+
+.cards {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
   gap: 20px;
+  width: 60%;
+  align-items: center;
 }

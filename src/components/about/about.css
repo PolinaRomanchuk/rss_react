@@ -1,0 +1,44 @@
+.about {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 80vh;
+  overflow: auto;
+  gap: 20px;
+}
+
+.about_photo-name-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+}
+
+.about_icon {
+  width: 30px;
+  height: 30px;
+}
+
+.about_contacts {
+  display: flex;
+  align-items: center;
+
+  ul {
+    display: flex;
+    list-style-type: none;
+    padding: 10px;
+    gap: 10px;
+  }
+}
+
+.about_rss-link{
+  text-decoration: none;
+  color: pink;
+}
