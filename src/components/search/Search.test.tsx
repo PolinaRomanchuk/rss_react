@@ -14,7 +14,7 @@ describe('Search component', () => {
   });
 
   it('load searchInput from localStorage', () => {
-    localStorage.setItem('searchInput', 'pikachu');
+    localStorage.setItem('searchInput', '"pikachu"');
     render(<Search onSearch={vi.fn()} />);
     expect(screen.getByDisplayValue('pikachu')).toBeInTheDocument();
   });

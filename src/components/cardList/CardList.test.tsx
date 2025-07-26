@@ -2,13 +2,18 @@ import { expect, vi } from 'vitest';
 import * as API from '../../services/API';
 import { render, screen, waitFor } from '@testing-library/react';
 import CardList from './CardList';
+import { MemoryRouter } from 'react-router';
 
 vi.mock('../../services/API');
 
 describe('CardList component', () => {
   const mockPokemons = [
-    { pokemonName: 'pikachu', description: 'Height: 4, Weight: 60' },
-    { pokemonName: 'bulbasaur', description: 'Height: 7, Weight: 69' },
+    { name: 'pikachu', description: 'Height: 4, Weight: 60', image: '' },
+    {
+      name: 'bulbasaur',
+      description: 'Height: 7, Weight: 69',
+      image: '',
+    },
   ];
 
   beforeEach(() => {
@@ -18,27 +23,40 @@ describe('CardList component', () => {
   it('render loading while fetching data', async () => {
     const fetchAllPokemonsMock = vi.mocked(API.fetchAllPokemons);
     fetchAllPokemonsMock.mockReturnValue(new Promise(() => {}));
-    render(<CardList name="" />);
+    render(
+      <MemoryRouter>
+        <CardList />
+      </MemoryRouter>
+    );
     expect(screen.getByAltText(/loading/i)).toBeInTheDocument();
   });
 
   it('fetch all pokemons', async () => {
     const fetchAllPokemonsMock = vi.mocked(API.fetchAllPokemons);
-    fetchAllPokemonsMock.mockResolvedValue({ pokemons: mockPokemons });
-    render(<CardList name="" />);
+    fetchAllPokemonsMock.mockResolvedValue(mockPokemons);
+    render(
+      <MemoryRouter>
+        <CardList />
+      </MemoryRouter>
+    );
     await waitFor(() => {
       expect(API.fetchAllPokemons).toHaveBeenCalled();
     });
     for (const pokemon of mockPokemons) {
-      expect(screen.getByText(pokemon.pokemonName)).toBeInTheDocument();
+      expect(screen.getByText(pokemon.name)).toBeInTheDocument();
       expect(screen.getByText(pokemon.description)).toBeInTheDocument();
     }
   });
 
   it('fetch pokemon by name', async () => {
     const fetchPokemonMock = vi.mocked(API.fetchPokemonByName);
-    fetchPokemonMock.mockResolvedValue({ pokemons: [mockPokemons[0]] });
-    render(<CardList name="pikachu" />);
+    fetchPokemonMock.mockResolvedValue([mockPokemons[0]]);
+
+    render(
+      <MemoryRouter>
+        <CardList searchName="pikachu" />
+      </MemoryRouter>
+    );
     await waitFor(() => {
       expect(API.fetchPokemonByName).toHaveBeenCalledWith('pikachu');
     });
@@ -49,13 +67,21 @@ describe('CardList component', () => {
   it('update data on prop change', async () => {
     const fetchPokemonMock = vi.mocked(API.fetchPokemonByName);
 
-    fetchPokemonMock.mockResolvedValue({ pokemons: mockPokemons });
-    fetchPokemonMock.mockResolvedValue({ pokemons: [mockPokemons[1]] });
+    fetchPokemonMock.mockResolvedValue(mockPokemons);
+    fetchPokemonMock.mockResolvedValue([mockPokemons[1]]);
 
-    const { rerender } = render(<CardList name="" />);
+    const { rerender } = render(
+      <MemoryRouter>
+        <CardList />
+      </MemoryRouter>
+    );
     await waitFor(() => expect(API.fetchAllPokemons).toHaveBeenCalled());
 
-    rerender(<CardList name="bulbasaur" />);
+    rerender(
+      <MemoryRouter>
+        <CardList searchName="bulbasaur" />
+      </MemoryRouter>
+    );
     await waitFor(() =>
       expect(API.fetchPokemonByName).toHaveBeenCalledWith('bulbasaur')
     );
