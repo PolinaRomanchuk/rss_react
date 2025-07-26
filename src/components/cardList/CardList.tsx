@@ -7,7 +7,11 @@ import loadingGif from '../../assets/Loading animation.gif';
 import type { Pokemon } from '../../type/pokemon';
 import { useSearchParams } from 'react-router';
 
-const CardList = (): ReactElement => {
+interface CardListProps {
+  searchName?: string;
+}
+
+const CardList = ({ searchName }: CardListProps): ReactElement => {
   const [pokemons, setPokemons] = useState<Pokemon[]>();
   const [totalpage, setTotalPage] = useState(1);
 
@@ -24,10 +28,10 @@ const CardList = (): ReactElement => {
     }
   }, [pageFromUrl, setSearchParams, totalpage]);
 
-  const loadPokemon = async (name?: string) => {
+  const loadPokemon = async () => {
     try {
-      if (name) {
-        const result = await fetchPokemonByName(name);
+      if (searchName) {
+        const result = await fetchPokemonByName(searchName);
         setPokemons(result);
         setTotalPage(1);
       } else {
@@ -43,7 +47,7 @@ const CardList = (): ReactElement => {
 
   useEffect(() => {
     loadPokemon();
-  }, []);
+  }, [searchName]);
 
   const startIndex = (currentPage - 1) * productsPerPage;
   const paginatedPokemons = pokemons

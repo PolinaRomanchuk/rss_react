@@ -24,7 +24,7 @@ class Main extends React.Component {
         <Header />
         <main className="main">
           <Search onSearch={this.handleSearch} />
-          <CardList name={this.state.searchInput} />
+          <CardList searchName={this.state.searchInput} />
           <div className="main_button-container">
             <button
               className="main_error-button"
