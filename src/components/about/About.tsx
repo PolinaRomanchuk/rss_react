@@ -33,7 +33,11 @@ const About = (): ReactElement => {
             <span>Contact:</span>
             <ul>
               <li>
-                <a href="mailto:polina.romanchuk99@mail.ru" rel="noreferrer">
+                <a
+                  href="mailto:polina.romanchuk99@mail.ru"
+                  rel="noreferrer"
+                  aria-label="mail"
+                >
                   <Mail
                     className={isDark ? 'about_icon dark' : 'about_icon '}
                   />
@@ -44,6 +48,7 @@ const About = (): ReactElement => {
                   href="https://github.com/PolinaRomanchuk"
                   rel="noreferrer"
                   target="_blank"
+                  aria-label="github"
                 >
                   <GitHub
                     className={isDark ? 'about_icon dark' : 'about_icon '}
@@ -55,6 +60,7 @@ const About = (): ReactElement => {
                   href="https://www.linkedin.com/in/polina-romanchuk-2b2543286/"
                   rel="noreferrer"
                   target="_blank"
+                  aria-label="linkedin"
                 >
                   <Linkedin
                     className={isDark ? 'about_icon dark' : 'about_icon '}

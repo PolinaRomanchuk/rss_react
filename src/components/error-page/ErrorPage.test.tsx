@@ -4,7 +4,7 @@ import { MemoryRouter } from 'react-router';
 import { expect } from 'vitest';
 
 describe('ErrorPage', () => {
-  it('render error page content', () => {
+  it('renders error page content', () => {
     render(
       <MemoryRouter>
         <ErrorPage />

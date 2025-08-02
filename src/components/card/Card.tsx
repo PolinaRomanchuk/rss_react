@@ -21,7 +21,12 @@ const Card = ({
       <div className="card-name">{name}</div>
       <div className="card-description">{description}</div>
       <button onClick={onClick}>see more</button>
-      <input type="checkbox" checked={isChecked} onChange={onToggleCheckbox} />
+      <input
+        type="checkbox"
+        checked={isChecked}
+        onChange={onToggleCheckbox}
+        aria-label={name}
+      />
     </div>
   );
 };

@@ -19,7 +19,7 @@ describe('Details', () => {
     vi.clearAllMocks();
   });
 
-  it('render pokemon and handle close', async () => {
+  it('renders pokemon and handle close', async () => {
     const fetchPokemonByNameMock = vi.mocked(API.fetchPokemonByName);
     fetchPokemonByNameMock.mockResolvedValue(mockData);
 

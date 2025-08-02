@@ -13,7 +13,7 @@ function NormalComponent() {
 }
 
 describe('ErrorBoundary', () => {
-  it('render children when no error', () => {
+  it('renders children when no error', () => {
     render(
       <ErrorBoundary>
         <NormalComponent />
@@ -22,7 +22,7 @@ describe('ErrorBoundary', () => {
     expect(screen.getByText(/normal component/i)).toBeInTheDocument();
   });
 
-  it('show error', () => {
+  it('shows error', () => {
     vi.spyOn(console, 'error').mockImplementation(() => {});
 
     render(

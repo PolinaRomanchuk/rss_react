@@ -7,7 +7,7 @@ describe('API functions', () => {
   });
 
   describe('fetchPokemonByName', () => {
-    it('return pokemon for name', async () => {
+    it('returns pokemon for name', async () => {
       vi.stubGlobal(
         'fetch',
         vi.fn().mockResolvedValue({
@@ -34,7 +34,7 @@ describe('API functions', () => {
       ]);
     });
 
-    it('throw error', async () => {
+    it('throws error', async () => {
       vi.stubGlobal(
         'fetch',
         vi.fn().mockResolvedValue({
@@ -47,7 +47,7 @@ describe('API functions', () => {
   });
 
   describe('fetchAllPokemons', () => {
-    it('return list of pokemons', async () => {
+    it('returns list of pokemons', async () => {
       const mockList = {
         results: [
           { name: 'bulbasaur', url: 'url1' },
@@ -96,7 +96,7 @@ describe('API functions', () => {
       expect(fetchMock).toHaveBeenCalledTimes(3);
     });
 
-    it('throw error', async () => {
+    it('throws error', async () => {
       vi.stubGlobal(
         'fetch',
         vi.fn().mockRejectedValue(new Error('Fetch failed'))

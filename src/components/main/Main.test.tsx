@@ -24,7 +24,7 @@ describe('Main component', () => {
     localStorage.clear();
   });
 
-  it('render Search, CardList and error button', () => {
+  it('renders Search, CardList and error button', () => {
     render(
       <MemoryRouter>
         <Main />
@@ -35,7 +35,7 @@ describe('Main component', () => {
     expect(screen.getByRole('button', { name: /error/i })).toBeInTheDocument();
   });
 
-  it('update searchInput', () => {
+  it('updates searchInput', () => {
     render(
       <MemoryRouter>
         <Main />

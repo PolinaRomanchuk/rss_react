@@ -7,7 +7,7 @@ describe('Search component', () => {
     localStorage.clear();
   });
 
-  it('render input and button', () => {
+  it('renders input and button', () => {
     render(<Search onSearch={vi.fn()} />);
     expect(screen.getByPlaceholderText(/enter full name/i)).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /search/i })).toBeInTheDocument();
@@ -19,14 +19,14 @@ describe('Search component', () => {
     expect(screen.getByDisplayValue('pikachu')).toBeInTheDocument();
   });
 
-  it('update input value', () => {
+  it('updates input value', () => {
     render(<Search onSearch={vi.fn()} />);
     const input = screen.getByPlaceholderText(/enter full name/i);
     fireEvent.change(input, { target: { value: 'bulbasaur' } });
     expect(screen.getByDisplayValue('bulbasaur')).toBeInTheDocument();
   });
 
-  it('call onSearch when button is clicked', () => {
+  it('calls onSearch when button is clicked', () => {
     const onSearchMock = vi.fn();
     render(<Search onSearch={onSearchMock} />);
     const input = screen.getByPlaceholderText(/enter full name/i);
