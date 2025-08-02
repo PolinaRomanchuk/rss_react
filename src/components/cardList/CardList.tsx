@@ -7,6 +7,8 @@ import loadingGif from '../../assets/Loading animation.gif';
 import type { Pokemon } from '../../type/pokemon';
 import { useSearchParams } from 'react-router';
 import Details from '../details/Details';
+import { useDispatch, useSelector } from 'react-redux';
+import type { RootState } from '../../store/store';
 
 interface CardListProps {
   searchName?: string;
@@ -20,6 +22,9 @@ const CardList = ({ searchName }: CardListProps): ReactElement => {
   const pageFromUrl = Number(searchParams.get('page')) || 1;
   const [currentPage, setCurrentPage] = useState(pageFromUrl);
   const detailName = searchParams.get('details');
+
+  const selectedCards = useSelector((state: RootState) => state.selectedCards);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (pageFromUrl >= 1 || pageFromUrl < totalpage) {
@@ -81,6 +86,10 @@ const CardList = ({ searchName }: CardListProps): ReactElement => {
                     searchParams.set('details', pokemon.name);
                     setSearchParams(searchParams);
                   }}
+                  isChecked={selectedCards.includes(pokemon.name)}
+                  onToggleCheckbox={() =>
+                    dispatch({ type: 'TOGGLE_CARD', payload: pokemon.name })
+                  }
                 />
               ))}
           </div>

@@ -6,6 +6,8 @@ import ErrorBoundary from './components/error/ErrorBoundary.tsx';
 import { BrowserRouter, Route, Routes } from 'react-router';
 import ErrorPage from './components/error-page/ErrorPage.tsx';
 import About from './components/about/About.tsx';
+import { Provider } from 'react-redux';
+import store from './store/store.ts';
 
 const root = document.getElementById('root');
 if (!root) throw new Error('No root');
@@ -14,11 +16,13 @@ createRoot(root).render(
   <StrictMode>
     <BrowserRouter>
       <ErrorBoundary>
-        <Routes>
-          <Route path="/" element={<Main />} />
-          <Route path="/about" element={<About />} />
-          <Route path="*" element={<ErrorPage />} />
-        </Routes>
+        <Provider store={store}>
+          <Routes>
+            <Route path="/" element={<Main />} />
+            <Route path="/about" element={<About />} />
+            <Route path="*" element={<ErrorPage />} />
+          </Routes>
+        </Provider>
       </ErrorBoundary>
     </BrowserRouter>
   </StrictMode>
