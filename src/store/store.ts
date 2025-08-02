@@ -1,39 +1,41 @@
-import { createStore } from 'redux';
-
-const TOGGLE_CARD = 'TOGGLE_CARD';
-const RESET_CARD = 'RESET_CARD';
-
-const initialState = {
-  selectedCards: [],
-};
+import {
+  configureStore,
+  createSlice,
+  type PayloadAction,
+} from '@reduxjs/toolkit';
 
 export interface RootState {
   selectedCards: string[];
 }
 
-type Action =
-  | { type: typeof TOGGLE_CARD; payload: string }
-  | { type: typeof RESET_CARD };
-
-const reducer = (state: RootState = initialState, action: Action) => {
-  switch (action.type) {
-    case TOGGLE_CARD: {
-      const alreadySelected = state.selectedCards.includes(action.payload);
-
-      return {
-        ...state,
-        selectedCards: alreadySelected
-          ? state.selectedCards.filter((name) => name !== action.payload)
-          : [...state.selectedCards, action.payload],
-      };
-    }
-    case RESET_CARD:
-      return { ...state, selectedCards: [] };
-    default:
-      return state;
-  }
+const initialState: RootState = {
+  selectedCards: [],
 };
 
-const store = createStore(reducer);
+const cardSlice = createSlice({
+  name: 'cards',
+  initialState,
+  reducers: {
+    toggleCard: (state, action: PayloadAction<string>) => {
+      const alreadySelected = state.selectedCards.includes(action.payload);
+
+      if (alreadySelected) {
+        state.selectedCards = state.selectedCards.filter(
+          (name) => name !== action.payload
+        );
+      } else {
+        state.selectedCards.push(action.payload);
+      }
+    },
+    resetSelectedCards: (state) => {
+      state.selectedCards = [];
+    },
+  },
+});
+
+export const { toggleCard, resetSelectedCards } = cardSlice.actions;
+const store = configureStore({
+  reducer: cardSlice.reducer,
+});
 
 export default store;

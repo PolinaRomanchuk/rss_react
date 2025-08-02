@@ -8,7 +8,7 @@ import type { Pokemon } from '../../type/pokemon';
 import { useSearchParams } from 'react-router';
 import Details from '../details/Details';
 import { useDispatch, useSelector } from 'react-redux';
-import type { RootState } from '../../store/store';
+import { toggleCard, type RootState } from '../../store/store';
 
 interface CardListProps {
   searchName?: string;
@@ -87,9 +87,7 @@ const CardList = ({ searchName }: CardListProps): ReactElement => {
                     setSearchParams(searchParams);
                   }}
                   isChecked={selectedCards.includes(pokemon.name)}
-                  onToggleCheckbox={() =>
-                    dispatch({ type: 'TOGGLE_CARD', payload: pokemon.name })
-                  }
+                  onToggleCheckbox={() => dispatch(toggleCard(pokemon.name))}
                 />
               ))}
           </div>
