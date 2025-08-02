@@ -1,4 +1,6 @@
-import { render, screen, waitFor, fireEvent } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+
 import Details from './Details';
 import * as API from '../../services/API';
 import { expect, vi } from 'vitest';
@@ -33,7 +35,8 @@ describe('Details', () => {
     screen.getByText('Height: 4, Weight: 60');
     screen.getByAltText('pikachu.png');
 
-    fireEvent.click(screen.getByRole('button'));
+    const user = userEvent.setup();
+    await user.click(screen.getByRole('button'));
     expect(onClose).toHaveBeenCalled();
   });
 });
