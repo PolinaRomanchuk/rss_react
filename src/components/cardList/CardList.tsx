@@ -1,4 +1,4 @@
-import { useEffect, useState, type ReactElement } from 'react';
+import { useEffect, useRef, useState, type ReactElement } from 'react';
 import Card from '../card/Card';
 import './card-list.css';
 import { fetchAllPokemons, fetchPokemonByName } from '../../services/API';
@@ -8,7 +8,12 @@ import type { Pokemon } from '../../type/pokemon';
 import { useSearchParams } from 'react-router';
 import Details from '../details/Details';
 import { useDispatch, useSelector } from 'react-redux';
-import { toggleCard, type RootState } from '../../store/store';
+import {
+  resetSelectedCards,
+  toggleCard,
+  type RootState,
+} from '../../store/store';
+import { getDownloadUrl } from '../../services/download';
 
 interface CardListProps {
   searchName?: string;
@@ -22,6 +27,8 @@ const CardList = ({ searchName }: CardListProps): ReactElement => {
   const pageFromUrl = Number(searchParams.get('page')) || 1;
   const [currentPage, setCurrentPage] = useState(pageFromUrl);
   const detailName = searchParams.get('details');
+
+  const downloadLinkRef = useRef<HTMLAnchorElement | null>(null);
 
   const selectedCards = useSelector((state: RootState) => state.selectedCards);
   const dispatch = useDispatch();
@@ -69,6 +76,15 @@ const CardList = ({ searchName }: CardListProps): ReactElement => {
     setSearchParams({ page: String(page) });
   };
 
+  const handleDownload = async () => {
+    const { href, filename } = await getDownloadUrl(selectedCards);
+    if (downloadLinkRef.current) {
+      downloadLinkRef.current.href = href;
+      downloadLinkRef.current.download = filename;
+      downloadLinkRef.current.click();
+    }
+  };
+
   return (
     <>
       <div className="card-list">
@@ -92,6 +108,19 @@ const CardList = ({ searchName }: CardListProps): ReactElement => {
               ))}
           </div>
 
+          {selectedCards.length > 0 && (
+            <div className="flyout-element">
+              <p>{selectedCards.length} items are selected</p>
+              <div className="flyout-element_button-container">
+                <button onClick={() => dispatch(resetSelectedCards())}>
+                  Unselect all
+                </button>
+                <button onClick={handleDownload}>Download</button>
+                <a ref={downloadLinkRef} className="hidden_link" />
+              </div>
+            </div>
+          )}
+
           {pokemons && pokemons.length > 1 && (
             <div className="pagination_container">
               <button
@@ -112,6 +141,7 @@ const CardList = ({ searchName }: CardListProps): ReactElement => {
             </div>
           )}
         </div>
+
         {detailName && (
           <Details
             name={detailName}

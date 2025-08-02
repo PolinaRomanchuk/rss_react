@@ -30,3 +30,18 @@
   width: 60%;
   align-items: center;
 }
+
+.flyout-element {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  border: 1px solid gray;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+
+.hidden_link{
+  display: none;
+}
