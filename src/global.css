@@ -1,6 +1,9 @@
 body {
   margin: 0;
-  &.dark{
+  font-family: 'Dosis', sans-serif;
+  font-size: large;
+
+  &.dark {
     background-color: black;
     color: white;
   }
@@ -8,4 +11,10 @@ body {
 
 button {
   cursor: pointer;
+  font-family: inherit;
+}
+
+input {
+  font-family: inherit;
+  padding: 5px;
 }

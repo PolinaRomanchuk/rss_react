@@ -21,3 +21,8 @@
 .details-description, .details-name{
   text-align: center;
 }
+
+.loading-details-gif{
+  width: 100px;
+  height: 100px;
+}

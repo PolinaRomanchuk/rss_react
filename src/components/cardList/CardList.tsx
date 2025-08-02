@@ -88,59 +88,63 @@ const CardList = ({ searchName }: CardListProps): ReactElement => {
   return (
     <>
       <div className="card-list">
-        {!pokemons && <img src={loadingGif} alt="Loading..." />}
-        <div className="card-list-with-pagination">
-          <div className="cards">
-            {pokemons &&
-              pokemons.length > 0 &&
-              paginatedPokemons.map((pokemon) => (
-                <Card
-                  name={pokemon.name}
-                  description={pokemon.description}
-                  key={pokemon.name}
-                  onClick={() => {
-                    searchParams.set('details', pokemon.name);
-                    setSearchParams(searchParams);
-                  }}
-                  isChecked={selectedCards.includes(pokemon.name)}
-                  onToggleCheckbox={() => dispatch(toggleCard(pokemon.name))}
-                />
-              ))}
-          </div>
+        {!pokemons && (
+          <img src={loadingGif} alt="Loading..." className="loading-gif" />
+        )}
 
-          {selectedCards.length > 0 && (
-            <div className="flyout-element">
-              <p>{selectedCards.length} items are selected</p>
-              <div className="flyout-element_button-container">
-                <button onClick={() => dispatch(resetSelectedCards())}>
-                  Unselect all
-                </button>
-                <button onClick={handleDownload}>Download</button>
-                <a ref={downloadLinkRef} className="hidden_link" />
+        {pokemons && (
+          <div className="card-list-with-pagination">
+            <div className="cards">
+              {pokemons.length > 0 &&
+                paginatedPokemons.map((pokemon) => (
+                  <Card
+                    name={pokemon.name}
+                    description={pokemon.description}
+                    key={pokemon.name}
+                    onClick={() => {
+                      searchParams.set('details', pokemon.name);
+                      setSearchParams(searchParams);
+                    }}
+                    isChecked={selectedCards.includes(pokemon.name)}
+                    onToggleCheckbox={() => dispatch(toggleCard(pokemon.name))}
+                  />
+                ))}
+            </div>
+
+            {selectedCards.length > 0 && (
+              <div className="flyout-element">
+                <p>{selectedCards.length} items are selected</p>
+                <div className="flyout-element_button-container">
+                  <button onClick={() => dispatch(resetSelectedCards())}>
+                    Unselect all
+                  </button>
+                  <button onClick={handleDownload}>Download</button>
+                  <a ref={downloadLinkRef} className="hidden_link" />
+                </div>
               </div>
-            </div>
-          )}
+            )}
 
-          {pokemons && pokemons.length > 1 && (
-            <div className="pagination_container">
-              <button
-                className="pagination_button"
-                onClick={() => goToPage(Math.max(currentPage - 1, 1))}
-                disabled={currentPage === 1}
-              >
-                {'<'}
-              </button>
-              <span>{currentPage}</span>
-              <button
-                className="pagination_button"
-                onClick={() => goToPage(Math.min(currentPage + 1, totalpage))}
-                disabled={currentPage === totalpage}
-              >
-                {'>'}
-              </button>
-            </div>
-          )}
-        </div>
+            {pokemons && pokemons.length > 1 && (
+              <div className="pagination_container">
+                <button
+                  className="pagination_button"
+                  onClick={() => goToPage(Math.max(currentPage - 1, 1))}
+                  disabled={currentPage === 1}
+                >
+                  {'<'}
+                </button>
+                <span>{currentPage}</span>
+                <button
+                  className="pagination_button"
+                  onClick={() => goToPage(Math.min(currentPage + 1, totalpage))}
+                  disabled={currentPage === totalpage}
+                >
+                  {'>'}
+                </button>
+              </div>
+            )}
+          </div>
+        )}
 
         {detailName && (
           <Details

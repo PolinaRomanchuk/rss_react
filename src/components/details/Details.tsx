@@ -20,7 +20,13 @@ const Details = ({ name, onClose }: Props): ReactElement => {
 
   return (
     <div className="details">
-      {!pokemon && <img src={loadingGif} alt="Loading..." />}
+      {!pokemon && (
+        <img
+          src={loadingGif}
+          alt="Loading..."
+          className="loading-details-gif"
+        />
+      )}
       {pokemon && (
         <>
           <button onClick={onClose} className="close_button">
