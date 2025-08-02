@@ -2,11 +2,14 @@ import type { ReactElement } from 'react';
 import Header from '../header/Header';
 import './about.css';
 import Photo from '../../assets/polina.jpg';
-import Mail from '../../assets/envelope.png';
-import GitHub from '../../assets/github.png';
-import Linkedin from '../../assets/linkedin.png';
+import Mail from '../../assets/envelope.svg?react';
+import GitHub from '../../assets/github.svg?react';
+import Linkedin from '../../assets/linkedin.svg?react';
+import { useTheme } from '../context/ThemeContext';
 
 const About = (): ReactElement => {
+  const { isDark } = useTheme();
+
   return (
     <>
       <Header />
@@ -31,7 +34,9 @@ const About = (): ReactElement => {
             <ul>
               <li>
                 <a href="mailto:polina.romanchuk99@mail.ru" rel="noreferrer">
-                  <img src={Mail} alt="mail" className="about_icon" />
+                  <Mail
+                    className={isDark ? 'about_icon dark' : 'about_icon '}
+                  />
                 </a>
               </li>
               <li>
@@ -40,7 +45,9 @@ const About = (): ReactElement => {
                   rel="noreferrer"
                   target="_blank"
                 >
-                  <img src={GitHub} alt="github" className="about_icon" />
+                  <GitHub
+                    className={isDark ? 'about_icon dark' : 'about_icon '}
+                  />
                 </a>
               </li>
               <li>
@@ -49,7 +56,9 @@ const About = (): ReactElement => {
                   rel="noreferrer"
                   target="_blank"
                 >
-                  <img src={Linkedin} alt="linkedin" className="about_icon" />
+                  <Linkedin
+                    className={isDark ? 'about_icon dark' : 'about_icon '}
+                  />
                 </a>
               </li>
             </ul>
