@@ -12,7 +12,7 @@ describe('About component', () => {
     );
   });
 
-  it('render photo and name', () => {
+  it('renders photo and name', () => {
     const photo = screen.getByAltText(/photo/i);
     expect(photo).toBeInTheDocument();
 
@@ -20,7 +20,7 @@ describe('About component', () => {
     expect(name).toBeInTheDocument();
   });
 
-  it('render RSS link', () => {
+  it('renders RSS link', () => {
     const rssLink = screen.getByRole('link', { name: /RS School website/i });
     expect(rssLink).toBeInTheDocument();
     expect(rssLink).toHaveAttribute(
@@ -31,7 +31,7 @@ describe('About component', () => {
     expect(rssLink).toHaveAttribute('rel', 'noreferrer');
   });
 
-  it('render contact icons with links', () => {
+  it('renders contact icons with links', () => {
     const mailLink = screen.getByRole('link', { name: /mail/i });
     expect(mailLink).toHaveAttribute(
       'href',

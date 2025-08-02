@@ -2,11 +2,14 @@ import type { ReactElement } from 'react';
 import Header from '../header/Header';
 import './about.css';
 import Photo from '../../assets/polina.jpg';
-import Mail from '../../assets/envelope.png';
-import GitHub from '../../assets/github.png';
-import Linkedin from '../../assets/linkedin.png';
+import Mail from '../../assets/envelope.svg?react';
+import GitHub from '../../assets/github.svg?react';
+import Linkedin from '../../assets/linkedin.svg?react';
+import { useTheme } from '../context/ThemeContext';
 
 const About = (): ReactElement => {
+  const { isDark } = useTheme();
+
   return (
     <>
       <Header />
@@ -30,8 +33,14 @@ const About = (): ReactElement => {
             <span>Contact:</span>
             <ul>
               <li>
-                <a href="mailto:polina.romanchuk99@mail.ru" rel="noreferrer">
-                  <img src={Mail} alt="mail" className="about_icon" />
+                <a
+                  href="mailto:polina.romanchuk99@mail.ru"
+                  rel="noreferrer"
+                  aria-label="mail"
+                >
+                  <Mail
+                    className={isDark ? 'about_icon dark' : 'about_icon '}
+                  />
                 </a>
               </li>
               <li>
@@ -39,8 +48,11 @@ const About = (): ReactElement => {
                   href="https://github.com/PolinaRomanchuk"
                   rel="noreferrer"
                   target="_blank"
+                  aria-label="github"
                 >
-                  <img src={GitHub} alt="github" className="about_icon" />
+                  <GitHub
+                    className={isDark ? 'about_icon dark' : 'about_icon '}
+                  />
                 </a>
               </li>
               <li>
@@ -48,8 +60,11 @@ const About = (): ReactElement => {
                   href="https://www.linkedin.com/in/polina-romanchuk-2b2543286/"
                   rel="noreferrer"
                   target="_blank"
+                  aria-label="linkedin"
                 >
-                  <img src={Linkedin} alt="linkedin" className="about_icon" />
+                  <Linkedin
+                    className={isDark ? 'about_icon dark' : 'about_icon '}
+                  />
                 </a>
               </li>
             </ul>

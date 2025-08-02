@@ -4,12 +4,14 @@ import { expect, describe, it } from 'vitest';
 import Card from './Card';
 
 describe('Card component', () => {
-  it('render name and description', () => {
+  it('renders name and description', () => {
     render(
       <Card
         name="Test name"
         description="Test description"
         onClick={() => {}}
+        isChecked={false}
+        onToggleCheckbox={() => {}}
       />
     );
     expect(screen.getByText('Test name')).toBeInTheDocument();

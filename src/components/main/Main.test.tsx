@@ -1,7 +1,8 @@
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import Main from '../main/Main';
 import { expect, vi } from 'vitest';
 import { MemoryRouter } from 'react-router';
+import userEvent from '@testing-library/user-event';
 
 vi.mock('../search/Search', () => ({
   default: ({ onSearch }: { onSearch: (value: string) => void }) => (
@@ -24,7 +25,7 @@ describe('Main component', () => {
     localStorage.clear();
   });
 
-  it('render Search, CardList and error button', () => {
+  it('renders Search, CardList and error button', () => {
     render(
       <MemoryRouter>
         <Main />
@@ -35,14 +36,15 @@ describe('Main component', () => {
     expect(screen.getByRole('button', { name: /error/i })).toBeInTheDocument();
   });
 
-  it('update searchInput', () => {
+  it('updates searchInput', async () => {
     render(
       <MemoryRouter>
         <Main />
       </MemoryRouter>
     );
     const input = screen.getByTestId('search-input');
-    fireEvent.change(input, { target: { value: 'Pikachu' } });
+    const user = userEvent.setup();
+    await user.type(input, 'Pikachu');
     expect(screen.getByTestId('card-list')).toHaveTextContent(
       'Card list for Pikachu'
     );

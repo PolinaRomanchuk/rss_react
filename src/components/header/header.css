@@ -1,6 +1,7 @@
 .header {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   margin: 20px 40px 20px 40px;
 
   ul {
@@ -24,4 +25,21 @@
 .header-links-container {
   display: flex;
   gap: 10px;
+  &.dark {
+    color: white;
+  }
+}
+
+.theme-icon {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  &.dark {
+    fill: white;
+  }
+}
+
+.header_actions {
+  display: flex;
+  align-items: center;
 }

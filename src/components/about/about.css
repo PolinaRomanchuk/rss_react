@@ -24,6 +24,9 @@
 .about_icon {
   width: 30px;
   height: 30px;
+  &.dark {
+    fill: white;
+  }
 }
 
 .about_contacts {
@@ -38,7 +41,7 @@
   }
 }
 
-.about_rss-link{
+.about_rss-link {
   text-decoration: none;
   color: pink;
 }

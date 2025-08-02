@@ -1,13 +1,14 @@
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import Search from '../search/Search';
 import { expect, vi } from 'vitest';
+import userEvent from '@testing-library/user-event';
 
 describe('Search component', () => {
   beforeEach(() => {
     localStorage.clear();
   });
 
-  it('render input and button', () => {
+  it('renders input and button', () => {
     render(<Search onSearch={vi.fn()} />);
     expect(screen.getByPlaceholderText(/enter full name/i)).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /search/i })).toBeInTheDocument();
@@ -19,21 +20,24 @@ describe('Search component', () => {
     expect(screen.getByDisplayValue('pikachu')).toBeInTheDocument();
   });
 
-  it('update input value', () => {
+  it('updates input value', async () => {
     render(<Search onSearch={vi.fn()} />);
     const input = screen.getByPlaceholderText(/enter full name/i);
-    fireEvent.change(input, { target: { value: 'bulbasaur' } });
+    const user = userEvent.setup();
+    await user.type(input, 'bulbasaur');
     expect(screen.getByDisplayValue('bulbasaur')).toBeInTheDocument();
   });
 
-  it('call onSearch when button is clicked', () => {
+  it('calls onSearch when button is clicked', async () => {
     const onSearchMock = vi.fn();
     render(<Search onSearch={onSearchMock} />);
     const input = screen.getByPlaceholderText(/enter full name/i);
     const button = screen.getByRole('button', { name: /search/i });
 
-    fireEvent.change(input, { target: { value: 'charmander' } });
-    fireEvent.click(button);
+    const user = userEvent.setup();
+
+    await user.type(input, 'charmander');
+    await user.click(button);
 
     expect(onSearchMock).toHaveBeenCalledWith('charmander');
     expect(onSearchMock).toHaveBeenCalledTimes(1);

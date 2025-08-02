@@ -1,4 +1,4 @@
-import { useEffect, useState, type ReactElement } from 'react';
+import { useEffect, useRef, useState, type ReactElement } from 'react';
 import Card from '../card/Card';
 import './card-list.css';
 import { fetchAllPokemons, fetchPokemonByName } from '../../services/API';
@@ -7,6 +7,13 @@ import loadingGif from '../../assets/Loading animation.gif';
 import type { Pokemon } from '../../type/pokemon';
 import { useSearchParams } from 'react-router';
 import Details from '../details/Details';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  resetSelectedCards,
+  toggleCard,
+  type RootState,
+} from '../../store/store';
+import { getDownloadUrl } from '../../services/download';
 
 interface CardListProps {
   searchName?: string;
@@ -20,6 +27,11 @@ const CardList = ({ searchName }: CardListProps): ReactElement => {
   const pageFromUrl = Number(searchParams.get('page')) || 1;
   const [currentPage, setCurrentPage] = useState(pageFromUrl);
   const detailName = searchParams.get('details');
+
+  const downloadLinkRef = useRef<HTMLAnchorElement | null>(null);
+
+  const selectedCards = useSelector((state: RootState) => state.selectedCards);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (pageFromUrl >= 1 || pageFromUrl < totalpage) {
@@ -64,47 +76,76 @@ const CardList = ({ searchName }: CardListProps): ReactElement => {
     setSearchParams({ page: String(page) });
   };
 
+  const handleDownload = async () => {
+    const { href, filename } = await getDownloadUrl(selectedCards);
+    if (downloadLinkRef.current) {
+      downloadLinkRef.current.href = href;
+      downloadLinkRef.current.download = filename;
+      downloadLinkRef.current.click();
+    }
+  };
+
   return (
     <>
       <div className="card-list">
-        {!pokemons && <img src={loadingGif} alt="Loading..." />}
-        <div className="card-list-with-pagination">
-          <div className="cards">
-            {pokemons &&
-              pokemons.length > 0 &&
-              paginatedPokemons.map((pokemon) => (
-                <Card
-                  name={pokemon.name}
-                  description={pokemon.description}
-                  key={pokemon.name}
-                  onClick={() => {
-                    searchParams.set('details', pokemon.name);
-                    setSearchParams(searchParams);
-                  }}
-                />
-              ))}
-          </div>
+        {!pokemons && (
+          <img src={loadingGif} alt="Loading..." className="loading-gif" />
+        )}
 
-          {pokemons && pokemons.length > 1 && (
-            <div className="pagination_container">
-              <button
-                className="pagination_button"
-                onClick={() => goToPage(Math.max(currentPage - 1, 1))}
-                disabled={currentPage === 1}
-              >
-                {'<'}
-              </button>
-              <span>{currentPage}</span>
-              <button
-                className="pagination_button"
-                onClick={() => goToPage(Math.min(currentPage + 1, totalpage))}
-                disabled={currentPage === totalpage}
-              >
-                {'>'}
-              </button>
+        {pokemons && (
+          <div className="card-list-with-pagination">
+            <div className="cards">
+              {pokemons.length > 0 &&
+                paginatedPokemons.map((pokemon) => (
+                  <Card
+                    name={pokemon.name}
+                    description={pokemon.description}
+                    key={pokemon.name}
+                    onClick={() => {
+                      searchParams.set('details', pokemon.name);
+                      setSearchParams(searchParams);
+                    }}
+                    isChecked={selectedCards.includes(pokemon.name)}
+                    onToggleCheckbox={() => dispatch(toggleCard(pokemon.name))}
+                  />
+                ))}
             </div>
-          )}
-        </div>
+
+            {selectedCards.length > 0 && (
+              <div className="flyout-element">
+                <p>{selectedCards.length} items are selected</p>
+                <div className="flyout-element_button-container">
+                  <button onClick={() => dispatch(resetSelectedCards())}>
+                    Unselect all
+                  </button>
+                  <button onClick={handleDownload}>Download</button>
+                  <a ref={downloadLinkRef} className="hidden_link" />
+                </div>
+              </div>
+            )}
+
+            {pokemons && pokemons.length > 1 && (
+              <div className="pagination_container">
+                <button
+                  className="pagination_button"
+                  onClick={() => goToPage(Math.max(currentPage - 1, 1))}
+                  disabled={currentPage === 1}
+                >
+                  {'<'}
+                </button>
+                <span>{currentPage}</span>
+                <button
+                  className="pagination_button"
+                  onClick={() => goToPage(Math.min(currentPage + 1, totalpage))}
+                  disabled={currentPage === totalpage}
+                >
+                  {'>'}
+                </button>
+              </div>
+            )}
+          </div>
+        )}
+
         {detailName && (
           <Details
             name={detailName}
