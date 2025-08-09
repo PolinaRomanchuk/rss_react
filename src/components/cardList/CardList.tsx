@@ -30,7 +30,9 @@ const CardList = ({ searchName }: CardListProps): ReactElement => {
 
   const downloadLinkRef = useRef<HTMLAnchorElement | null>(null);
 
-  const selectedCards = useSelector((state: RootState) => state.cards.selectedCards);
+  const selectedCards = useSelector(
+    (state: RootState) => state.cards.selectedCards
+  );
   const dispatch = useDispatch();
 
   const {
@@ -45,13 +47,8 @@ const CardList = ({ searchName }: CardListProps): ReactElement => {
     isFetching: searchLoading,
   } = useGetPokemonByNameQuery(searchName!, { skip: !searchName });
 
-  const pokemons: Pokemon[] | undefined = searchName
-    ? searchedPokemon
-    : allPokemons;
-
   const loading = searchName ? searchLoading : allLoading;
   const error = searchName ? searchError : allError;
-  const totalpage = pokemons ? getTotalPages(pokemons.length) : 1;
 
   useEffect(() => {
     if (searchName) {
@@ -59,24 +56,6 @@ const CardList = ({ searchName }: CardListProps): ReactElement => {
       setSearchParams({ page: '1' });
     }
   }, [searchName]);
-
-  useEffect(() => {
-    if (pageFromUrl >= 1 || pageFromUrl < totalpage) {
-      setCurrentPage(pageFromUrl);
-    } else {
-      setCurrentPage(1);
-      setSearchParams({ page: '1' });
-    }
-  }, [pageFromUrl, setSearchParams, totalpage]);
-
-  const startIndex = (currentPage - 1) * productsPerPage;
-  const paginatedPokemons = pokemons
-    ? pokemons.slice(startIndex, startIndex + productsPerPage)
-    : [];
-
-  const goToPage = (page: number) => {
-    setSearchParams({ page: String(page) });
-  };
 
   const handleDownload = async () => {
     const { href, filename } = await getDownloadUrl(selectedCards);
@@ -86,6 +65,38 @@ const CardList = ({ searchName }: CardListProps): ReactElement => {
       downloadLinkRef.current.click();
     }
   };
+
+  const { data: paginatedPokemons } = useGetAllPokemonsQuery(undefined, {
+    selectFromResult: ({ data }) => {
+      if (!data) return { data: undefined };
+
+      const start = (currentPage - 1) * productsPerPage;
+      const end = start + productsPerPage;
+      return {
+        data: data.slice(start, end),
+      };
+    },
+  });
+
+  const totalPage = allPokemons ? getTotalPages(allPokemons.length) : 1;
+
+  useEffect(() => {
+    if (pageFromUrl >= 1 && pageFromUrl <= totalPage) {
+      setCurrentPage(pageFromUrl);
+    } else {
+      setCurrentPage(1);
+      setSearchParams({ page: '1' });
+    }
+  }, [pageFromUrl, setSearchParams, totalPage]);
+
+  const goToPage = (page: number) => {
+    setSearchParams({ page: String(page) });
+  };
+
+  const pokemons: Pokemon[] | undefined = searchName
+    ? searchedPokemon
+    : paginatedPokemons;
+  console.log(pokemons);
 
   return (
     <>
@@ -99,8 +110,8 @@ const CardList = ({ searchName }: CardListProps): ReactElement => {
         {pokemons && !loading && (
           <div className="card-list-with-pagination">
             <div className="cards">
-              {pokemons.length > 0 &&
-                paginatedPokemons.map((pokemon) => (
+              {pokemons &&
+                pokemons?.map((pokemon) => (
                   <Card
                     name={pokemon.name}
                     description={pokemon.description}
@@ -140,8 +151,8 @@ const CardList = ({ searchName }: CardListProps): ReactElement => {
                 <span>{currentPage}</span>
                 <button
                   className="pagination_button"
-                  onClick={() => goToPage(Math.min(currentPage + 1, totalpage))}
-                  disabled={currentPage === totalpage}
+                  onClick={() => goToPage(Math.min(currentPage + 1, totalPage))}
+                  disabled={currentPage === totalPage}
                 >
                   {'>'}
                 </button>

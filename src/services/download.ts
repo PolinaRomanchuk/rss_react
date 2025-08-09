@@ -10,7 +10,7 @@ async function loadSelectedPokemons(
     selectedNames.map(async (name) => {
       const cached = pokemonApi.endpoints.getPokemonByName.select(name)(state);
       if (cached?.data) {
-        return cached.data[0] as Pokemon;
+        return cached.data[0];
       }
 
       const result = await store
