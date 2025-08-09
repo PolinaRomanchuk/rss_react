@@ -47,7 +47,7 @@ export const pokemonApi = createApi({
           image: data.sprites.front_default,
         },
       ],
-      providesTags: (result, error, name) => [{ type: 'Pokemon', id: name }],
+      providesTags: (_result, _error, name) => [{ type: 'Pokemon', id: name }],
     }),
   }),
 });
