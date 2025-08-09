@@ -1,12 +1,31 @@
 import { expect, vi } from 'vitest';
-import * as API from '../../services/API';
 import { render, screen, waitFor } from '@testing-library/react';
 import CardList from './CardList';
 import { MemoryRouter } from 'react-router';
 import { Provider } from 'react-redux';
 import store from '../../store/store';
+import {
+  useGetAllPokemonsQuery,
+  useGetPokemonByNameQuery,
+} from '../../services/pokemonApi';
 
-vi.mock('../../services/API');
+vi.mock('../../services/pokemonApi', async (importOriginal) => {
+  const actualModule = await importOriginal();
+  const actual = actualModule as typeof import('../../services/pokemonApi');
+  return {
+    ...actual,
+    useGetAllPokemonsQuery: vi.fn(() => ({
+      data: undefined,
+      isFetching: false,
+      error: undefined,
+    })),
+    useGetPokemonByNameQuery: vi.fn(() => ({
+      data: undefined,
+      isFetching: false,
+      error: undefined,
+    })),
+  };
+});
 
 describe('CardList component', () => {
   const mockPokemons = [
@@ -23,8 +42,14 @@ describe('CardList component', () => {
   });
 
   it('renders loading while fetching data', async () => {
-    const fetchAllPokemonsMock = vi.mocked(API.fetchAllPokemons);
-    fetchAllPokemonsMock.mockReturnValue(new Promise(() => {}));
+    (
+      useGetAllPokemonsQuery as unknown as ReturnType<typeof vi.fn>
+    ).mockReturnValue({
+      data: undefined,
+      isFetching: true,
+      error: undefined,
+    });
+
     render(
       <MemoryRouter>
         <Provider store={store}>
@@ -36,8 +61,13 @@ describe('CardList component', () => {
   });
 
   it('fetches all pokemons', async () => {
-    const fetchAllPokemonsMock = vi.mocked(API.fetchAllPokemons);
-    fetchAllPokemonsMock.mockResolvedValue(mockPokemons);
+    (
+      useGetAllPokemonsQuery as unknown as ReturnType<typeof vi.fn>
+    ).mockReturnValue({
+      data: mockPokemons,
+      isFetching: false,
+      error: undefined,
+    });
     render(
       <MemoryRouter>
         <Provider store={store}>
@@ -46,17 +76,19 @@ describe('CardList component', () => {
       </MemoryRouter>
     );
     await waitFor(() => {
-      expect(API.fetchAllPokemons).toHaveBeenCalled();
+      mockPokemons.forEach((pokemon) => {
+        expect(screen.getByText(pokemon.name)).toBeInTheDocument();
+        expect(screen.getByText(pokemon.description)).toBeInTheDocument();
+      });
     });
-    for (const pokemon of mockPokemons) {
-      expect(screen.getByText(pokemon.name)).toBeInTheDocument();
-      expect(screen.getByText(pokemon.description)).toBeInTheDocument();
-    }
   });
 
   it('fetches pokemon by name', async () => {
-    const fetchPokemonMock = vi.mocked(API.fetchPokemonByName);
-    fetchPokemonMock.mockResolvedValue([mockPokemons[0]]);
+    vi.mocked(useGetPokemonByNameQuery).mockReturnValue({
+      data: [mockPokemons[0]],
+      isFetching: false,
+      error: undefined,
+    } as never);
 
     render(
       <MemoryRouter>
@@ -65,18 +97,23 @@ describe('CardList component', () => {
         </Provider>
       </MemoryRouter>
     );
-    await waitFor(() => {
-      expect(API.fetchPokemonByName).toHaveBeenCalledWith('pikachu');
-    });
+
     expect(screen.getByText('pikachu')).toBeInTheDocument();
     expect(screen.getByText('Height: 4, Weight: 60')).toBeInTheDocument();
   });
 
   it('updates data on prop change', async () => {
-    const fetchPokemonMock = vi.mocked(API.fetchPokemonByName);
+    vi.mocked(useGetAllPokemonsQuery).mockReturnValue({
+      data: mockPokemons,
+      isFetching: false,
+      error: undefined,
+    } as never);
 
-    fetchPokemonMock.mockResolvedValue(mockPokemons);
-    fetchPokemonMock.mockResolvedValue([mockPokemons[1]]);
+    vi.mocked(useGetPokemonByNameQuery).mockReturnValue({
+      data: [mockPokemons[1]],
+      isFetching: false,
+      error: undefined,
+    } as never);
 
     const { rerender } = render(
       <MemoryRouter>
@@ -85,7 +122,10 @@ describe('CardList component', () => {
         </Provider>
       </MemoryRouter>
     );
-    await waitFor(() => expect(API.fetchAllPokemons).toHaveBeenCalled());
+    await waitFor(() => {
+      expect(screen.getByText('pikachu')).toBeInTheDocument();
+      expect(screen.getByText('bulbasaur')).toBeInTheDocument();
+    });
 
     rerender(
       <MemoryRouter>
@@ -94,17 +134,20 @@ describe('CardList component', () => {
         </Provider>
       </MemoryRouter>
     );
-    await waitFor(() =>
-      expect(API.fetchPokemonByName).toHaveBeenCalledWith('bulbasaur')
-    );
+    await waitFor(() => {
+      expect(screen.getByText('bulbasaur')).toBeInTheDocument();
+      expect(screen.queryByText('pikachu')).not.toBeInTheDocument();
+    });
 
-    expect(screen.getByText('bulbasaur')).toBeInTheDocument();
     expect(screen.getByText('Height: 7, Weight: 69')).toBeInTheDocument();
   });
 
   it('unselects all cards on Unselect all click', async () => {
-    const fetchAllPokemonsMock = vi.mocked(API.fetchAllPokemons);
-    fetchAllPokemonsMock.mockResolvedValue(mockPokemons);
+    vi.mocked(useGetAllPokemonsQuery).mockReturnValue({
+      data: mockPokemons,
+      isFetching: false,
+      error: undefined,
+    } as never);
 
     render(
       <MemoryRouter>
@@ -114,20 +157,16 @@ describe('CardList component', () => {
       </MemoryRouter>
     );
 
-    await waitFor(() => {
-      expect(API.fetchAllPokemons).toHaveBeenCalled();
-    });
-
     const checkbox = screen.getByRole('checkbox', { name: /pikachu/i });
     checkbox.click();
 
-    expect(store.getState().selectedCards).toContain('pikachu');
+    expect(store.getState().cards.selectedCards).toContain('pikachu');
 
     const unselectButton = screen.getByRole('button', {
       name: /unselect all/i,
     });
     unselectButton.click();
 
-    expect(store.getState().selectedCards).toEqual([]);
+    expect(store.getState().cards.selectedCards).toEqual([]);
   });
 });

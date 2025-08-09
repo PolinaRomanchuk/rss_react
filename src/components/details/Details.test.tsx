@@ -2,10 +2,12 @@ import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import Details from './Details';
-import * as API from '../../services/API';
 import { expect, vi } from 'vitest';
+import { useGetPokemonByNameQuery } from '../../services/pokemonApi';
 
-vi.mock('../../services/API');
+vi.mock('../../services/pokemonApi', () => ({
+  useGetPokemonByNameQuery: vi.fn(),
+}));
 
 describe('Details', () => {
   const mockData = [
@@ -22,8 +24,11 @@ describe('Details', () => {
   });
 
   it('renders pokemon and handle close', async () => {
-    const fetchPokemonByNameMock = vi.mocked(API.fetchPokemonByName);
-    fetchPokemonByNameMock.mockResolvedValue(mockData);
+    vi.mocked(useGetPokemonByNameQuery).mockReturnValue({
+          data: [mockData[0]],
+          isFetching: false,
+          error: undefined,
+        } as never);
 
     render(<Details name="pikachu" onClose={onClose} />);
 

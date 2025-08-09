@@ -3,6 +3,8 @@ import Main from '../main/Main';
 import { expect, vi } from 'vitest';
 import { MemoryRouter } from 'react-router';
 import userEvent from '@testing-library/user-event';
+import { Provider } from 'react-redux';
+import store from '../../store/store';
 
 vi.mock('../search/Search', () => ({
   default: ({ onSearch }: { onSearch: (value: string) => void }) => (
@@ -28,7 +30,9 @@ describe('Main component', () => {
   it('renders Search, CardList and error button', () => {
     render(
       <MemoryRouter>
-        <Main />
+        <Provider store={store}>
+          <Main />
+        </Provider>
       </MemoryRouter>
     );
     expect(screen.getByTestId('search-input')).toBeInTheDocument();
@@ -39,7 +43,9 @@ describe('Main component', () => {
   it('updates searchInput', async () => {
     render(
       <MemoryRouter>
-        <Main />
+        <Provider store={store}>
+          <Main />
+        </Provider>
       </MemoryRouter>
     );
     const input = screen.getByTestId('search-input');
