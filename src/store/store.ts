@@ -4,11 +4,17 @@ import {
   type PayloadAction,
 } from '@reduxjs/toolkit';
 
-export interface RootState {
+import { pokemonApi } from '../services/pokemonApi';
+
+export interface CardsState {
   selectedCards: string[];
 }
 
-const initialState: RootState = {
+export interface RootState {
+  cards: CardsState;
+}
+
+const initialState: CardsState = {
   selectedCards: [],
 };
 
@@ -35,7 +41,12 @@ const cardSlice = createSlice({
 
 export const { toggleCard, resetSelectedCards } = cardSlice.actions;
 const store = configureStore({
-  reducer: cardSlice.reducer,
+  reducer: {
+    cards: cardSlice.reducer,
+    [pokemonApi.reducerPath]: pokemonApi.reducer,
+  },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(pokemonApi.middleware),
 });
 
 export default store;

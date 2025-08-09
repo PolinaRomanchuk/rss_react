@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState, type ReactElement } from 'react';
 import Card from '../card/Card';
 import './card-list.css';
-import { fetchAllPokemons, fetchPokemonByName } from '../../services/API';
 import { getTotalPages, productsPerPage } from '../../services/pagination';
 import loadingGif from '../../assets/Loading animation.gif';
 import type { Pokemon } from '../../type/pokemon';
@@ -14,15 +13,16 @@ import {
   type RootState,
 } from '../../store/store';
 import { getDownloadUrl } from '../../services/download';
+import {
+  useGetAllPokemonsQuery,
+  useGetPokemonByNameQuery,
+} from '../../services/pokemonApi';
 
 interface CardListProps {
   searchName?: string;
 }
 
 const CardList = ({ searchName }: CardListProps): ReactElement => {
-  const [pokemons, setPokemons] = useState<Pokemon[]>();
-  const [totalpage, setTotalPage] = useState(1);
-
   const [searchParams, setSearchParams] = useSearchParams();
   const pageFromUrl = Number(searchParams.get('page')) || 1;
   const [currentPage, setCurrentPage] = useState(pageFromUrl);
@@ -30,8 +30,35 @@ const CardList = ({ searchName }: CardListProps): ReactElement => {
 
   const downloadLinkRef = useRef<HTMLAnchorElement | null>(null);
 
-  const selectedCards = useSelector((state: RootState) => state.selectedCards);
+  const selectedCards = useSelector((state: RootState) => state.cards.selectedCards);
   const dispatch = useDispatch();
+
+  const {
+    data: allPokemons,
+    error: allError,
+    isFetching: allLoading,
+  } = useGetAllPokemonsQuery(undefined, { skip: !!searchName });
+
+  const {
+    data: searchedPokemon,
+    error: searchError,
+    isFetching: searchLoading,
+  } = useGetPokemonByNameQuery(searchName!, { skip: !searchName });
+
+  const pokemons: Pokemon[] | undefined = searchName
+    ? searchedPokemon
+    : allPokemons;
+
+  const loading = searchName ? searchLoading : allLoading;
+  const error = searchName ? searchError : allError;
+  const totalpage = pokemons ? getTotalPages(pokemons.length) : 1;
+
+  useEffect(() => {
+    if (searchName) {
+      setCurrentPage(1);
+      setSearchParams({ page: '1' });
+    }
+  }, [searchName]);
 
   useEffect(() => {
     if (pageFromUrl >= 1 || pageFromUrl < totalpage) {
@@ -41,31 +68,6 @@ const CardList = ({ searchName }: CardListProps): ReactElement => {
       setSearchParams({ page: '1' });
     }
   }, [pageFromUrl, setSearchParams, totalpage]);
-
-  const loadPokemon = async () => {
-    try {
-      if (searchName) {
-        const result = await fetchPokemonByName(searchName);
-        setPokemons(result);
-        setTotalPage(1);
-      } else {
-        const result = await fetchAllPokemons();
-        setPokemons(result);
-        setTotalPage(getTotalPages(result.length));
-      }
-    } catch (error: unknown) {
-      localStorage.setItem('searchInput', '');
-      void error;
-    }
-  };
-
-  useEffect(() => {
-    loadPokemon();
-    if (searchName) {
-      setCurrentPage(1);
-      setSearchParams({ page: '1' });
-    }
-  }, [searchName]);
 
   const startIndex = (currentPage - 1) * productsPerPage;
   const paginatedPokemons = pokemons
@@ -88,11 +90,13 @@ const CardList = ({ searchName }: CardListProps): ReactElement => {
   return (
     <>
       <div className="card-list">
-        {!pokemons && (
+        {loading && (
           <img src={loadingGif} alt="Loading..." className="loading-gif" />
         )}
 
-        {pokemons && (
+        {error && <p className="error">This pokemon does not found</p>}
+
+        {pokemons && !loading && (
           <div className="card-list-with-pagination">
             <div className="cards">
               {pokemons.length > 0 &&
@@ -105,13 +109,13 @@ const CardList = ({ searchName }: CardListProps): ReactElement => {
                       searchParams.set('details', pokemon.name);
                       setSearchParams(searchParams);
                     }}
-                    isChecked={selectedCards.includes(pokemon.name)}
+                    isChecked={selectedCards?.includes(pokemon.name)}
                     onToggleCheckbox={() => dispatch(toggleCard(pokemon.name))}
                   />
                 ))}
             </div>
 
-            {selectedCards.length > 0 && (
+            {selectedCards?.length > 0 && (
               <div className="flyout-element">
                 <p>{selectedCards.length} items are selected</p>
                 <div className="flyout-element_button-container">

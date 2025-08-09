@@ -1,8 +1,7 @@
-import { useEffect, useState, type ReactElement } from 'react';
-import type { Pokemon } from '../../type/pokemon';
-import { fetchPokemonByName } from '../../services/API';
+import { type ReactElement } from 'react';
 import './details.css';
 import loadingGif from '../../assets/Pokeball.gif';
+import { useGetPokemonByNameQuery } from '../../services/pokemonApi';
 
 type Props = {
   name: string;
@@ -10,24 +9,27 @@ type Props = {
 };
 
 const Details = ({ name, onClose }: Props): ReactElement => {
-  const [pokemon, setPokemon] = useState<Pokemon[]>();
+  const {
+    data: pokemonDetails,
+    error: pokemonDetailsError,
+    isFetching: pokemonDetailsLoading,
+  } = useGetPokemonByNameQuery(name!, { skip: !name });
 
-  useEffect(() => {
-    fetchPokemonByName(name)
-      .then(setPokemon)
-      .catch(() => {});
-  }, [name]);
+  const pokemon = pokemonDetails;
 
   return (
     <div className="details">
-      {!pokemon && (
+      {pokemonDetailsLoading && (
         <img
           src={loadingGif}
           alt="Loading..."
           className="loading-details-gif"
         />
       )}
-      {pokemon && (
+
+      {pokemonDetailsError && <p className="error">Something went wrong</p>}
+
+      {pokemon && !pokemonDetailsLoading && (
         <>
           <button onClick={onClose} className="close_button">
             x

@@ -4,6 +4,7 @@ import './main.css';
 import CardList from '../cardList/CardList';
 import Header from '../header/Header';
 import { useLocalStorage } from '../../utils/useLocalStorage';
+import { useGetAllPokemonsQuery } from '../../services/pokemonApi';
 
 const Main = (): ReactElement => {
   const [searchInput, setSearchInput] = useLocalStorage<string>(
@@ -11,6 +12,8 @@ const Main = (): ReactElement => {
     ''
   );
   const [hasError, setHasError] = useState(false);
+
+  const { refetch } = useGetAllPokemonsQuery(undefined);
 
   const handleSearch = (value: string) => {
     setSearchInput(value);
@@ -32,6 +35,7 @@ const Main = (): ReactElement => {
           >
             error
           </button>
+          <button onClick={() => refetch()}>reload</button>
         </div>
       </main>
     </>
