@@ -2,7 +2,6 @@ import { useEffect, useRef, useState, type ReactElement } from 'react';
 import Card from '../card/Card';
 import './card-list.css';
 import { getTotalPages, productsPerPage } from '../../services/pagination';
-import loadingGif from '../../assets/Loading animation.gif';
 import type { Pokemon } from '../../type/pokemon';
 import { useSearchParams } from 'react-router';
 import Details from '../details/Details';
@@ -45,7 +44,7 @@ const CardList = ({ searchName }: CardListProps): ReactElement => {
     data: searchedPokemon,
     error: searchError,
     isFetching: searchLoading,
-  } = useGetPokemonByNameQuery(searchName!, { skip: !searchName });
+  } = useGetPokemonByNameQuery(searchName, { skip: !searchName });
 
   const loading = searchName ? searchLoading : allLoading;
   const error = searchName ? searchError : allError;
@@ -96,13 +95,12 @@ const CardList = ({ searchName }: CardListProps): ReactElement => {
   const pokemons: Pokemon[] | undefined = searchName
     ? searchedPokemon
     : paginatedPokemons;
-  console.log(pokemons);
 
   return (
     <>
       <div className="card-list">
         {loading && (
-          <img src={loadingGif} alt="Loading..." className="loading-gif" />
+          <img src="./loading.gif" alt="Loading..." className="loading-gif" />
         )}
 
         {error && <p className="error">This pokemon does not found</p>}

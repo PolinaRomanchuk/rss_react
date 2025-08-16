@@ -1,5 +1,4 @@
 import type { ReactElement } from 'react';
-import Pokeball from '../../assets/pokeball.png';
 import './error-page.css';
 import { Link } from 'react-router';
 
@@ -9,7 +8,7 @@ const ErrorPage = (): ReactElement => {
       <div className="error-page_error-text-container">
         <p>4</p>
         <div className="error-page_image-container">
-          <img src={Pokeball} alt="0" />
+          <img src="/.pokeball.png" alt="0" />
         </div>
         <p>4</p>
       </div>

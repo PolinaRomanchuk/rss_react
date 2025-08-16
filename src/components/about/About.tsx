@@ -1,10 +1,9 @@
 import type { ReactElement } from 'react';
 import Header from '../header/Header';
 import './about.css';
-import Photo from '../../assets/polina.jpg';
-import Mail from '../../assets/envelope.svg?react';
-import GitHub from '../../assets/github.svg?react';
-import Linkedin from '../../assets/linkedin.svg?react';
+import Mail from '../../assets/envelope.svg';
+import GitHub from '../../assets/github.svg';
+import Linkedin from '../../assets/linkedin.svg';
 import { useTheme } from '../context/ThemeContext';
 
 const About = (): ReactElement => {
@@ -15,7 +14,7 @@ const About = (): ReactElement => {
       <Header />
       <div className="about">
         <div className="about_photo-name-container">
-          <img src={Photo} alt="photo" />
+          <img src="./polina.jpg" alt="photo" />
           <p>Polina Romanchuk</p>
         </div>
         <div className="about_cours-info">

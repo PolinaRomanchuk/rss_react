@@ -1,6 +1,5 @@
 import { type ReactElement } from 'react';
 import './details.css';
-import loadingGif from '../../assets/Pokeball.gif';
 import { useGetPokemonByNameQuery } from '../../services/pokemonApi';
 
 type Props = {
@@ -21,7 +20,7 @@ const Details = ({ name, onClose }: Props): ReactElement => {
     <div className="details">
       {pokemonDetailsLoading && (
         <img
-          src={loadingGif}
+          src="./Pokeball.gif"
           alt="Loading..."
           className="loading-details-gif"
         />
