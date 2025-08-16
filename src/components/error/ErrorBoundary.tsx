@@ -1,15 +1,18 @@
 import React from 'react';
 import './error.css';
+import { useTranslations } from 'next-intl';
 
-class ErrorBoundary extends React.Component<
-  { children: React.ReactNode },
+class ErrorBoundaryInner extends React.Component<
+  { children: React.ReactNode; translate: (key: string) => string },
   { hasError: boolean }
 > {
-  constructor(props: { children: React.ReactNode }) {
+  constructor(props: {
+    children: React.ReactNode;
+    translate: (key: string) => string;
+  }) {
     super(props);
     this.state = { hasError: false };
   }
-
   static getDerivedStateFromError() {
     return { hasError: true };
   }
@@ -19,12 +22,13 @@ class ErrorBoundary extends React.Component<
   }
 
   render() {
+    const { translate } = this.props;
     if (this.state.hasError) {
       return (
         <div className="error-message">
-          <p>Something went wrong</p>
+          <p>{translate('error-message')}</p>
           <button onClick={() => this.setState({ hasError: false })}>
-            Reload
+            {translate('reload')}
           </button>
         </div>
       );
@@ -33,4 +37,7 @@ class ErrorBoundary extends React.Component<
   }
 }
 
-export default ErrorBoundary;
+export default function ErrorBoundary(props: { children: React.ReactNode }) {
+  const translate = useTranslations();
+  return <ErrorBoundaryInner {...props} translate={translate} />;
+}

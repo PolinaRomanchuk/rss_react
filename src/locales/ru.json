@@ -1,0 +1,33 @@
+{
+  "header": {
+    "home": "Главная",
+    "about": "О нас"
+  },
+
+  "cardList": {
+    "search-error": "Этот покемон не найден",
+    "unselect-button-name": "Очистить выбор",
+    "download-button-name": "Скачать",
+    "select-message": "элемента выбрано"
+  },
+
+  "search": {
+    "search-button-name": "поиск",
+    "search-placeholder": "введите полное имя, например, bulbasaur"
+  },
+
+  "card":{
+    "see-more-button-name": "подробнее"
+  },
+
+  "about":{
+    "author": "Полина Романчук",
+    "message": "Этот проект был создан в рамках курсов RS School. Чтобы узнать больше о курсах, посетите",
+    "link": "веб-сайт RS School",
+    "contact": "Контакты"
+  },
+
+  "error": "ошибка",
+  "error-message": "Что-то пошло не так",
+  "reload": "обновить"
+}

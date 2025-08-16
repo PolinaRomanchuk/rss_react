@@ -16,12 +16,15 @@ import {
   useGetAllPokemonsQuery,
   useGetPokemonByNameQuery,
 } from '../../services/pokemonApi';
+import { useTranslations } from 'next-intl';
 
 interface CardListProps {
   searchName?: string;
 }
 
 const CardList = ({ searchName }: CardListProps): ReactElement => {
+  const translate = useTranslations();
+
   const [searchParams, setSearchParams] = useSearchParams();
   const pageFromUrl = Number(searchParams.get('page')) || 1;
   const [currentPage, setCurrentPage] = useState(pageFromUrl);
@@ -103,7 +106,7 @@ const CardList = ({ searchName }: CardListProps): ReactElement => {
           <img src="./loading.gif" alt="Loading..." className="loading-gif" />
         )}
 
-        {error && <p className="error">This pokemon does not found</p>}
+        {error && <p className="error">{translate('cardList.search-error')}</p>}
 
         {pokemons && !loading && (
           <div className="card-list-with-pagination">
@@ -126,12 +129,16 @@ const CardList = ({ searchName }: CardListProps): ReactElement => {
 
             {selectedCards?.length > 0 && (
               <div className="flyout-element">
-                <p>{selectedCards.length} items are selected</p>
+                <p>
+                  {selectedCards.length} {translate('cardList.select-message')}
+                </p>
                 <div className="flyout-element_button-container">
                   <button onClick={() => dispatch(resetSelectedCards())}>
-                    Unselect all
+                    {translate('cardList.unselect-button-name')}
                   </button>
-                  <button onClick={handleDownload}>Download</button>
+                  <button onClick={handleDownload}>
+                    {translate('cardList.download-button-name')}
+                  </button>
                   <a ref={downloadLinkRef} className="hidden_link" />
                 </div>
               </div>

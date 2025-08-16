@@ -1,0 +1,30 @@
+{
+  "header": {
+    "home": "Home",
+    "about": "About"
+  },
+ "cardList":{
+    "search-error": "This pokemon does not found",
+    "unselect-button-name":"Unselect all",
+    "download-button-name":"Download",
+    "select-message": "items are selected"
+  },
+
+  "search": {
+    "search-button-name":"search",
+    "search-placeholder": "enter full name, eg bulbasaur"
+  },
+  "card":{
+    "see-more-button-name": "see more"
+  },
+
+  "about":{
+    "author": "Polina Romanchuk",
+    "message": "This project was created as part of the RS School courses. To learn more about the program, visit",
+    "link": "RS School website",
+    "contact": "Contact"
+  },
+  "error": "error",
+  "error-message": "Something went wrong",
+  "reload": "reload"
+}

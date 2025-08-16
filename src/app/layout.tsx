@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import { Nunito, Poppins } from 'next/font/google';
+import '../global.css';
 
 export const metadata: Metadata = {
   title: 'React app',

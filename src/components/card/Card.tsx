@@ -1,5 +1,6 @@
 import { type ReactElement } from 'react';
 import './card.css';
+import { useTranslations } from 'next-intl';
 
 type Props = {
   name: string;
@@ -16,11 +17,15 @@ const Card = ({
   isChecked,
   onToggleCheckbox,
 }: Props): ReactElement => {
+  const translate = useTranslations();
+
   return (
     <div className="card">
       <div className="card-name">{name}</div>
       <div className="card-description">{description}</div>
-      <button onClick={onClick}>see more</button>
+      <button onClick={onClick} className="card_button">
+        {translate('card.see-more-button-name')}
+      </button>
       <input
         type="checkbox"
         checked={isChecked}

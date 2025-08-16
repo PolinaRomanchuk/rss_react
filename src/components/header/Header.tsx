@@ -5,15 +5,25 @@ import { NavLink } from 'react-router';
 import Sun from '../../assets/sun.svg';
 import Moon from '../../assets/moon.svg';
 import { useTheme } from '../context/ThemeContext';
+import { useTranslations } from 'next-intl';
 
-const Header = (): ReactElement => {
+type HeaderProps = {
+  locale: 'en' | 'ru';
+  setLocale: (locale: 'en' | 'ru') => void;
+};
+
+const Header = ({ locale, setLocale }: HeaderProps): ReactElement => {
   const { isDark, setIsDark } = useTheme();
+  const translate = useTranslations();
   return (
     <header className="header">
       <div className="logo-container">
         <img className="logo" src="/pikachu.png" alt="logo" />
       </div>
       <div className="header_actions">
+        <button onClick={() => setLocale(locale === 'en' ? 'ru' : 'en')}>
+          {locale === 'en' ? 'РУ' : 'EN'}
+        </button>
         {isDark ? (
           <Moon
             className="theme-icon dark"
@@ -37,7 +47,7 @@ const Header = (): ReactElement => {
               }}
               className="header-link"
             >
-              home
+              {translate('header.home')}
             </NavLink>
             <NavLink
               to="/about"
@@ -49,7 +59,7 @@ const Header = (): ReactElement => {
               }}
               className="header-link"
             >
-              about
+              {translate('header.about')}
             </NavLink>
           </ul>
         </nav>

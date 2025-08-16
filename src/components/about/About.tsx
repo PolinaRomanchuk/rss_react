@@ -1,35 +1,34 @@
 import type { ReactElement } from 'react';
-import Header from '../header/Header';
 import './about.css';
 import Mail from '../../assets/envelope.svg';
 import GitHub from '../../assets/github.svg';
 import Linkedin from '../../assets/linkedin.svg';
 import { useTheme } from '../context/ThemeContext';
+import { useTranslations } from 'next-intl';
 
 const About = (): ReactElement => {
   const { isDark } = useTheme();
+  const translate = useTranslations();
 
   return (
     <>
-      <Header />
       <div className="about">
         <div className="about_photo-name-container">
           <img src="./polina.jpg" alt="photo" />
-          <p>Polina Romanchuk</p>
+          <p>{translate('about.author')}</p>
         </div>
         <div className="about_cours-info">
-          This project was created as part of the RS School courses. To learn
-          more about the program, visit{' '}
+          {translate('about.message')}{' '}
           <a
             target="_blank"
             href="https://rs.school/courses/reactjs"
             rel="noreferrer"
             className="about_rss-link"
           >
-            RS School website.
+            {translate('about.link')}
           </a>
           <div className="about_contacts">
-            <span>Contact:</span>
+            <span>{translate('about.contact')}:</span>
             <ul>
               <li>
                 <a
