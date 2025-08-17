@@ -33,5 +33,10 @@
 
   "error": "error",
   "error-message": "Something went wrong",
+  "reload": "reload",
+
+  "error-boundary":{
+    "error-message": "Something went wrong",
   "reload": "reload"
+  }
 }

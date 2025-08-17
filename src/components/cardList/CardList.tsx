@@ -1,9 +1,10 @@
+'use client';
 import { useEffect, useRef, useState, type ReactElement } from 'react';
 import Card from '../card/Card';
 import './card-list.css';
 import { getTotalPages, productsPerPage } from '../../services/pagination';
 import type { Pokemon } from '../../type/pokemon';
-import { useSearchParams } from 'react-router';
+import { useSearchParams, useRouter } from 'next/navigation';
 import Details from '../details/Details';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -25,8 +26,10 @@ interface CardListProps {
 
 const CardList = ({ searchName }: CardListProps): ReactElement => {
   const translate = useTranslations();
+  const router = useRouter();
 
-  const [searchParams, setSearchParams] = useSearchParams();
+  const searchParams = useSearchParams();
+
   const pageFromUrl = Number(searchParams.get('page')) || 1;
   const [currentPage, setCurrentPage] = useState(pageFromUrl);
   const detailName = searchParams.get('details');
@@ -56,9 +59,9 @@ const CardList = ({ searchName }: CardListProps): ReactElement => {
   useEffect(() => {
     if (searchName) {
       setCurrentPage(1);
-      setSearchParams({ page: '1' });
+      router.push('?page=1');
     }
-  }, [searchName]);
+  }, [router, searchName]);
 
   const handleDownload = async () => {
     const { href, filename } = await getDownloadUrl(selectedCards);
@@ -88,12 +91,12 @@ const CardList = ({ searchName }: CardListProps): ReactElement => {
       setCurrentPage(pageFromUrl);
     } else {
       setCurrentPage(1);
-      setSearchParams({ page: '1' });
+      router.push('?page=1');
     }
-  }, [pageFromUrl, setSearchParams, totalPage]);
+  }, [pageFromUrl, router, totalPage]);
 
   const goToPage = (page: number) => {
-    setSearchParams({ page: String(page) });
+    router.push(`?page=${page}`);
   };
 
   const pokemons: Pokemon[] | undefined = searchName
@@ -105,7 +108,7 @@ const CardList = ({ searchName }: CardListProps): ReactElement => {
       <div className="card-list">
         {loading && (
           <Image
-            src="./loading.gif"
+            src="/loading.gif"
             alt="Loading..."
             className="loading-gif"
             width={100}
@@ -125,8 +128,7 @@ const CardList = ({ searchName }: CardListProps): ReactElement => {
                     description={pokemon.description}
                     key={pokemon.name}
                     onClick={() => {
-                      searchParams.set('details', pokemon.name);
-                      setSearchParams(searchParams);
+                      router.push(`?details=${pokemon.name}`);
                     }}
                     isChecked={selectedCards?.includes(pokemon.name)}
                     onToggleCheckbox={() => dispatch(toggleCard(pokemon.name))}
@@ -177,8 +179,7 @@ const CardList = ({ searchName }: CardListProps): ReactElement => {
           <Details
             name={detailName}
             onClose={() => {
-              searchParams.delete('details');
-              setSearchParams(searchParams);
+              router.push(`?page=${currentPage}`);
             }}
           />
         )}

@@ -1,3 +1,4 @@
+'use client';
 import { useState, type ReactElement } from 'react';
 import Search from '../search/Search';
 import './main.css';

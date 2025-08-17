@@ -23,7 +23,7 @@ const Details = ({ name, onClose }: Props): ReactElement => {
         <Image
           width={50}
           height={50}
-          src="./Pokeball.gif"
+          src="/Pokeball.gif"
           alt="Loading..."
           className="loading-details-gif"
         />
@@ -38,7 +38,7 @@ const Details = ({ name, onClose }: Props): ReactElement => {
           </button>
           {pokemon.map((poke) => (
             <div className="details_card" key={poke.name}>
-              <Image width={90} height={90} src={poke.image} alt={poke.image} />
+              <img src={poke.image} alt={poke.image} />
               <div className="details-name">{poke.name}</div>
               <div className="details-description">{poke.description}</div>
             </div>

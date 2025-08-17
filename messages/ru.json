@@ -35,5 +35,9 @@
 
   "error": "ошибка",
   "error-message": "Что-то пошло не так",
-  "reload": "обновить"
+  "reload": "обновить",
+  "error-boundary": {
+    "error-message": "Что-то пошло не так",
+    "reload": "обновить"
+  }
 }
