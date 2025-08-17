@@ -6,6 +6,7 @@ import Sun from '../../assets/sun.svg';
 import Moon from '../../assets/moon.svg';
 import { useTheme } from '../context/ThemeContext';
 import { useTranslations } from 'next-intl';
+import Image from 'next/image';
 
 type HeaderProps = {
   locale: 'en' | 'ru';
@@ -18,7 +19,13 @@ const Header = ({ locale, setLocale }: HeaderProps): ReactElement => {
   return (
     <header className="header">
       <div className="logo-container">
-        <img className="logo" src="/pikachu.png" alt="logo" />
+        <Image
+          width={40}
+          height={40}
+          className="logo"
+          src="/pikachu.png"
+          alt="logo"
+        />
       </div>
       <div className="header_actions">
         <button onClick={() => setLocale(locale === 'en' ? 'ru' : 'en')}>

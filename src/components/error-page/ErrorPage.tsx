@@ -1,6 +1,7 @@
 import type { ReactElement } from 'react';
 import './error-page.css';
 import { Link } from 'react-router';
+import Image from 'next/image';
 
 const ErrorPage = (): ReactElement => {
   return (
@@ -8,7 +9,7 @@ const ErrorPage = (): ReactElement => {
       <div className="error-page_error-text-container">
         <p>4</p>
         <div className="error-page_image-container">
-          <img src="/.pokeball.png" alt="0" />
+          <Image width={200} height={200} src="/.pokeball.png" alt="0" />
         </div>
         <p>4</p>
       </div>

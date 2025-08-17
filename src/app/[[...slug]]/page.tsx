@@ -2,7 +2,7 @@ import { ClientOnly } from './client';
 import '../../global.css';
 
 export function generateStaticParams() {
-  return [{ slug: [''] }];
+  return [{ slug: [''] }, { slug: ['about'] }];
 }
 
 export default function Page() {

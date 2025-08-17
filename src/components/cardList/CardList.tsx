@@ -17,6 +17,7 @@ import {
   useGetPokemonByNameQuery,
 } from '../../services/pokemonApi';
 import { useTranslations } from 'next-intl';
+import Image from 'next/image';
 
 interface CardListProps {
   searchName?: string;
@@ -103,7 +104,13 @@ const CardList = ({ searchName }: CardListProps): ReactElement => {
     <>
       <div className="card-list">
         {loading && (
-          <img src="./loading.gif" alt="Loading..." className="loading-gif" />
+          <Image
+            src="./loading.gif"
+            alt="Loading..."
+            className="loading-gif"
+            width={100}
+            height={50}
+          />
         )}
 
         {error && <p className="error">{translate('cardList.search-error')}</p>}

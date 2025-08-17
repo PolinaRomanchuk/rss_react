@@ -5,6 +5,7 @@ import GitHub from '../../assets/github.svg';
 import Linkedin from '../../assets/linkedin.svg';
 import { useTheme } from '../context/ThemeContext';
 import { useTranslations } from 'next-intl';
+import Image from 'next/image';
 
 const About = (): ReactElement => {
   const { isDark } = useTheme();
@@ -14,7 +15,7 @@ const About = (): ReactElement => {
     <>
       <div className="about">
         <div className="about_photo-name-container">
-          <img src="./polina.jpg" alt="photo" />
+          <Image src="./polina.jpg" alt="photo" width={50} height={50} />
           <p>{translate('about.author')}</p>
         </div>
         <div className="about_cours-info">
