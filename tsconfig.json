@@ -29,9 +29,10 @@
   "include": [
     "**/*.ts",
     "**/*.tsx",
+    "./dist/types/**/*.ts",
     "global.d.ts",
     "next-env.d.ts",
-    "./dist/types/**/*.ts"
+    ".next/types/**/*.ts"
   ],
   "exclude": [
     "node_modules"

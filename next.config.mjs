@@ -1,3 +1,6 @@
+import createNextIntlPlugin from 'next-intl/plugin';
+/** @type {import('next').NextConfig} */
+
 const nextConfig = {
   output: 'export',
   distDir: './dist',
@@ -12,4 +15,4 @@ const nextConfig = {
   images: { unoptimized: true },
 };
 
-export default nextConfig;
+export default createNextIntlPlugin(nextConfig);

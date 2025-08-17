@@ -1,21 +1,24 @@
+'use client';
 import type { ReactElement } from 'react';
 import './header.css';
-import { NavLink } from 'react-router';
 
-import Sun from '../../assets/sun.svg';
-import Moon from '../../assets/moon.svg';
 import { useTheme } from '../context/ThemeContext';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import Image from 'next/image';
+import { Link, usePathname, useRouter } from '../../i18n/navigation';
 
-type HeaderProps = {
-  locale: 'en' | 'ru';
-  setLocale: (locale: 'en' | 'ru') => void;
-};
-
-const Header = ({ locale, setLocale }: HeaderProps): ReactElement => {
+const Header = (): ReactElement => {
   const { isDark, setIsDark } = useTheme();
-  const translate = useTranslations();
+  const translate = useTranslations('header');
+  const pathname = usePathname();
+  const router = useRouter();
+  const locale = useLocale();
+
+  const toggleLocale = () => {
+    const newLocale = locale === 'ru' ? 'en' : 'ru';
+    router.replace(pathname, { locale: newLocale });
+  };
+
   return (
     <header className="header">
       <div className="logo-container">
@@ -28,46 +31,34 @@ const Header = ({ locale, setLocale }: HeaderProps): ReactElement => {
         />
       </div>
       <div className="header_actions">
-        <button onClick={() => setLocale(locale === 'en' ? 'ru' : 'en')}>
-          {locale === 'en' ? 'РУ' : 'EN'}
-        </button>
+        <button onClick={toggleLocale}>{locale === 'ru' ? 'en' : 'ру'}</button>
         {isDark ? (
-          <Moon
+          <Image
+            src={'/moon.svg'}
+            width={24}
+            height={24}
+            alt="moon icon"
             className="theme-icon dark"
             onClick={() => setIsDark((previous) => !previous)}
           />
         ) : (
-          <Sun
+          <Image
+            src={'/sun.svg'}
+            width={24}
+            height={24}
+            alt="sun icon"
             className="theme-icon"
             onClick={() => setIsDark((previous) => !previous)}
           />
         )}
         <nav>
           <ul className="header-links-container">
-            <NavLink
-              to="/"
-              style={({ isActive }) => {
-                const themeColor = isDark ? 'white' : 'black';
-                return {
-                  color: isActive ? 'pink' : themeColor,
-                };
-              }}
-              className="header-link"
-            >
-              {translate('header.home')}
-            </NavLink>
-            <NavLink
-              to="/about"
-              style={({ isActive }) => {
-                const themeColor = isDark ? 'white' : 'black';
-                return {
-                  color: isActive ? 'pink' : themeColor,
-                };
-              }}
-              className="header-link"
-            >
-              {translate('header.about')}
-            </NavLink>
+            <Link href="/" className="header-link">
+              {translate('home')}
+            </Link>
+            <Link href="/about" className="header-link">
+              {translate('about')}
+            </Link>
           </ul>
         </nav>
       </div>

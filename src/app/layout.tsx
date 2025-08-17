@@ -1,6 +1,5 @@
-import { Metadata } from 'next';
+import type { Metadata } from 'next';
 import { Nunito, Poppins } from 'next/font/google';
-import '../global.css';
 
 export const metadata: Metadata = {
   title: 'React app',
@@ -14,11 +13,13 @@ const poppins = Poppins({ subsets: ['latin'], weight: ['400', '600', '700'] });
 
 export default function RootLayout({
   children,
+  params,
 }: {
   children: React.ReactNode;
+  params: { locale: 'en' | 'ru' };
 }) {
   return (
-    <html lang="en">
+    <html lang={params.locale}>
       <body className={`${nunito.className} ${poppins.className}`}>
         {children}
       </body>

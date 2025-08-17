@@ -24,6 +24,13 @@
     "link": "RS School website",
     "contact": "Contact"
   },
+
+  "error-page":{
+    "title": "Not found",
+    "message": "The page you are looking for does not exist",
+    "button": "Go home"
+  },
+
   "error": "error",
   "error-message": "Something went wrong",
   "reload": "reload"

@@ -16,15 +16,21 @@
     "search-placeholder": "введите полное имя, например, bulbasaur"
   },
 
-  "card":{
+  "card": {
     "see-more-button-name": "подробнее"
   },
 
-  "about":{
+  "about": {
     "author": "Полина Романчук",
     "message": "Этот проект был создан в рамках курсов RS School. Чтобы узнать больше о курсах, посетите",
     "link": "веб-сайт RS School",
     "contact": "Контакты"
+  },
+
+  "error-page": {
+    "title": "Не найдено",
+    "message": "Страница, которую вы ищете, не существует",
+    "button": "Главная"
   },
 
   "error": "ошибка",
