@@ -11,18 +11,19 @@
   right: 0;
 }
 
-.details_card{
+.details_card {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 10px;
 }
 
-.details-description, .details-name{
+.details-description,
+.details-name {
   text-align: center;
 }
 
-.loading-details-gif{
+.loading-details-gif {
   width: 100px;
   height: 100px;
 }

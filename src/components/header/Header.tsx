@@ -1,57 +1,64 @@
+'use client';
 import type { ReactElement } from 'react';
 import './header.css';
-import Logo from '../../assets/pikachu.png';
-import { NavLink } from 'react-router';
 
-import Sun from '../../assets/sun.svg?react';
-import Moon from '../../assets/moon.svg?react';
 import { useTheme } from '../context/ThemeContext';
+import { useLocale, useTranslations } from 'next-intl';
+import Image from 'next/image';
+import { Link, usePathname, useRouter } from '../../i18n/navigation';
 
 const Header = (): ReactElement => {
   const { isDark, setIsDark } = useTheme();
+  const translate = useTranslations('header');
+  const pathname = usePathname();
+  const router = useRouter();
+  const locale = useLocale();
+
+  const toggleLocale = () => {
+    const newLocale = locale === 'ru' ? 'en' : 'ru';
+    router.replace(pathname, { locale: newLocale });
+  };
+
   return (
     <header className="header">
       <div className="logo-container">
-        <img className="logo" src={Logo} alt="logo" />
+        <Image
+          width={40}
+          height={40}
+          className="logo"
+          src="/pikachu.png"
+          alt="logo"
+        />
       </div>
       <div className="header_actions">
+        <button onClick={toggleLocale}>{locale === 'ru' ? 'en' : 'ру'}</button>
         {isDark ? (
-          <Moon
+          <Image
+            src={'/moon.svg'}
+            width={24}
+            height={24}
+            alt="moon icon"
             className="theme-icon dark"
             onClick={() => setIsDark((previous) => !previous)}
           />
         ) : (
-          <Sun
+          <Image
+            src={'/sun.svg'}
+            width={24}
+            height={24}
+            alt="sun icon"
             className="theme-icon"
             onClick={() => setIsDark((previous) => !previous)}
           />
         )}
         <nav>
           <ul className="header-links-container">
-            <NavLink
-              to="/"
-              style={({ isActive }) => {
-                const themeColor = isDark ? 'white' : 'black';
-                return {
-                  color: isActive ? 'pink' : themeColor,
-                };
-              }}
-              className="header-link"
-            >
-              home
-            </NavLink>
-            <NavLink
-              to="/about"
-              style={({ isActive }) => {
-                const themeColor = isDark ? 'white' : 'black';
-                return {
-                  color: isActive ? 'pink' : themeColor,
-                };
-              }}
-              className="header-link"
-            >
-              about
-            </NavLink>
+            <Link href="/" className="header-link">
+              {translate('home')}
+            </Link>
+            <Link href="/about" className="header-link">
+              {translate('about')}
+            </Link>
           </ul>
         </nav>
       </div>

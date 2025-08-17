@@ -1,3 +1,4 @@
+'use client';
 import {
   createContext,
   useContext,
@@ -12,6 +13,7 @@ type ThemeContextType = {
   setIsDark: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const ThemeContext = createContext<ThemeContextType>({
   isDark: false,
   setIsDark: () => {},
@@ -26,12 +28,12 @@ export const ThemeProvider = ({
 
   useEffect(() => {
     const className = 'dark';
-    const body = document.body;
+    const root = document.documentElement;
 
     if (isDark) {
-      body.classList.add(className);
+      root.classList.add(className);
     } else {
-      body.classList.remove(className);
+      root.classList.remove(className);
     }
   }, [isDark]);
 
@@ -42,6 +44,7 @@ export const ThemeProvider = ({
   );
 };
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useTheme = () => {
   const value = useContext(ThemeContext);
   if (value === undefined) throw new Error('Error');

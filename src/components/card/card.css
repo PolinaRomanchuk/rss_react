@@ -1,19 +1,22 @@
-.card{
+.card {
   display: flex;
   gap: 30px;
 }
 
-.card-name{
+.card-name {
   width: 100px;
 }
 
-.card-description{
+.card-description {
   width: 200px;
 }
 
+.card_button {
+  width: 100px;
+}
+
 @media (max-width: 640px) {
-  .card{
+  .card {
     flex-direction: column;
   }
-  
 }

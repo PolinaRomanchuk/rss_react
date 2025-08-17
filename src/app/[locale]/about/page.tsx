@@ -1,36 +1,33 @@
 import type { ReactElement } from 'react';
-import Header from '../header/Header';
-import './about.css';
-import Photo from '../../assets/polina.jpg';
-import Mail from '../../assets/envelope.svg?react';
-import GitHub from '../../assets/github.svg?react';
-import Linkedin from '../../assets/linkedin.svg?react';
-import { useTheme } from '../context/ThemeContext';
+import '../../../components/about/about.css';
+
+import { useTranslations } from 'next-intl';
+import Image from 'next/image';
+import Header from '../../../components/header/Header';
 
 const About = (): ReactElement => {
-  const { isDark } = useTheme();
+  const translate = useTranslations();
 
   return (
     <>
       <Header />
       <div className="about">
         <div className="about_photo-name-container">
-          <img src={Photo} alt="photo" />
-          <p>Polina Romanchuk</p>
+          <Image src="/polina.jpg" alt="photo" width={50} height={50} />
+          <p>{translate('about.author')}</p>
         </div>
         <div className="about_cours-info">
-          This project was created as part of the RS School courses. To learn
-          more about the program, visit{' '}
+          {translate('about.message')}{' '}
           <a
             target="_blank"
             href="https://rs.school/courses/reactjs"
             rel="noreferrer"
             className="about_rss-link"
           >
-            RS School website.
+            {translate('about.link')}
           </a>
           <div className="about_contacts">
-            <span>Contact:</span>
+            <span>{translate('about.contact')}:</span>
             <ul>
               <li>
                 <a
@@ -38,8 +35,11 @@ const About = (): ReactElement => {
                   rel="noreferrer"
                   aria-label="mail"
                 >
-                  <Mail
-                    className={isDark ? 'about_icon dark' : 'about_icon '}
+                  <Image
+                    src="/envelope.svg"
+                    width={20}
+                    height={20}
+                    alt="mail"
                   />
                 </a>
               </li>
@@ -50,8 +50,11 @@ const About = (): ReactElement => {
                   target="_blank"
                   aria-label="github"
                 >
-                  <GitHub
-                    className={isDark ? 'about_icon dark' : 'about_icon '}
+                  <Image
+                    src="/github.svg"
+                    width={20}
+                    height={20}
+                    alt="github"
                   />
                 </a>
               </li>
@@ -62,8 +65,11 @@ const About = (): ReactElement => {
                   target="_blank"
                   aria-label="linkedin"
                 >
-                  <Linkedin
-                    className={isDark ? 'about_icon dark' : 'about_icon '}
+                  <Image
+                    src="/linkedin.svg"
+                    width={20}
+                    height={20}
+                    alt="linkedin"
                   />
                 </a>
               </li>

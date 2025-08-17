@@ -1,7 +1,7 @@
 import { type ReactElement } from 'react';
 import './details.css';
-import loadingGif from '../../assets/Pokeball.gif';
 import { useGetPokemonByNameQuery } from '../../services/pokemonApi';
+import Image from 'next/image';
 
 type Props = {
   name: string;
@@ -13,15 +13,17 @@ const Details = ({ name, onClose }: Props): ReactElement => {
     data: pokemonDetails,
     error: pokemonDetailsError,
     isFetching: pokemonDetailsLoading,
-  } = useGetPokemonByNameQuery(name!, { skip: !name });
+  } = useGetPokemonByNameQuery(name, { skip: !name });
 
   const pokemon = pokemonDetails;
 
   return (
     <div className="details">
       {pokemonDetailsLoading && (
-        <img
-          src={loadingGif}
+        <Image
+          width={50}
+          height={50}
+          src="/Pokeball.gif"
           alt="Loading..."
           className="loading-details-gif"
         />
@@ -36,7 +38,13 @@ const Details = ({ name, onClose }: Props): ReactElement => {
           </button>
           {pokemon.map((poke) => (
             <div className="details_card" key={poke.name}>
-              <img src={poke.image} alt={poke.image} />
+              <Image
+                src={poke.image}
+                alt={poke.name}
+                width={90}
+                height={90}
+                unoptimized={true}
+              />
               <div className="details-name">{poke.name}</div>
               <div className="details-description">{poke.description}</div>
             </div>

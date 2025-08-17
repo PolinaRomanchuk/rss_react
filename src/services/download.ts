@@ -29,8 +29,8 @@ export async function getDownloadUrl(
 ): Promise<{ href: string; filename: string }> {
   const selectedPokemons = await loadSelectedPokemons(selectedNames);
 
-  const json = JSON.stringify(selectedPokemons, null, 2);
-  const dataUri = 'data:text/json;charset=utf8,' + encodeURIComponent(json);
-  const filename = `${selectedNames.length}_items.json`;
+  const csv = JSON.stringify(selectedPokemons, null, 2);
+  const dataUri = 'data:text/json;charset=utf8,' + encodeURIComponent(csv);
+  const filename = `${selectedNames.length}_items.csv`;
   return { href: dataUri, filename };
 }
