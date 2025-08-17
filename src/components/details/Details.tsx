@@ -38,7 +38,13 @@ const Details = ({ name, onClose }: Props): ReactElement => {
           </button>
           {pokemon.map((poke) => (
             <div className="details_card" key={poke.name}>
-              <img src={poke.image} alt={poke.image} />
+              <Image
+                src={poke.image}
+                alt={poke.name}
+                width={90}
+                height={90}
+                unoptimized={true}
+              />
               <div className="details-name">{poke.name}</div>
               <div className="details-description">{poke.description}</div>
             </div>

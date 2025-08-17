@@ -2,11 +2,6 @@ body {
   margin: 0;
   font-family: 'Dosis', sans-serif;
   font-size: large;
-
-  &.dark {
-    background-color: black;
-    color: white;
-  }
 }
 
 button {
@@ -18,3 +13,12 @@ input {
   font-family: inherit;
   padding: 5px;
 }
+
+a {
+  color: pink;
+}
+
+.dark {
+    background-color: black;
+    color: white;
+  }

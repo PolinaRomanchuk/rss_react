@@ -27,12 +27,12 @@ export const ThemeProvider = ({
 
   useEffect(() => {
     const className = 'dark';
-    const body = document.body;
+    const root = document.documentElement;
 
     if (isDark) {
-      body.classList.add(className);
+      root.classList.add(className);
     } else {
-      body.classList.remove(className);
+      root.classList.remove(className);
     }
   }, [isDark]);
 

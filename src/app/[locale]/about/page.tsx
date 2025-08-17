@@ -35,7 +35,12 @@ const About = (): ReactElement => {
                   rel="noreferrer"
                   aria-label="mail"
                 >
-                  mail
+                  <Image
+                    src="/envelope.svg"
+                    width={20}
+                    height={20}
+                    alt="mail"
+                  />
                 </a>
               </li>
               <li>
@@ -45,7 +50,12 @@ const About = (): ReactElement => {
                   target="_blank"
                   aria-label="github"
                 >
-                  git
+                  <Image
+                    src="/github.svg"
+                    width={20}
+                    height={20}
+                    alt="github"
+                  />
                 </a>
               </li>
               <li>
@@ -55,7 +65,12 @@ const About = (): ReactElement => {
                   target="_blank"
                   aria-label="linkedin"
                 >
-                  linkedin
+                  <Image
+                    src="/linkedin.svg"
+                    width={20}
+                    height={20}
+                    alt="linkedin"
+                  />
                 </a>
               </li>
             </ul>
