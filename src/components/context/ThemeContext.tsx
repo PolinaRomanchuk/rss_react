@@ -13,6 +13,7 @@ type ThemeContextType = {
   setIsDark: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const ThemeContext = createContext<ThemeContextType>({
   isDark: false,
   setIsDark: () => {},
@@ -43,6 +44,7 @@ export const ThemeProvider = ({
   );
 };
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useTheme = () => {
   const value = useContext(ThemeContext);
   if (value === undefined) throw new Error('Error');

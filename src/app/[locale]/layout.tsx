@@ -8,14 +8,15 @@ export default async function LocaleLayout({
   params,
 }: {
   children: React.ReactNode;
-  params: { locale: string };
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  params: any;
 }) {
   const { locale } = params;
   if (!hasLocale(routing.locales, locale)) {
     notFound();
   }
 
-  const messages = (await import(`/messages/${locale}.json`)).default;
+  const messages = (await import(`../../messages/${locale}.json`)).default;
 
   return (
     <Providers locale={locale} messages={messages}>

@@ -25,10 +25,10 @@ describe('Details', () => {
 
   it('renders pokemon and handle close', async () => {
     vi.mocked(useGetPokemonByNameQuery).mockReturnValue({
-          data: [mockData[0]],
-          isFetching: false,
-          error: undefined,
-        } as never);
+      data: [mockData[0]],
+      isFetching: false,
+      error: undefined,
+    } as never);
 
     render(<Details name="pikachu" onClose={onClose} />);
 

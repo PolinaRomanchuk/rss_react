@@ -2,8 +2,8 @@ import createNextIntlPlugin from 'next-intl/plugin';
 /** @type {import('next').NextConfig} */
 
 const nextConfig = {
-  output: 'export',
-  distDir: './dist',
+ // output: 'export',
+  distDir: 'out',
   webpack(config) {
     config.module.rules.push({
       test: /\.svg$/i,

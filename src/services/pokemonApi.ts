@@ -15,6 +15,7 @@ export const pokemonApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: 'https://pokeapi.co/api/v2/' }),
   tagTypes: ['Pokemon'],
   endpoints: (builder) => ({
+    // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
     getAllPokemons: builder.query<Pokemon[], void>({
       query: () => `pokemon?limit=30`,
       transformResponse: async (response: {

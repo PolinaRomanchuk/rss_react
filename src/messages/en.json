@@ -3,29 +3,29 @@
     "home": "Home",
     "about": "About"
   },
- "cardList":{
+  "cardList": {
     "search-error": "This pokemon does not found",
-    "unselect-button-name":"Unselect all",
-    "download-button-name":"Download",
+    "unselect-button-name": "Unselect all",
+    "download-button-name": "Download",
     "select-message": "items are selected"
   },
 
   "search": {
-    "search-button-name":"search",
+    "search-button-name": "search",
     "search-placeholder": "enter full name, eg bulbasaur"
   },
-  "card":{
+  "card": {
     "see-more-button-name": "see more"
   },
 
-  "about":{
+  "about": {
     "author": "Polina Romanchuk",
     "message": "This project was created as part of the RS School courses. To learn more about the program, visit",
     "link": "RS School website",
     "contact": "Contact"
   },
 
-  "error-page":{
+  "error-page": {
     "title": "Not found",
     "message": "The page you are looking for does not exist",
     "button": "Go home"
@@ -35,8 +35,8 @@
   "error-message": "Something went wrong",
   "reload": "reload",
 
-  "error-boundary":{
+  "error-boundary": {
     "error-message": "Something went wrong",
-  "reload": "reload"
+    "reload": "reload"
   }
 }
