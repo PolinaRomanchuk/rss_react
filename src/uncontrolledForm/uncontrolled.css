@@ -8,3 +8,10 @@
   display: flex;
   flex-direction: column;
 }
+
+.error{
+  color: red;
+  text-align: justify;
+  font-size: small;
+  margin-top: 5px;
+}

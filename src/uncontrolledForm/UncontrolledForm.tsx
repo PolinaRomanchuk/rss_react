@@ -1,11 +1,14 @@
-import { useRef, type ReactElement } from 'react';
+import { useRef, useState, type ReactElement } from 'react';
 import './uncontrolled.css';
 import { useStore } from '../store/store';
+import { ZodError } from 'zod';
+import { formValidation } from '../validation/validation';
 
 const UncontrolledForm = (): ReactElement => {
   const formRef = useRef<HTMLFormElement>(null);
   const setFormData = useStore((state) => state.setFormData);
   const countries = useStore((state) => state.countries);
+  const [errors, setErrors] = useState<Record<string, string[]>>({});
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -13,7 +16,7 @@ const UncontrolledForm = (): ReactElement => {
     if (form) {
       const formData = new FormData(form);
       const file = formData.get('file') as File;
-      const base64 = await getbase64(file);
+      const base64 = file ? await getbase64(file) : null;
 
       const data = {
         name: String(formData.get('name')),
@@ -26,8 +29,15 @@ const UncontrolledForm = (): ReactElement => {
         agreement: formData.get('agreement') !== null,
         file: base64,
       };
-      setFormData(data);
-      console.log(data);
+      try {
+        const validated = formValidation.parse(data);
+        setFormData(data);
+        console.log(validated);
+      } catch (error) {
+        if (error instanceof ZodError) {
+          setErrors(error.flatten().fieldErrors);
+        }
+      }
     }
   };
 
@@ -45,10 +55,12 @@ const UncontrolledForm = (): ReactElement => {
       <div className="uncontrolled-form_input-container">
         <label htmlFor="name">Name</label>
         <input type="text" id="name" name="name" defaultValue="" />
+        {errors.name && <p className="error">{errors.name[0]}</p>}
       </div>
       <div className="uncontrolled-form_input-container">
         <label htmlFor="age">Age</label>
         <input type="text" id="age" name="age" defaultValue="" />
+        {errors.age && <p className="error">{errors.age[0]}</p>}
       </div>
 
       <fieldset className="uncontrolled-form_fieldset-container">
@@ -61,6 +73,7 @@ const UncontrolledForm = (): ReactElement => {
           <input type="radio" name="gender" value="female" />
           Female
         </label>
+        {errors.gender && <p className="error">{errors.gender[0]}</p>}
       </fieldset>
 
       <div className="uncontrolled-form_input-container">
@@ -75,26 +88,32 @@ const UncontrolledForm = (): ReactElement => {
             </option>
           ))}
         </select>
+        {errors.country && <p className="error">{errors.country[0]}</p>}
       </div>
 
       <div className="uncontrolled-form_input-container">
         <label htmlFor="email">Email</label>
-        <input type="email" id="email" name="email" defaultValue="" />
+        <input type="string" id="email" name="email" defaultValue="" />
+        {errors.email && <p className="error">{errors.email[0]}</p>}
       </div>
 
       <div className="uncontrolled-form_input-container">
         <label htmlFor="password">Password</label>
         <input type="password" id="password" name="password" defaultValue="" />
+        {errors.password && <p className="error">{errors.password[0]}</p>}
       </div>
 
       <div className="uncontrolled-form_input-container">
-        <label htmlFor="password">Confirm password</label>
+        <label htmlFor="confirmedPassword">Confirm password</label>
         <input
           type="password"
           id="confirmedPassword"
           name="confirmedPassword"
           defaultValue=""
         />
+        {errors.confirmedPassword && (
+          <p className="error">{errors.confirmedPassword[0]}</p>
+        )}
       </div>
 
       <label>
@@ -106,10 +125,12 @@ const UncontrolledForm = (): ReactElement => {
         />
         I agree to terms and Conditions
       </label>
+      {errors.agreement && <p className="error">{errors.agreement[0]}</p>}
 
       <div className="uncontrolled-form_input-container">
         <label htmlFor="file">Upload image</label>
         <input type="file" id="file" name="file" accept=".jpeg,.png" />
+        {errors.file && <p className="error">{errors.file[0]}</p>}
       </div>
 
       <button type="submit">Done</button>
