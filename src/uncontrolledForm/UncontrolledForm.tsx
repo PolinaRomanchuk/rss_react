@@ -1,27 +1,43 @@
 import { useRef, type ReactElement } from 'react';
 import './uncontrolled.css';
+import { useStore } from '../store/store';
 
 const UncontrolledForm = (): ReactElement => {
   const formRef = useRef<HTMLFormElement>(null);
+  const setFormData = useStore((state) => state.setFormData);
+  const countries = useStore((state) => state.countries);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const form = formRef.current;
     if (form) {
       const formData = new FormData(form);
+      const file = formData.get('file') as File;
+      const base64 = await getbase64(file);
+
       const data = {
-        name: formData.get('name'),
+        name: String(formData.get('name')),
         age: Number(formData.get('age')),
-        gender: formData.get('gender'),
-        country: formData.get('country'),
-        email: formData.get('email'),
-        password: formData.get('password'),
-        confirmedPassword: formData.get('confirmedPassword'),
-        agreement: formData.get('agreement'),
-        file: formData.get('file'),
+        gender: String(formData.get('gender')) as 'male' | 'female',
+        country: String(formData.get('country')),
+        email: String(formData.get('email')),
+        password: String(formData.get('password')),
+        confirmedPassword: String(formData.get('confirmedPassword')),
+        agreement: formData.get('agreement') !== null,
+        file: base64,
       };
+      setFormData(data);
       console.log(data);
     }
+  };
+
+  const getbase64 = async (file: File): Promise<string> => {
+    return await new Promise<string>((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
   };
 
   return (
@@ -53,9 +69,11 @@ const UncontrolledForm = (): ReactElement => {
           <option value="" disabled>
             Select a country
           </option>
-          <option value="belarus">Belarus</option>
-          <option value="russia">Russia</option>
-          <option value="usa">USA</option>
+          {countries.map((country) => (
+            <option key={country} value={country}>
+              {country}
+            </option>
+          ))}
         </select>
       </div>
 
@@ -91,7 +109,7 @@ const UncontrolledForm = (): ReactElement => {
 
       <div className="uncontrolled-form_input-container">
         <label htmlFor="file">Upload image</label>
-        <input type="file" id="file" name="file" accept=".jpg,.png,.svg" />
+        <input type="file" id="file" name="file" accept=".jpeg,.png" />
       </div>
 
       <button type="submit">Done</button>
