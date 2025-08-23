@@ -4,6 +4,7 @@ import { ZodError } from 'zod';
 import { formValidation } from '../validation/validation';
 import { getbase64 } from '../utils/utils';
 import type { FormField } from '../type/form';
+import PasswordStrength from '../utils/passwordStrength';
 
 type ControlledFormProps = {
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -183,6 +184,7 @@ const ControlledForm = ({
             validateField('password', e.target.value);
           }}
         />
+        <PasswordStrength password={password} />
         {errors.password && <p className="error">{errors.password[0]}</p>}
       </div>
 

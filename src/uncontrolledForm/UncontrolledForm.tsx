@@ -3,6 +3,7 @@ import { useStore } from '../store/store';
 import { ZodError } from 'zod';
 import { formValidation } from '../validation/validation';
 import { getbase64 } from '../utils/utils';
+import PasswordStrength from '../utils/passwordStrength';
 
 type UncontrolledFormProps = {
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -12,6 +13,9 @@ const UncontrolledForm = ({
   setShowModal,
 }: UncontrolledFormProps): ReactElement => {
   const formRef = useRef<HTMLFormElement>(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
+  const [passwordValue, setPasswordValue] = useState('');
+
   const setFormData = useStore((state) => state.addFormData);
   const countries = useStore((state) => state.countries);
   const [errors, setErrors] = useState<Record<string, string[]>>({});
@@ -100,7 +104,19 @@ const UncontrolledForm = ({
 
       <div className="form_input-container">
         <label htmlFor="password">Password</label>
-        <input type="password" id="password" name="password" defaultValue="" />
+        <input
+          type="password"
+          id="password"
+          name="password"
+          defaultValue=""
+          ref={passwordRef}
+          onInput={() => {
+            if (passwordRef.current) {
+              setPasswordValue(passwordRef.current.value);
+            }
+          }}
+        />
+        <PasswordStrength password={passwordValue} />
         {errors.password && <p className="error">{errors.password[0]}</p>}
       </div>
 
