@@ -14,27 +14,17 @@ type FormData = {
 
 type Store = {
   countries: string[];
-  formData: FormData | null;
-  setFormData: (data: FormData) => void;
+  formDataList: FormData[];
+  addFormData: (data: FormData) => void;
   resetFormData: () => void;
 };
 
 export const useStore = create<Store>()((set) => ({
   countries: ['Belarus', 'Russia', 'USA'],
-  formData: null,
-  setFormData: (data) => set({ formData: data }),
-  resetFormData: () =>
-    set({
-      formData: {
-        name: '',
-        age: 0,
-        email: '',
-        password: '',
-        confirmedPassword: '',
-        gender: 'male',
-        agreement: false,
-        country: '',
-        file: null,
-      },
-    }),
+  formDataList: [],
+  addFormData: (data) =>
+    set((state) => ({
+      formDataList: [...state.formDataList, data],
+    })),
+  resetFormData: () => set({ formDataList: [] }),
 }));

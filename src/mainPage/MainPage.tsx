@@ -3,6 +3,8 @@ import { createPortal } from 'react-dom';
 import Modal from '../modal/Modal';
 import UncontrolledForm from '../uncontrolledForm/UncontrolledForm';
 import ControlledForm from '../controlledForm/ControlledForm';
+import './mainpage.css';
+import DataList from '../dataList/DataList';
 
 const MainPage = (): ReactElement => {
   const [showModal, setShowModal] = useState(false);
@@ -23,11 +25,13 @@ const MainPage = (): ReactElement => {
       <button onClick={() => openModal('controlled-form')}>
         Controlled form
       </button>
+      <DataList />
+
       {showModal &&
         createPortal(
           <Modal setShowModal={setShowModal}>
             {modalContent === 'uncontrolled-form' ? (
-              <UncontrolledForm />
+              <UncontrolledForm setShowModal={setShowModal} />
             ) : (
               <ControlledForm />
             )}

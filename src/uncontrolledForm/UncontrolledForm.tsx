@@ -1,12 +1,18 @@
-import { useRef, useState, type ReactElement } from 'react';
+import React, { useRef, useState, type ReactElement } from 'react';
 import './uncontrolled.css';
 import { useStore } from '../store/store';
 import { ZodError } from 'zod';
 import { formValidation } from '../validation/validation';
 
-const UncontrolledForm = (): ReactElement => {
+type UncontrolledFormProps = {
+  setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+const UncontrolledForm = ({
+  setShowModal,
+}: UncontrolledFormProps): ReactElement => {
   const formRef = useRef<HTMLFormElement>(null);
-  const setFormData = useStore((state) => state.setFormData);
+  const setFormData = useStore((state) => state.addFormData);
   const countries = useStore((state) => state.countries);
   const [errors, setErrors] = useState<Record<string, string[]>>({});
 
@@ -16,8 +22,11 @@ const UncontrolledForm = (): ReactElement => {
     if (form) {
       const formData = new FormData(form);
       const file = formData.get('file') as File;
-      const base64 = file ? await getbase64(file) : null;
+      let base64: string | null = null;
 
+      if (file && file.size > 0) {
+        base64 = await getbase64(file);
+      }
       const data = {
         name: String(formData.get('name')),
         age: Number(formData.get('age')),
@@ -31,7 +40,8 @@ const UncontrolledForm = (): ReactElement => {
       };
       try {
         const validated = formValidation.parse(data);
-        setFormData(data);
+        setFormData(validated);
+        setShowModal(false);
         console.log(validated);
       } catch (error) {
         if (error instanceof ZodError) {
