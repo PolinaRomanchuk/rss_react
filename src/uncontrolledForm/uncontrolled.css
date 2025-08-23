@@ -1,0 +1,10 @@
+.uncontrolled-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.uncontrolled-form_input-container {
+  display: flex;
+  flex-direction: column;
+}
