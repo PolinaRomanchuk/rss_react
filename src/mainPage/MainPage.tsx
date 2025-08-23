@@ -33,7 +33,7 @@ const MainPage = (): ReactElement => {
             {modalContent === 'uncontrolled-form' ? (
               <UncontrolledForm setShowModal={setShowModal} />
             ) : (
-              <ControlledForm />
+              <ControlledForm setShowModal={setShowModal} />
             )}
           </Modal>,
           document.documentElement

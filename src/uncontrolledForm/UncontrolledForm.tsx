@@ -1,8 +1,8 @@
 import React, { useRef, useState, type ReactElement } from 'react';
-import './uncontrolled.css';
 import { useStore } from '../store/store';
 import { ZodError } from 'zod';
 import { formValidation } from '../validation/validation';
+import { getbase64 } from '../utils/utils';
 
 type UncontrolledFormProps = {
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -51,29 +51,20 @@ const UncontrolledForm = ({
     }
   };
 
-  const getbase64 = async (file: File): Promise<string> => {
-    return await new Promise<string>((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = () => resolve(reader.result as string);
-      reader.onerror = reject;
-      reader.readAsDataURL(file);
-    });
-  };
-
   return (
-    <form ref={formRef} onSubmit={handleSubmit} className="uncontrolled-form">
-      <div className="uncontrolled-form_input-container">
+    <form ref={formRef} onSubmit={handleSubmit} className="form">
+      <div className="form_input-container">
         <label htmlFor="name">Name</label>
         <input type="text" id="name" name="name" defaultValue="" />
         {errors.name && <p className="error">{errors.name[0]}</p>}
       </div>
-      <div className="uncontrolled-form_input-container">
+      <div className="form_input-container">
         <label htmlFor="age">Age</label>
         <input type="text" id="age" name="age" defaultValue="" />
         {errors.age && <p className="error">{errors.age[0]}</p>}
       </div>
 
-      <fieldset className="uncontrolled-form_fieldset-container">
+      <fieldset className="form_fieldset-container">
         <legend>Gender</legend>
         <label>
           <input type="radio" name="gender" value="male" defaultChecked />
@@ -86,7 +77,7 @@ const UncontrolledForm = ({
         {errors.gender && <p className="error">{errors.gender[0]}</p>}
       </fieldset>
 
-      <div className="uncontrolled-form_input-container">
+      <div className="form_input-container">
         <label htmlFor="country">Country</label>
         <select id="country" name="country" defaultValue="">
           <option value="" disabled>
@@ -101,19 +92,19 @@ const UncontrolledForm = ({
         {errors.country && <p className="error">{errors.country[0]}</p>}
       </div>
 
-      <div className="uncontrolled-form_input-container">
+      <div className="form_input-container">
         <label htmlFor="email">Email</label>
         <input type="string" id="email" name="email" defaultValue="" />
         {errors.email && <p className="error">{errors.email[0]}</p>}
       </div>
 
-      <div className="uncontrolled-form_input-container">
+      <div className="form_input-container">
         <label htmlFor="password">Password</label>
         <input type="password" id="password" name="password" defaultValue="" />
         {errors.password && <p className="error">{errors.password[0]}</p>}
       </div>
 
-      <div className="uncontrolled-form_input-container">
+      <div className="form_input-container">
         <label htmlFor="confirmedPassword">Confirm password</label>
         <input
           type="password"
@@ -137,7 +128,7 @@ const UncontrolledForm = ({
       </label>
       {errors.agreement && <p className="error">{errors.agreement[0]}</p>}
 
-      <div className="uncontrolled-form_input-container">
+      <div className="form_input-container">
         <label htmlFor="file">Upload image</label>
         <input type="file" id="file" name="file" accept=".jpeg,.png" />
         {errors.file && <p className="error">{errors.file[0]}</p>}
