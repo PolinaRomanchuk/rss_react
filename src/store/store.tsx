@@ -9,7 +9,18 @@ type Store = {
 };
 
 export const useStore = create<Store>()((set) => ({
-  countries: ['Belarus', 'Russia', 'USA'],
+  countries: [
+    'Belarus',
+    'Russia',
+    'USA',
+    'Poland',
+    'Germany',
+    'Canada',
+    'France',
+    'Italy',
+    'Spain',
+    'Japan',
+  ],
   formDataList: [],
   addFormData: (data) =>
     set((state) => ({

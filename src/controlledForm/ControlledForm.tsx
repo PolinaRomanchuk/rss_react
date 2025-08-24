@@ -5,6 +5,7 @@ import { formValidation } from '../validation/validation';
 import { getbase64 } from '../utils/utils';
 import type { FormField } from '../type/form';
 import PasswordStrength from '../utils/passwordStrength';
+import AutocompletedCountry from '../utils/AutocompletedCountry';
 
 type ControlledFormProps = {
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -14,7 +15,7 @@ const ControlledForm = ({
   setShowModal,
 }: ControlledFormProps): ReactElement => {
   const setFormData = useStore((state) => state.addFormData);
-  const countries = useStore((state) => state.countries);
+
   const [errors, setErrors] = useState<Record<string, string[]>>({});
   const [isValid, setIsValid] = useState(false);
 
@@ -132,26 +133,11 @@ const ControlledForm = ({
       </fieldset>
 
       <div className="form_input-container">
-        <label htmlFor="country">Country</label>
-        <select
-          id="country"
-          name="country"
-          defaultValue=""
-          value={country}
-          onChange={(e) => {
-            setCountry(e.target.value);
-            validateField('country', e.target.value);
-          }}
-        >
-          <option value="" disabled>
-            Select a country
-          </option>
-          {countries.map((country) => (
-            <option key={country} value={country}>
-              {country}
-            </option>
-          ))}
-        </select>
+        <AutocompletedCountry
+          setCountry={setCountry}
+          country={country}
+          validateField={validateField}
+        />
         {errors.country && <p className="error">{errors.country[0]}</p>}
       </div>
 
