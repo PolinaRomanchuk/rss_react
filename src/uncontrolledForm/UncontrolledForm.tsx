@@ -19,6 +19,7 @@ const UncontrolledForm = ({
 
   const setFormData = useStore((state) => state.addFormData);
   const [errors, setErrors] = useState<Record<string, string[]>>({});
+  const schema = formValidation();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -43,7 +44,7 @@ const UncontrolledForm = ({
         file: base64,
       };
       try {
-        const validated = formValidation.parse(data);
+        const validated = schema.parse(data);
         setFormData(validated);
         setShowModal(false);
         console.log(validated);

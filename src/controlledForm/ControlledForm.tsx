@@ -4,7 +4,7 @@ import { ZodError } from 'zod';
 import { formValidation } from '../validation/validation';
 import { getbase64 } from '../utils/utils';
 import type { FormField } from '../type/form';
-import PasswordStrength from '../utils/passwordStrength';
+import PasswordStrength from '../utils/PasswordStrength';
 import AutocompletedCountry from '../utils/AutocompletedCountry';
 
 type ControlledFormProps = {
@@ -28,6 +28,7 @@ const ControlledForm = ({
   const [confirmedPassword, setConfirmedPassword] = useState('');
   const [agreement, setAgreement] = useState(false);
   const [file, setFile] = useState<File | null>(null);
+  const schema = formValidation();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -48,7 +49,7 @@ const ControlledForm = ({
       file: base64,
     };
     try {
-      const validated = formValidation.parse(data);
+      const validated = schema.parse(data);
       setFormData(validated);
       setShowModal(false);
       console.log(validated);
@@ -60,7 +61,7 @@ const ControlledForm = ({
   };
 
   const validateField = (field: FormField, value: unknown) => {
-    const fieldSchema = formValidation.shape[field];
+    const fieldSchema = schema.shape[field];
     const result = fieldSchema.safeParse(value);
 
     let newErrors = { ...errors };
