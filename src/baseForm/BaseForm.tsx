@@ -1,4 +1,4 @@
-import { type ReactElement, type Ref } from 'react';
+import { useEffect, useRef, type ReactElement, type Ref } from 'react';
 import AutocompletedCountry from '../utils/AutocompletedCountry';
 import PasswordStrength from '../utils/PasswordStrength';
 import type { FormField } from '../type/form';
@@ -42,6 +42,11 @@ const BaseForm = ({
       onChange('file', null);
     }
   };
+  const nameInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    nameInputRef.current?.focus();
+  }, []);
 
   return (
     <form
@@ -56,6 +61,7 @@ const BaseForm = ({
           type="text"
           id="name"
           name="name"
+          ref={nameInputRef}
           value={isControlled ? values.name : undefined}
           defaultValue={isControlled ? undefined : values.name}
           onChange={(e) =>

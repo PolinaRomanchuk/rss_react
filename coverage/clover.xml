@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1756067163393" clover="3.2.0">
-  <project timestamp="1756067163394" name="All files">
-    <metrics statements="222" coveredstatements="187" conditionals="190" coveredconditionals="132" methods="64" coveredmethods="49" elements="476" coveredelements="368" complexity="0" loc="222" ncloc="222" packages="9" files="11" classes="11"/>
+<coverage generated="1756067663055" clover="3.2.0">
+  <project timestamp="1756067663055" name="All files">
+    <metrics statements="226" coveredstatements="191" conditionals="190" coveredconditionals="132" methods="65" coveredmethods="50" elements="481" coveredelements="373" complexity="0" loc="226" ncloc="226" packages="9" files="11" classes="11"/>
     <package name="baseForm">
-      <metrics statements="28" coveredstatements="17" conditionals="106" coveredconditionals="73" methods="14" coveredmethods="5"/>
+      <metrics statements="32" coveredstatements="21" conditionals="106" coveredconditionals="73" methods="15" coveredmethods="6"/>
       <file name="BaseForm.tsx" path="D:\1\rss_react\src\baseForm\BaseForm.tsx">
-        <metrics statements="28" coveredstatements="17" conditionals="106" coveredconditionals="73" methods="14" coveredmethods="5"/>
+        <metrics statements="32" coveredstatements="21" conditionals="106" coveredconditionals="73" methods="15" coveredmethods="6"/>
+        <line num="1" count="4" type="stmt"/>
         <line num="2" count="4" type="stmt"/>
         <line num="3" count="4" type="stmt"/>
         <line num="6" count="4" type="stmt"/>
@@ -18,22 +19,25 @@
         <line num="39" count="1" type="stmt"/>
         <line num="40" count="1" type="stmt"/>
         <line num="42" count="0" type="stmt"/>
-        <line num="46" count="24" type="stmt"/>
-        <line num="62" count="6" type="cond" truecount="3" falsecount="0"/>
-        <line num="78" count="0" type="cond" truecount="0" falsecount="3"/>
-        <line num="96" count="0" type="cond" truecount="0" falsecount="3"/>
-        <line num="109" count="0" type="cond" truecount="0" falsecount="3"/>
-        <line num="120" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="140" count="0" type="cond" truecount="0" falsecount="3"/>
-        <line num="157" count="0" type="cond" truecount="0" falsecount="3"/>
-        <line num="161" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="166" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="167" count="0" type="stmt"/>
-        <line num="189" count="0" type="cond" truecount="0" falsecount="3"/>
-        <line num="209" count="4" type="cond" truecount="3" falsecount="0"/>
-        <line num="225" count="2" type="cond" truecount="1" falsecount="1"/>
-        <line num="226" count="2" type="stmt"/>
-        <line num="249" count="4" type="stmt"/>
+        <line num="45" count="24" type="stmt"/>
+        <line num="47" count="24" type="stmt"/>
+        <line num="48" count="15" type="stmt"/>
+        <line num="51" count="24" type="stmt"/>
+        <line num="68" count="6" type="cond" truecount="3" falsecount="0"/>
+        <line num="84" count="0" type="cond" truecount="0" falsecount="3"/>
+        <line num="102" count="0" type="cond" truecount="0" falsecount="3"/>
+        <line num="115" count="0" type="cond" truecount="0" falsecount="3"/>
+        <line num="126" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="146" count="0" type="cond" truecount="0" falsecount="3"/>
+        <line num="163" count="0" type="cond" truecount="0" falsecount="3"/>
+        <line num="167" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="172" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="173" count="0" type="stmt"/>
+        <line num="195" count="0" type="cond" truecount="0" falsecount="3"/>
+        <line num="215" count="4" type="cond" truecount="3" falsecount="0"/>
+        <line num="231" count="2" type="cond" truecount="1" falsecount="1"/>
+        <line num="232" count="2" type="stmt"/>
+        <line num="255" count="4" type="stmt"/>
       </file>
     </package>
     <package name="controlledForm">
