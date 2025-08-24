@@ -3,7 +3,8 @@ import { useStore } from '../store/store';
 import { ZodError } from 'zod';
 import { formValidation } from '../validation/validation';
 import { getbase64 } from '../utils/utils';
-import PasswordStrength from '../utils/passwordStrength';
+import PasswordStrength from '../utils/PasswordStrength';
+import AutocompletedCountry from '../utils/AutocompletedCountry';
 
 type UncontrolledFormProps = {
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -17,7 +18,6 @@ const UncontrolledForm = ({
   const [passwordValue, setPasswordValue] = useState('');
 
   const setFormData = useStore((state) => state.addFormData);
-  const countries = useStore((state) => state.countries);
   const [errors, setErrors] = useState<Record<string, string[]>>({});
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -82,17 +82,7 @@ const UncontrolledForm = ({
       </fieldset>
 
       <div className="form_input-container">
-        <label htmlFor="country">Country</label>
-        <select id="country" name="country" defaultValue="">
-          <option value="" disabled>
-            Select a country
-          </option>
-          {countries.map((country) => (
-            <option key={country} value={country}>
-              {country}
-            </option>
-          ))}
-        </select>
+        <AutocompletedCountry defaultValue="" />
         {errors.country && <p className="error">{errors.country[0]}</p>}
       </div>
 

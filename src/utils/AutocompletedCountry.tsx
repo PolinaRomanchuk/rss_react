@@ -1,26 +1,35 @@
-import { useState, type ReactElement } from 'react';
+import { useRef, useState, type ReactElement } from 'react';
 import { useStore } from '../store/store';
 import type { FormField } from '../type/form';
 import './countries.css';
 
-type AutocompletedCountryProps = {
+type ControlledProps = {
   setCountry: React.Dispatch<React.SetStateAction<string>>;
   country: string;
   validateField: (field: FormField, value: unknown) => void;
 };
 
-const AutocompletedCountry = ({
-  setCountry,
-  country,
-  validateField,
-}: AutocompletedCountryProps): ReactElement => {
+type UncontrolledProps = {
+  defaultValue: string;
+};
+
+type AutocompletedCountryProps = ControlledProps | UncontrolledProps;
+
+const AutocompletedCountry = (
+  props: AutocompletedCountryProps
+): ReactElement => {
   const countries = useStore((state) => state.countries);
   const [filteredCountries, setFilteredCountries] = useState<string[]>([]);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    setCountry(value);
-    validateField('country', value);
+    if ('setCountry' in props) {
+      props.setCountry(value);
+    }
+    if ('validateField' in props) {
+      props.validateField('country', value);
+    }
 
     if (value === '') {
       setFilteredCountries([]);
@@ -34,8 +43,15 @@ const AutocompletedCountry = ({
   };
 
   const handleSelect = (country: string) => {
-    setCountry(country);
-    validateField('country', country);
+    if ('setCountry' in props) {
+      props.setCountry(country);
+    }
+    if ('validateField' in props) {
+      props.validateField('country', country);
+    }
+    if (inputRef.current) {
+      inputRef.current.value = country;
+    }
     setFilteredCountries([]);
   };
 
@@ -45,12 +61,16 @@ const AutocompletedCountry = ({
       <input
         type="text"
         id="country"
-        value={country}
         onChange={handleChange}
         autoComplete="off"
         onBlur={() => {
           setTimeout(() => setFilteredCountries([]), 100);
         }}
+        {...('country' in props
+          ? { value: props.country }
+          : { defaultValue: props.defaultValue ?? '' })}
+        ref={inputRef}
+        name="country"
       />
       {filteredCountries.length > 0 && (
         <ul className="country_ul">
