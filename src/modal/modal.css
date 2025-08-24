@@ -17,10 +17,18 @@
   min-height: 100px;
   padding: 30px;
   position: relative;
+  max-height: 660px;
+  overflow-y: auto;
 }
 .modal_close-button {
   cursor: pointer;
   position: absolute;
   top: 0;
   right: 0;
+}
+
+@media (max-height: 600px) {
+  .modal_container {
+    max-height: 500px;
+  }
 }

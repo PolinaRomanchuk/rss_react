@@ -4,6 +4,7 @@ import PasswordStrength from '../utils/PasswordStrength';
 import type { FormField } from '../type/form';
 import { type FormData } from '../type/form';
 import { getbase64 } from '../utils/utils';
+import './baseform.css';
 
 type BaseFormProps = {
   handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
@@ -30,6 +31,18 @@ const BaseForm = ({
   uncontrolledsetPass,
   passwordRef,
 }: BaseFormProps): ReactElement => {
+  const handleChangeFile = async (rowfile: File) => {
+    if (!isControlled || !onChange) return;
+
+    const file = rowfile ?? null;
+    if (file) {
+      const base64 = await getbase64(file);
+      onChange('file', base64);
+    } else {
+      onChange('file', null);
+    }
+  };
+
   return (
     <form
       onSubmit={handleSubmit}
@@ -48,7 +61,9 @@ const BaseForm = ({
             isControlled && onChange && onChange('name', e.target.value)
           }
         />
-        {errors.name && <p className="error">{errors.name[0]}</p>}
+        <div className="error_container">
+          {errors.name && <p className="error">{errors.name[0]}</p>}
+        </div>
       </div>
       <div className="form_input-container">
         <label htmlFor="age">Age</label>
@@ -62,7 +77,9 @@ const BaseForm = ({
             isControlled && onChange && onChange('age', Number(e.target.value))
           }
         />
-        {errors.age && <p className="error">{errors.age[0]}</p>}
+        <div className="error_container">
+          {errors.age && <p className="error">{errors.age[0]}</p>}
+        </div>
       </div>
 
       <fieldset className="form_fieldset-container">
@@ -105,7 +122,9 @@ const BaseForm = ({
         ) : (
           <AutocompletedCountry defaultValue={values.country} />
         )}
-        {errors.country && <p className="error">{errors.country[0]}</p>}
+        <div className="error_container">
+          {errors.country && <p className="error">{errors.country[0]}</p>}
+        </div>
       </div>
 
       <div className="form_input-container">
@@ -120,7 +139,9 @@ const BaseForm = ({
             isControlled && onChange && onChange('email', e.target.value)
           }
         />
-        {errors.email && <p className="error">{errors.email[0]}</p>}
+        <div className="error_container">
+          {errors.email && <p className="error">{errors.email[0]}</p>}
+        </div>
       </div>
 
       <div className="form_input-container">
@@ -150,7 +171,9 @@ const BaseForm = ({
         <PasswordStrength
           password={uncontrolledPass ? uncontrolledPass : values.password}
         />
-        {errors.password && <p className="error">{errors.password[0]}</p>}
+        <div className="error_container">
+          {errors.password && <p className="error">{errors.password[0]}</p>}
+        </div>
       </div>
 
       <div className="form_input-container">
@@ -167,9 +190,11 @@ const BaseForm = ({
             onChange('confirmedPassword', e.target.value)
           }
         />
-        {errors.confirmedPassword && (
-          <p className="error">{errors.confirmedPassword[0]}</p>
-        )}
+        <div className="error_container">
+          {errors.confirmedPassword && (
+            <p className="error">{errors.confirmedPassword[0]}</p>
+          )}
+        </div>
       </div>
 
       <label>
@@ -183,30 +208,34 @@ const BaseForm = ({
             isControlled && onChange && onChange('agreement', e.target.checked)
           }
         />
-        I agree to terms and Conditions
+        I agree to Terms and Conditions
       </label>
-      {errors.agreement && <p className="error">{errors.agreement[0]}</p>}
+      <div className="error_container">
+        {errors.agreement && <p className="error">{errors.agreement[0]}</p>}
+      </div>
 
       <div className="form_input-container">
-        <label htmlFor="file">Upload image</label>
         <input
           type="file"
           id="file"
           name="file"
           accept=".jpeg,.png"
           onChange={async (e) => {
-            if (!isControlled || !onChange) return;
-
-            const file = e.target.files?.[0] ?? null;
-            if (file) {
-              const base64 = await getbase64(file);
-              onChange('file', base64);
-            } else {
-              onChange('file', null);
+            if (e.target.files?.[0]) {
+              handleChangeFile(e.target.files?.[0]);
             }
           }}
+          className="hidden"
         />
-        {errors.file && <p className="error">{errors.file[0]}</p>}
+        <div className="file_container">
+          <label htmlFor="file" className="upload-btn">
+            Upload image
+          </label>
+          {values.file && <p className="file-name">file is uploaded</p>}
+        </div>
+        <div className="error_container">
+          {errors.file && <p className="error">{errors.file[0]}</p>}
+        </div>
       </div>
 
       <button type="submit" disabled={isControlled && !isValid}>
