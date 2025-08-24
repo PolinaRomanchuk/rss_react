@@ -6,7 +6,8 @@ export type FormField =
   | 'email'
   | 'password'
   | 'confirmedPassword'
-  | 'agreement';
+  | 'agreement'
+  | 'file';
 
 export type FormData = {
   name: string;

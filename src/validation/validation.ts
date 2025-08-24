@@ -29,7 +29,10 @@ export const formValidation = () => {
         .refine((val) => countries.includes(val), {
           message: 'Please select a valid country',
         }),
-      file: z.string().nullable(),
+      file: z
+        .string()
+        .nullable()
+        .refine((val) => val !== null && val !== '', 'File is required'),
     })
     .refine((data) => data.password === data.confirmedPassword, {
       message: 'Passwords must match',

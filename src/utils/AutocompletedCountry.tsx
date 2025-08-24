@@ -4,7 +4,7 @@ import type { FormField } from '../type/form';
 import './countries.css';
 
 type ControlledProps = {
-  setCountry: React.Dispatch<React.SetStateAction<string>>;
+  setCountry: (val: string) => void;
   country: string;
   validateField: (field: FormField, value: unknown) => void;
 };
