@@ -1,5 +1,5 @@
 import type { ReactElement, ReactNode } from 'react';
-import './modal.css';
+import '../modal/modal.css';
 
 type ModalProps = {
   setShowModal: (value: boolean) => void;

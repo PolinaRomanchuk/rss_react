@@ -13,7 +13,7 @@ const PasswordStrength = ({
 
   return (
     <div className="password-strength_container">
-      <div className="password-strength_cell-container">
+      <div className="password-strength_cell-container" data-testid="cells">
         {Array.from({ length: 5 }).map((_, index) => (
           <div
             key={index + 1}
@@ -21,6 +21,7 @@ const PasswordStrength = ({
             style={{
               backgroundColor: index < score ? color : 'lightgray',
             }}
+            data-testid="cell"
           />
         ))}
       </div>

@@ -48,6 +48,7 @@ const BaseForm = ({
       onSubmit={handleSubmit}
       ref={isControlled ? undefined : formref}
       className="form"
+      data-testid={isControlled ? 'controlled-form' : 'uncontrolled-form'}
     >
       <div className="form_input-container">
         <label htmlFor="name">Name</label>

@@ -1,7 +1,7 @@
 import { useEffect, useState, type ReactElement } from 'react';
 import { useStore } from '../store/store';
 import './data.css';
-import DefaultImage from '../../public/default.jpeg';
+import DefaultImage from '../assets/default.jpeg';
 
 const DataList = (): ReactElement => {
   const data = useStore((state) => state.formDataList);
@@ -18,7 +18,7 @@ const DataList = (): ReactElement => {
   }, [data]);
 
   return (
-    <div className="data_container">
+    <div className="data_container" data-testid="data-list">
       {data &&
         data.map((form, index) => (
           <div

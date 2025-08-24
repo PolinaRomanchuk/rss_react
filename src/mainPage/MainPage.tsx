@@ -3,7 +3,6 @@ import { createPortal } from 'react-dom';
 import Modal from '../modal/Modal';
 import UncontrolledForm from '../uncontrolledForm/UncontrolledForm';
 import ControlledForm from '../controlledForm/ControlledForm';
-import './mainpage.css';
 import DataList from '../dataList/DataList';
 
 const MainPage = (): ReactElement => {
@@ -19,10 +18,16 @@ const MainPage = (): ReactElement => {
 
   return (
     <>
-      <button onClick={() => openModal('uncontrolled-form')}>
+      <button
+        onClick={() => openModal('uncontrolled-form')}
+        data-testid="btn-uncontrolled"
+      >
         Uncontrolled form
       </button>
-      <button onClick={() => openModal('controlled-form')}>
+      <button
+        onClick={() => openModal('controlled-form')}
+        data-testid="btn-controlled"
+      >
         Controlled form
       </button>
       <DataList />
