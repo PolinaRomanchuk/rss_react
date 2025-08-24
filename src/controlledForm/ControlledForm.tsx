@@ -1,4 +1,4 @@
-import { useState, type ReactElement } from 'react';
+import { useEffect, useState, type ReactElement } from 'react';
 import { useStore } from '../store/store';
 import { ZodError } from 'zod';
 import { formValidation } from '../validation/validation';
@@ -61,21 +61,47 @@ const ControlledForm = ({
   };
 
   const validateField = (field: FormField, value: unknown) => {
+    let newErrors = { ...errors };
+    if (field === 'confirmedPassword') {
+      if (value !== password) {
+        newErrors.confirmedPassword = ['Passwords must match'];
+      } else {
+        delete newErrors.confirmedPassword;
+      }
+    }
     const fieldSchema = schema.shape[field];
     const result = fieldSchema.safeParse(value);
 
-    let newErrors = { ...errors };
-
     if (!result.success) {
       newErrors[field] = result.error.issues.map((issue) => issue.message);
-    } else {
-      const { [field]: _, ...rest } = errors;
-      newErrors = rest;
+    } else if (field !== 'confirmedPassword') {
+      newErrors = Object.fromEntries(
+        Object.entries(newErrors).filter(([key]) => key !== field)
+      );
     }
-
     setErrors(newErrors);
-    setIsValid(Object.keys(newErrors).length === 0);
   };
+
+  useEffect(() => {
+    const valid =
+      name != '' &&
+      age > 0 &&
+      email !== '' &&
+      password !== '' &&
+      confirmedPassword == password &&
+      country !== '' &&
+      agreement;
+    setIsValid(Object.keys(errors).length === 0 && valid);
+  }, [
+    age,
+    agreement,
+    confirmedPassword,
+    country,
+    email,
+    errors,
+    name,
+    password,
+  ]);
 
   return (
     <form onSubmit={handleSubmit} className="form">
