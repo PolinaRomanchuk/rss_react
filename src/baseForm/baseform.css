@@ -1,0 +1,48 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.form_input-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.error {
+  color: red;
+  text-align: justify;
+  font-size: small;
+  margin: 0;
+}
+
+.error_container {
+  margin: 1px;
+  height: 15px;
+}
+
+.upload-btn {
+  cursor: pointer;
+  background-color: #f9f9f9;
+  width: 100px;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+}
+
+.file-name {
+  margin-top: 6px;
+  font-size: 14px;
+  color: green;
+}
+
+.hidden {
+  display: none;
+}
+
+.file_container {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}

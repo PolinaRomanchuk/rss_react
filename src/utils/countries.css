@@ -1,0 +1,26 @@
+.country_input {
+  position: relative;
+}
+
+.country_ul {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background-color: white;
+  border: 1px solid gray;
+  z-index: 10;
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+  overflow-y: auto;
+  max-height: 300px;
+}
+
+.country_li {
+  padding: 4px;
+  cursor: pointer;
+  &:hover {
+    background-color: aliceblue;
+  }
+}

@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1756067663055" clover="3.2.0">
+  <project timestamp="1756067663055" name="All files">
+    <metrics statements="226" coveredstatements="191" conditionals="190" coveredconditionals="132" methods="65" coveredmethods="50" elements="481" coveredelements="373" complexity="0" loc="226" ncloc="226" packages="9" files="11" classes="11"/>
+    <package name="baseForm">
+      <metrics statements="32" coveredstatements="21" conditionals="106" coveredconditionals="73" methods="15" coveredmethods="6"/>
+      <file name="BaseForm.tsx" path="D:\1\rss_react\src\baseForm\BaseForm.tsx">
+        <metrics statements="32" coveredstatements="21" conditionals="106" coveredconditionals="73" methods="15" coveredmethods="6"/>
+        <line num="1" count="4" type="stmt"/>
+        <line num="2" count="4" type="stmt"/>
+        <line num="3" count="4" type="stmt"/>
+        <line num="6" count="4" type="stmt"/>
+        <line num="7" count="4" type="stmt"/>
+        <line num="22" count="4" type="stmt"/>
+        <line num="34" count="24" type="stmt"/>
+        <line num="35" count="2" type="cond" truecount="4" falsecount="0"/>
+        <line num="37" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="38" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="39" count="1" type="stmt"/>
+        <line num="40" count="1" type="stmt"/>
+        <line num="42" count="0" type="stmt"/>
+        <line num="45" count="24" type="stmt"/>
+        <line num="47" count="24" type="stmt"/>
+        <line num="48" count="15" type="stmt"/>
+        <line num="51" count="24" type="stmt"/>
+        <line num="68" count="6" type="cond" truecount="3" falsecount="0"/>
+        <line num="84" count="0" type="cond" truecount="0" falsecount="3"/>
+        <line num="102" count="0" type="cond" truecount="0" falsecount="3"/>
+        <line num="115" count="0" type="cond" truecount="0" falsecount="3"/>
+        <line num="126" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="146" count="0" type="cond" truecount="0" falsecount="3"/>
+        <line num="163" count="0" type="cond" truecount="0" falsecount="3"/>
+        <line num="167" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="172" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="173" count="0" type="stmt"/>
+        <line num="195" count="0" type="cond" truecount="0" falsecount="3"/>
+        <line num="215" count="4" type="cond" truecount="3" falsecount="0"/>
+        <line num="231" count="2" type="cond" truecount="1" falsecount="1"/>
+        <line num="232" count="2" type="stmt"/>
+        <line num="255" count="4" type="stmt"/>
+      </file>
+    </package>
+    <package name="controlledForm">
+      <metrics statements="43" coveredstatements="30" conditionals="20" coveredconditionals="8" methods="9" coveredmethods="7"/>
+      <file name="ControlledForm.tsx" path="D:\1\rss_react\src\controlledForm\ControlledForm.tsx">
+        <metrics statements="43" coveredstatements="30" conditionals="20" coveredconditionals="8" methods="9" coveredmethods="7"/>
+        <line num="1" count="2" type="stmt"/>
+        <line num="2" count="2" type="stmt"/>
+        <line num="3" count="2" type="stmt"/>
+        <line num="4" count="2" type="stmt"/>
+        <line num="7" count="2" type="stmt"/>
+        <line num="13" count="2" type="stmt"/>
+        <line num="16" count="55" type="stmt"/>
+        <line num="18" count="21" type="stmt"/>
+        <line num="19" count="21" type="stmt"/>
+        <line num="21" count="21" type="stmt"/>
+        <line num="32" count="21" type="stmt"/>
+        <line num="34" count="21" type="stmt"/>
+        <line num="35" count="8" type="stmt"/>
+        <line num="36" count="8" type="stmt"/>
+        <line num="39" count="21" type="stmt"/>
+        <line num="40" count="0" type="stmt"/>
+        <line num="42" count="0" type="stmt"/>
+        <line num="44" count="0" type="stmt"/>
+        <line num="45" count="0" type="stmt"/>
+        <line num="46" count="0" type="stmt"/>
+        <line num="47" count="0" type="stmt"/>
+        <line num="48" count="0" type="stmt"/>
+        <line num="50" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="51" count="0" type="stmt"/>
+        <line num="56" count="21" type="stmt"/>
+        <line num="57" count="8" type="stmt"/>
+        <line num="58" count="8" type="cond" truecount="1" falsecount="1"/>
+        <line num="59" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="60" count="0" type="stmt"/>
+        <line num="62" count="0" type="stmt"/>
+        <line num="65" count="8" type="stmt"/>
+        <line num="66" count="8" type="stmt"/>
+        <line num="68" count="8" type="cond" truecount="2" falsecount="0"/>
+        <line num="69" count="1" type="stmt"/>
+        <line num="70" count="7" type="cond" truecount="1" falsecount="1"/>
+        <line num="71" count="7" type="stmt"/>
+        <line num="72" count="0" type="stmt"/>
+        <line num="75" count="8" type="stmt"/>
+        <line num="78" count="21" type="stmt"/>
+        <line num="80" count="13" type="cond" truecount="2" falsecount="6"/>
+        <line num="88" count="13" type="cond" truecount="2" falsecount="0"/>
+        <line num="101" count="21" type="stmt"/>
+        <line num="113" count="2" type="stmt"/>
+      </file>
+    </package>
+    <package name="dataList">
+      <metrics statements="16" coveredstatements="16" conditionals="8" coveredconditionals="8" methods="6" coveredmethods="6"/>
+      <file name="DataList.tsx" path="D:\1\rss_react\src\dataList\DataList.tsx">
+        <metrics statements="16" coveredstatements="16" conditionals="8" coveredconditionals="8" methods="6" coveredmethods="6"/>
+        <line num="1" count="2" type="stmt"/>
+        <line num="2" count="2" type="stmt"/>
+        <line num="3" count="2" type="stmt"/>
+        <line num="4" count="2" type="stmt"/>
+        <line num="6" count="2" type="stmt"/>
+        <line num="7" count="24" type="stmt"/>
+        <line num="8" count="14" type="stmt"/>
+        <line num="10" count="14" type="stmt"/>
+        <line num="11" count="7" type="cond" truecount="2" falsecount="0"/>
+        <line num="12" count="2" type="stmt"/>
+        <line num="13" count="2" type="stmt"/>
+        <line num="15" count="2" type="stmt"/>
+        <line num="16" count="2" type="stmt"/>
+        <line num="20" count="14" type="stmt"/>
+        <line num="24" count="7" type="stmt"/>
+        <line num="44" count="2" type="stmt"/>
+      </file>
+    </package>
+    <package name="mainPage">
+      <metrics statements="16" coveredstatements="16" conditionals="4" coveredconditionals="4" methods="4" coveredmethods="4"/>
+      <file name="MainPage.tsx" path="D:\1\rss_react\src\mainPage\MainPage.tsx">
+        <metrics statements="16" coveredstatements="16" conditionals="4" coveredconditionals="4" methods="4" coveredmethods="4"/>
+        <line num="1" count="1" type="stmt"/>
+        <line num="2" count="1" type="stmt"/>
+        <line num="3" count="1" type="stmt"/>
+        <line num="4" count="1" type="stmt"/>
+        <line num="5" count="1" type="stmt"/>
+        <line num="6" count="1" type="stmt"/>
+        <line num="8" count="1" type="stmt"/>
+        <line num="9" count="8" type="stmt"/>
+        <line num="10" count="8" type="stmt"/>
+        <line num="14" count="8" type="stmt"/>
+        <line num="15" count="3" type="stmt"/>
+        <line num="16" count="3" type="stmt"/>
+        <line num="19" count="8" type="stmt"/>
+        <line num="22" count="2" type="stmt"/>
+        <line num="28" count="1" type="stmt"/>
+        <line num="50" count="1" type="stmt"/>
+      </file>
+    </package>
+    <package name="modal">
+      <metrics statements="10" coveredstatements="10" conditionals="2" coveredconditionals="1" methods="4" coveredmethods="4"/>
+      <file name="Modal.tsx" path="D:\1\rss_react\src\modal\Modal.tsx">
+        <metrics statements="10" coveredstatements="10" conditionals="2" coveredconditionals="1" methods="4" coveredmethods="4"/>
+        <line num="2" count="2" type="stmt"/>
+        <line num="9" count="2" type="stmt"/>
+        <line num="10" count="7" type="stmt"/>
+        <line num="11" count="7" type="stmt"/>
+        <line num="13" count="7" type="stmt"/>
+        <line num="14" count="4" type="cond" truecount="1" falsecount="1"/>
+        <line num="15" count="4" type="stmt"/>
+        <line num="19" count="7" type="stmt"/>
+        <line num="24" count="2" type="stmt"/>
+        <line num="36" count="2" type="stmt"/>
+      </file>
+    </package>
+    <package name="store">
+      <metrics statements="4" coveredstatements="4" conditionals="0" coveredconditionals="0" methods="4" coveredmethods="4"/>
+      <file name="store.tsx" path="D:\1\rss_react\src\store\store.tsx">
+        <metrics statements="4" coveredstatements="4" conditionals="0" coveredconditionals="0" methods="4" coveredmethods="4"/>
+        <line num="1" count="6" type="stmt"/>
+        <line num="11" count="6" type="stmt"/>
+        <line num="48" count="2" type="stmt"/>
+        <line num="51" count="4" type="stmt"/>
+      </file>
+    </package>
+    <package name="uncontrolledForm">
+      <metrics statements="32" coveredstatements="28" conditionals="8" coveredconditionals="5" methods="3" coveredmethods="3"/>
+      <file name="UncontrolledForm.tsx" path="D:\1\rss_react\src\uncontrolledForm\UncontrolledForm.tsx">
+        <metrics statements="32" coveredstatements="28" conditionals="8" coveredconditionals="5" methods="3" coveredmethods="3"/>
+        <line num="1" count="2" type="stmt"/>
+        <line num="2" count="2" type="stmt"/>
+        <line num="3" count="2" type="stmt"/>
+        <line num="4" count="2" type="stmt"/>
+        <line num="5" count="2" type="stmt"/>
+        <line num="6" count="2" type="stmt"/>
+        <line num="12" count="2" type="stmt"/>
+        <line num="15" count="7" type="stmt"/>
+        <line num="16" count="7" type="stmt"/>
+        <line num="17" count="7" type="stmt"/>
+        <line num="19" count="21" type="stmt"/>
+        <line num="20" count="7" type="stmt"/>
+        <line num="21" count="7" type="stmt"/>
+        <line num="23" count="7" type="stmt"/>
+        <line num="24" count="1" type="stmt"/>
+        <line num="25" count="1" type="stmt"/>
+        <line num="26" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="27" count="1" type="stmt"/>
+        <line num="28" count="1" type="stmt"/>
+        <line num="29" count="1" type="stmt"/>
+        <line num="31" count="1" type="cond" truecount="3" falsecount="1"/>
+        <line num="32" count="0" type="stmt"/>
+        <line num="34" count="1" type="stmt"/>
+        <line num="45" count="1" type="stmt"/>
+        <line num="46" count="1" type="stmt"/>
+        <line num="47" count="0" type="stmt"/>
+        <line num="48" count="0" type="stmt"/>
+        <line num="49" count="0" type="stmt"/>
+        <line num="51" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="52" count="1" type="stmt"/>
+        <line num="58" count="7" type="stmt"/>
+        <line num="82" count="2" type="stmt"/>
+      </file>
+    </package>
+    <package name="utils">
+      <metrics statements="64" coveredstatements="57" conditionals="40" coveredconditionals="32" methods="15" coveredmethods="11"/>
+      <file name="AutocompletedCountry.tsx" path="D:\1\rss_react\src\utils\AutocompletedCountry.tsx">
+        <metrics statements="32" coveredstatements="30" conditionals="18" coveredconditionals="11" methods="9" coveredmethods="8"/>
+        <line num="1" count="3" type="stmt"/>
+        <line num="2" count="3" type="stmt"/>
+        <line num="4" count="3" type="stmt"/>
+        <line num="18" count="3" type="stmt"/>
+        <line num="21" count="48" type="stmt"/>
+        <line num="22" count="25" type="stmt"/>
+        <line num="23" count="25" type="stmt"/>
+        <line num="25" count="25" type="stmt"/>
+        <line num="26" count="4" type="stmt"/>
+        <line num="27" count="4" type="cond" truecount="1" falsecount="1"/>
+        <line num="28" count="4" type="stmt"/>
+        <line num="30" count="4" type="cond" truecount="1" falsecount="1"/>
+        <line num="31" count="4" type="stmt"/>
+        <line num="34" count="4" type="cond" truecount="1" falsecount="1"/>
+        <line num="35" count="0" type="stmt"/>
+        <line num="36" count="0" type="stmt"/>
+        <line num="39" count="4" type="stmt"/>
+        <line num="40" count="16" type="stmt"/>
+        <line num="42" count="4" type="stmt"/>
+        <line num="45" count="25" type="stmt"/>
+        <line num="46" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="47" count="1" type="stmt"/>
+        <line num="49" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="50" count="1" type="stmt"/>
+        <line num="52" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="53" count="1" type="stmt"/>
+        <line num="55" count="1" type="stmt"/>
+        <line num="58" count="25" type="stmt"/>
+        <line num="67" count="1" type="stmt"/>
+        <line num="78" count="12" type="stmt"/>
+        <line num="80" count="1" type="stmt"/>
+        <line num="92" count="3" type="stmt"/>
+      </file>
+      <file name="PasswordStrength.tsx" path="D:\1\rss_react\src\utils\PasswordStrength.tsx">
+        <metrics statements="7" coveredstatements="7" conditionals="4" coveredconditionals="4" methods="2" coveredmethods="2"/>
+        <line num="2" count="3" type="stmt"/>
+        <line num="3" count="3" type="stmt"/>
+        <line num="9" count="3" type="stmt"/>
+        <line num="12" count="20" type="stmt"/>
+        <line num="14" count="20" type="stmt"/>
+        <line num="18" count="100" type="stmt"/>
+        <line num="32" count="3" type="stmt"/>
+      </file>
+      <file name="utils.ts" path="D:\1\rss_react\src\utils\utils.ts">
+        <metrics statements="25" coveredstatements="20" conditionals="18" coveredconditionals="17" methods="4" coveredmethods="1"/>
+        <line num="1" count="5" type="stmt"/>
+        <line num="2" count="0" type="stmt"/>
+        <line num="3" count="0" type="stmt"/>
+        <line num="4" count="0" type="stmt"/>
+        <line num="5" count="0" type="stmt"/>
+        <line num="6" count="0" type="stmt"/>
+        <line num="10" count="5" type="stmt"/>
+        <line num="13" count="23" type="stmt"/>
+        <line num="15" count="23" type="cond" truecount="2" falsecount="0"/>
+        <line num="16" count="23" type="cond" truecount="2" falsecount="0"/>
+        <line num="17" count="23" type="cond" truecount="2" falsecount="0"/>
+        <line num="18" count="23" type="cond" truecount="2" falsecount="0"/>
+        <line num="19" count="23" type="cond" truecount="2" falsecount="0"/>
+        <line num="21" count="23" type="stmt"/>
+        <line num="22" count="23" type="stmt"/>
+        <line num="24" count="23" type="cond" truecount="2" falsecount="0"/>
+        <line num="25" count="19" type="stmt"/>
+        <line num="26" count="19" type="stmt"/>
+        <line num="27" count="4" type="cond" truecount="4" falsecount="0"/>
+        <line num="28" count="2" type="stmt"/>
+        <line num="29" count="2" type="stmt"/>
+        <line num="30" count="2" type="cond" truecount="1" falsecount="1"/>
+        <line num="31" count="2" type="stmt"/>
+        <line num="32" count="2" type="stmt"/>
+        <line num="35" count="23" type="stmt"/>
+      </file>
+    </package>
+    <package name="validation">
+      <metrics statements="9" coveredstatements="9" conditionals="2" coveredconditionals="1" methods="5" coveredmethods="5"/>
+      <file name="validation.ts" path="D:\1\rss_react\src\validation\validation.ts">
+        <metrics statements="9" coveredstatements="9" conditionals="2" coveredconditionals="1" methods="5" coveredmethods="5"/>
+        <line num="1" count="3" type="stmt"/>
+        <line num="2" count="3" type="stmt"/>
+        <line num="4" count="3" type="stmt"/>
+        <line num="5" count="28" type="stmt"/>
+        <line num="6" count="28" type="stmt"/>
+        <line num="23" count="3" type="stmt"/>
+        <line num="29" count="1" type="stmt"/>
+        <line num="35" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="37" count="1" type="stmt"/>
+      </file>
+    </package>
+  </project>
+</coverage>
