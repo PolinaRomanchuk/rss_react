@@ -1,1 +1,1 @@
-# rss_react
+# React + TypeScript + Vite
