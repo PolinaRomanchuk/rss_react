@@ -2,16 +2,26 @@ import { type ReactElement } from 'react';
 import './table.css';
 import type { Row } from '../../types/table-types';
 import Spinner from '../spinner/Spinner';
+import Filter from '../filter/Filter';
 
 type TableProps = {
   rows: Row[];
-  currentYear: number;
+  maxYear: number;
+  filtredYear: number;
+  setFiltredYear: React.Dispatch<React.SetStateAction<number>>;
 };
 
-const Table = ({ rows, currentYear }: TableProps): ReactElement => {
+const Table = ({
+  rows,
+  maxYear,
+  filtredYear,
+  setFiltredYear,
+}: TableProps): ReactElement => {
   if (!rows.length) {
     return <Spinner />;
   }
+  const yearToShow = filtredYear || maxYear;
+
   return (
     <>
       <table>
@@ -20,14 +30,21 @@ const Table = ({ rows, currentYear }: TableProps): ReactElement => {
             <th>Country</th>
             <th>ISO code</th>
             <th>Population </th>
-            <th>Year</th>
+            <th>
+              <Filter
+                filterName="Year"
+                filterData={Array.from(new Set(rows.map((x) => x.year)))}
+                filtredInput={filtredYear}
+                setFiltredInput={setFiltredYear}
+              />
+            </th>
             <th>CO2</th>
             <th>CO2 per capita</th>
           </tr>
         </thead>
         <tbody>
           {rows
-            .filter((x) => x.year == currentYear)
+            .filter((x) => x.year == yearToShow)
             .map((row, i) => (
               <tr key={i}>
                 <td>{row.country}</td>

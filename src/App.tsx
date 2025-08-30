@@ -9,9 +9,11 @@ const Table = lazy(() => import('./components/table/Table'));
 
 function App() {
   const [rows, setRows] = useState<Row[]>([]);
-  const [currentYear, setCurrentYear] = useState(0);
+  const [maxYear, setMaxYear] = useState(0);
   const [searchWord, setSearchWord] = useState('');
   const [error, setError] = useState('');
+
+  const [filtredYear, setFiltredYear] = useState(0);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -20,7 +22,7 @@ function App() {
         const { maxYear, rows } = searchWord
           ? await fetchCountryByName(searchWord)
           : await fetchAllCountries();
-        setCurrentYear(maxYear);
+        setMaxYear(maxYear);
         setRows(rows);
       } catch (error) {
         if (error instanceof Error) {
@@ -39,7 +41,12 @@ function App() {
       <Search setSearchWord={setSearchWord} />
       <Suspense fallback={<Spinner />}>
         {!error ? (
-          <Table rows={rows} currentYear={currentYear} />
+          <Table
+            rows={rows}
+            maxYear={maxYear}
+            filtredYear={filtredYear}
+            setFiltredYear={setFiltredYear}
+          />
         ) : (
           <div className="error_message">{error}</div>
         )}
