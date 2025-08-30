@@ -1,58 +1,17 @@
-import { useEffect, useState, type ReactElement } from 'react';
+import { type ReactElement } from 'react';
 import './table.css';
+import type { Row } from '../../types/table-types';
+import Spinner from '../spinner/Spinner';
 
-type CountryRow = {
-  year: number;
-  population?: number;
-  cement_co2?: number;
-  cement_co2_per_capita?: number;
+type TableProps = {
+  rows: Row[];
+  currentYear: number;
 };
 
-type CountryData = {
-  iso_code: string;
-  data: CountryRow[];
-};
-
-type JSONData = {
-  [country: string]: CountryData;
-};
-
-type Row = {
-  country: string;
-  iso_code: string;
-  population?: number;
-  year: number;
-  cement_co2?: number;
-  cement_co2_per_capita?: number;
-};
-
-const Table = (): ReactElement => {
-  const [rows, setRows] = useState<Row[]>([]);
-  const [currentYear, setCurrentYear] = useState(0);
-
-  useEffect(() => {
-    fetch('/owid-co2-data.json')
-      .then((res) => res.json())
-      .then((json: JSONData) => {
-        const allRows: Row[] = [];
-        Object.entries(json).forEach(([country, countryData]) => {
-          countryData.data.forEach((row) => {
-            allRows.push({
-              country,
-              iso_code: countryData.iso_code,
-              population: row.population,
-              year: row.year,
-              cement_co2: row.cement_co2,
-              cement_co2_per_capita: row.cement_co2_per_capita,
-            });
-          });
-        });
-        const maxYear = Math.max(...allRows.map((x) => x.year));
-        setCurrentYear(maxYear);
-        setRows(allRows);
-      });
-  }, []);
-
+const Table = ({ rows, currentYear }: TableProps): ReactElement => {
+  if (!rows.length) {
+    return <Spinner />;
+  }
   return (
     <>
       <table>
