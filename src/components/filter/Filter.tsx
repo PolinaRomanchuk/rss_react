@@ -5,14 +5,12 @@ import './filter.css';
 type FilterProps = {
   filterName: string;
   filterData: number[];
-  filtredInput: number;
   setFiltredInput: React.Dispatch<React.SetStateAction<number>>;
 };
 
 const Filter = ({
   filterName,
   filterData,
-  filtredInput,
   setFiltredInput,
 }: FilterProps): ReactElement => {
   const [isShow, setIsShow] = useState(false);

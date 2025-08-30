@@ -1,8 +1,9 @@
-import { type ReactElement } from 'react';
+import { useState, type ReactElement } from 'react';
 import './table.css';
 import type { Row } from '../../types/table-types';
 import Spinner from '../spinner/Spinner';
 import Filter from '../filter/Filter';
+import Sort from '../sort/Sort';
 
 type TableProps = {
   rows: Row[];
@@ -17,10 +18,19 @@ const Table = ({
   filtredYear,
   setFiltredYear,
 }: TableProps): ReactElement => {
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
+
   if (!rows.length) {
     return <Spinner />;
   }
   const yearToShow = filtredYear || maxYear;
+  const filteredRows = rows.filter((x) => x.year === yearToShow);
+  const sortedRows = filteredRows.sort((a, b) => {
+    const popA = a.population ?? 0;
+    const popB = b.population ?? 0;
+
+    return sortOrder === 'asc' ? popA - popB : popB - popA;
+  });
 
   return (
     <>
@@ -29,12 +39,13 @@ const Table = ({
           <tr>
             <th>Country</th>
             <th>ISO code</th>
-            <th>Population </th>
+            <th>
+              <Sort sortName="Population" setSortOrder={setSortOrder} />
+            </th>
             <th>
               <Filter
                 filterName="Year"
                 filterData={Array.from(new Set(rows.map((x) => x.year)))}
-                filtredInput={filtredYear}
                 setFiltredInput={setFiltredYear}
               />
             </th>
@@ -43,18 +54,16 @@ const Table = ({
           </tr>
         </thead>
         <tbody>
-          {rows
-            .filter((x) => x.year == yearToShow)
-            .map((row, i) => (
-              <tr key={i}>
-                <td>{row.country}</td>
-                <td>{row.iso_code}</td>
-                <td>{row.population?.toLocaleString() ?? 'N/A'}</td>
-                <td>{row.year}</td>
-                <td>{row.cement_co2?.toLocaleString() ?? 'N/A'}</td>
-                <td>{row.cement_co2_per_capita ?? 'N/A'} </td>
-              </tr>
-            ))}
+          {sortedRows.map((row, i) => (
+            <tr key={i}>
+              <td>{row.country}</td>
+              <td>{row.iso_code}</td>
+              <td>{row.population?.toLocaleString() ?? 'N/A'}</td>
+              <td>{row.year}</td>
+              <td>{row.cement_co2?.toLocaleString() ?? 'N/A'}</td>
+              <td>{row.cement_co2_per_capita ?? 'N/A'} </td>
+            </tr>
+          ))}
         </tbody>
       </table>
     </>
