@@ -3,6 +3,16 @@ export type AllCountriesResponse = {
   maxYear: number;
   rows: Row[];
 };
+
+const baseFields = [
+  'country',
+  'iso_code',
+  'population',
+  'year',
+  'cement_co2',
+  'cement_co2_per_capita',
+];
+
 export const fetchAllCountries = async (): Promise<AllCountriesResponse> => {
   try {
     const res = await fetch('/owid-co2-data.json');
@@ -15,9 +25,7 @@ export const fetchAllCountries = async (): Promise<AllCountriesResponse> => {
           country,
           iso_code: countryData.iso_code,
           population: row.population,
-          year: row.year,
-          cement_co2: row.cement_co2,
-          cement_co2_per_capita: row.cement_co2_per_capita,
+          ...row,
         });
       });
     });
@@ -45,9 +53,7 @@ export const fetchCountryByName = async (
       country: searchCountry,
       iso_code: countryData.iso_code,
       population: row.population,
-      year: row.year,
-      cement_co2: row.cement_co2,
-      cement_co2_per_capita: row.cement_co2_per_capita,
+      ...row,
     }));
 
     const maxYear = Math.max(...rows.map((x) => x.year));
@@ -57,4 +63,12 @@ export const fetchCountryByName = async (
     console.log(error);
     throw Error('Something went wrong');
   }
+};
+
+export const getAvailableColumns = (rows: Row[]): string[] => {
+  if (!rows.length) return [];
+
+  const allKeys = Object.keys(rows[0]);
+
+  return allKeys.filter((key) => !baseFields.includes(key));
 };

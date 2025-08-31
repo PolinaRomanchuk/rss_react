@@ -4,6 +4,8 @@ import type { Row } from '../../types/table-types';
 import Spinner from '../spinner/Spinner';
 import Filter from '../filter/Filter';
 import Sort from '../sort/Sort';
+import Modal from '../modal/Modal';
+import { getAvailableColumns } from '../../services/fetchData';
 
 type TableProps = {
   rows: Row[];
@@ -19,6 +21,8 @@ const Table = ({
   setFiltredYear,
 }: TableProps): ReactElement => {
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
+  const [showModal, setShowModal] = useState(false);
+  const [extraColumns, setExtraColumns] = useState<string[]>([]);
 
   if (!rows.length) {
     return <Spinner />;
@@ -31,6 +35,8 @@ const Table = ({
 
     return sortOrder === 'asc' ? popA - popB : popB - popA;
   });
+
+  const availableColumns = getAvailableColumns(filteredRows);
 
   return (
     <>
@@ -51,6 +57,17 @@ const Table = ({
             </th>
             <th>CO2</th>
             <th>CO2 per capita</th>
+            {extraColumns.map((col) => (
+              <th key={col}>{col}</th>
+            ))}
+            <th>
+              <button
+                onClick={() => setShowModal(true)}
+                className="add-columns_button"
+              >
+                Add Columns
+              </button>
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -62,10 +79,20 @@ const Table = ({
               <td>{row.year}</td>
               <td>{row.cement_co2?.toLocaleString() ?? 'N/A'}</td>
               <td>{row.cement_co2_per_capita ?? 'N/A'} </td>
+              {extraColumns.map((col) => (
+                <td key={col}>{row[col as keyof Row] ?? 'N/A'}</td>
+              ))}
             </tr>
           ))}
         </tbody>
       </table>
+      <Modal
+        show={showModal}
+        setShow={setShowModal}
+        columns={availableColumns}
+        selectedColumns={extraColumns}
+        setSelectedColumns={setExtraColumns}
+      />
     </>
   );
 };
