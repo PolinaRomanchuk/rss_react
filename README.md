@@ -1,4 +1,4 @@
-Before
+Before optimization
 
 search
 ![search](./public/before/search1.png)
@@ -13,7 +13,7 @@ sort
 ![sort](./public/before/sort2.png)
 
 
-After
+After optimization
 
 search
 ![search](./public/after/search.png)
