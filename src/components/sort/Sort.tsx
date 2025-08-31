@@ -1,4 +1,4 @@
-import { type ReactElement } from 'react';
+import { useCallback, type ReactElement } from 'react';
 import Icon from '../../assets/arrow.png';
 import './sort.css';
 
@@ -8,9 +8,9 @@ type SortProps = {
 };
 
 const Sort = ({ sortName, setSortOrder }: SortProps): ReactElement => {
-  const handleSortClick = () => {
+  const handleSortClick = useCallback(() => {
     setSortOrder((prev) => (prev === 'asc' ? 'desc' : 'asc'));
-  };
+  }, [setSortOrder]);
 
   return (
     <div className="sort_container" onClick={handleSortClick}>

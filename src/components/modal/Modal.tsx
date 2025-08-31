@@ -1,4 +1,4 @@
-import { type ReactElement } from 'react';
+import { useCallback, type ReactElement } from 'react';
 import './modal.css';
 
 type ModalProps = {
@@ -16,15 +16,17 @@ const Modal = ({
   selectedColumns,
   setSelectedColumns,
 }: ModalProps): ReactElement | null => {
+  const toggleColumn = useCallback(
+    (col: string) => {
+      if (selectedColumns.includes(col)) {
+        setSelectedColumns(selectedColumns.filter((c) => c !== col));
+      } else {
+        setSelectedColumns([...selectedColumns, col]);
+      }
+    },
+    [selectedColumns]
+  );
   if (!show) return null;
-
-  const toggleColumn = (col: string) => {
-    if (selectedColumns.includes(col)) {
-      setSelectedColumns(selectedColumns.filter((c) => c !== col));
-    } else {
-      setSelectedColumns([...selectedColumns, col]);
-    }
-  };
 
   const handleClose = (): void => {
     setShow(false);

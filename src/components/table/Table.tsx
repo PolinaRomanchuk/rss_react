@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type ReactElement } from 'react';
+import { useEffect, useMemo, useRef, useState, type ReactElement } from 'react';
 import './table.css';
 import type { Row } from '../../types/table-types';
 import Spinner from '../spinner/Spinner';
@@ -31,13 +31,17 @@ const Table = ({
   const prevRowsRef = useRef<Row[]>([]);
 
   const yearToShow = filtredYear || maxYear;
-  const filteredRows = rows.filter((x) => x.year === yearToShow);
-  const sortedRows = filteredRows.sort((a, b) => {
-    const popA = a.population ?? 0;
-    const popB = b.population ?? 0;
-
-    return sortOrder === 'asc' ? popA - popB : popB - popA;
-  });
+  const filteredRows = useMemo(
+    () => rows.filter((x) => x.year === yearToShow),
+    [rows, yearToShow]
+  );
+  const sortedRows = useMemo(() => {
+    return [...filteredRows].sort((a, b) => {
+      const popA = a.population ?? 0;
+      const popB = b.population ?? 0;
+      return sortOrder === 'asc' ? popA - popB : popB - popA;
+    });
+  }, [filteredRows, sortOrder]);
 
   useEffect(() => {
     const prevRows = prevRowsRef.current;
@@ -68,8 +72,10 @@ const Table = ({
     prevRowsRef.current = sortedRows.map((r) => ({ ...r }));
   }, [sortedRows]);
 
-  const availableColumns = getAvailableColumns(filteredRows);
-
+  const availableColumns = useMemo(
+    () => getAvailableColumns(filteredRows),
+    [filteredRows]
+  );
   if (!rows.length) {
     return <Spinner />;
   }

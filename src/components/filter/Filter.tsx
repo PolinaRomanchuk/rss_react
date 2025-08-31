@@ -1,4 +1,4 @@
-import { useState, type ReactElement } from 'react';
+import { useCallback, useState, type ReactElement } from 'react';
 import Icon from '../../assets/filter.png';
 import './filter.css';
 
@@ -15,9 +15,9 @@ const Filter = ({
 }: FilterProps): ReactElement => {
   const [isShow, setIsShow] = useState(false);
 
-  const handleSelect = (input: number) => {
+  const handleSelect = useCallback((input: number) => {
     setFiltredInput(input);
-  };
+  }, []);
 
   return (
     <div

@@ -1,4 +1,4 @@
-import { useState, type ReactElement } from 'react';
+import { useCallback, useState, type ReactElement } from 'react';
 import './search.css';
 import Icon from '../../assets/search.png';
 
@@ -9,11 +9,11 @@ type SearchProps = {
 const Search = ({ setSearchWord }: SearchProps): ReactElement => {
   const [input, setInput] = useState('');
 
-  const handleClick = () => {
+  const handleClick = useCallback(() => {
     const capitalized =
       input.charAt(0).toUpperCase() + input.slice(1).toLowerCase();
     setSearchWord(capitalized);
-  };
+  }, [input, setSearchWord]);
 
   return (
     <div className="search_container">
