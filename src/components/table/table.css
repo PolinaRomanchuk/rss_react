@@ -1,0 +1,19 @@
+table {
+  border: 1px solid whitesmoke;
+  border-collapse: collapse;
+}
+
+th, td {
+  border: 1px solid whitesmoke;
+  padding: 5px;
+}
+
+
+.add-columns_button{
+  color: white;
+}
+
+.highlight {
+  background-color: #6a8761; 
+  transition: background-color 2s ease;
+}
