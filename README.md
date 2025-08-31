@@ -5,12 +5,12 @@ search
 ![search2](./public/before/search2.png)
 
 filter
-![filter](./public/before/filter1.png)
-![filter2](./public/before/filter2.png)
+![filter](./public/before/filter1.PNG)
+![filter2](./public/before/filter2.PNG)
 
 sort
-![sort](./public/before/sort.png)
-![sort](./public/before/sort2.png)
+![sort](./public/before/sort.PNG)
+![sort](./public/before/sort2.PNG)
 
 
 After optimization
