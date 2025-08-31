@@ -1,4 +1,4 @@
-import { useState, type ReactElement } from 'react';
+import { useEffect, useRef, useState, type ReactElement } from 'react';
 import './table.css';
 import type { Row } from '../../types/table-types';
 import Spinner from '../spinner/Spinner';
@@ -24,9 +24,12 @@ const Table = ({
   const [showModal, setShowModal] = useState(false);
   const [extraColumns, setExtraColumns] = useState<string[]>([]);
 
-  if (!rows.length) {
-    return <Spinner />;
-  }
+  const [highlightedCells, setHighlightedCells] = useState<
+    Record<string, boolean>
+  >({});
+
+  const prevRowsRef = useRef<Row[]>([]);
+
   const yearToShow = filtredYear || maxYear;
   const filteredRows = rows.filter((x) => x.year === yearToShow);
   const sortedRows = filteredRows.sort((a, b) => {
@@ -36,7 +39,40 @@ const Table = ({
     return sortOrder === 'asc' ? popA - popB : popB - popA;
   });
 
+  useEffect(() => {
+    const prevRows = prevRowsRef.current;
+    const newHighlights: Record<string, boolean> = {};
+
+    sortedRows.forEach((row, rowIndex) => {
+      const prevRow = prevRows[rowIndex];
+      if (!prevRow) return;
+
+      Object.keys(row).forEach((key) => {
+        const k = key as keyof Row;
+        if (row[k] !== prevRow[k]) {
+          newHighlights[`${rowIndex}-${key}`] = true;
+        }
+      });
+    });
+
+    if (Object.keys(newHighlights).length > 0) {
+      setHighlightedCells(newHighlights);
+
+      const timeout = setTimeout(() => setHighlightedCells({}), 2000);
+
+      return () => clearTimeout(timeout);
+    }
+  }, [rows, filtredYear]);
+
+  useEffect(() => {
+    prevRowsRef.current = sortedRows.map((r) => ({ ...r }));
+  }, [sortedRows]);
+
   const availableColumns = getAvailableColumns(filteredRows);
+
+  if (!rows.length) {
+    return <Spinner />;
+  }
 
   return (
     <>
@@ -73,14 +109,49 @@ const Table = ({
         <tbody>
           {sortedRows.map((row, i) => (
             <tr key={i}>
-              <td>{row.country}</td>
-              <td>{row.iso_code}</td>
-              <td>{row.population?.toLocaleString() ?? 'N/A'}</td>
-              <td>{row.year}</td>
-              <td>{row.cement_co2?.toLocaleString() ?? 'N/A'}</td>
-              <td>{row.cement_co2_per_capita ?? 'N/A'} </td>
+              <td
+                className={highlightedCells[`${i}-country`] ? 'highlight' : ''}
+              >
+                {row.country}
+              </td>
+              <td
+                className={highlightedCells[`${i}-iso_code`] ? 'highlight' : ''}
+              >
+                {row.iso_code}
+              </td>
+              <td
+                className={
+                  highlightedCells[`${i}-population`] ? 'highlight' : ''
+                }
+              >
+                {row.population?.toLocaleString() ?? 'N/A'}
+              </td>
+              <td className={highlightedCells[`${i}-year`] ? 'highlight' : ''}>
+                {row.year}
+              </td>
+              <td
+                className={
+                  highlightedCells[`${i}-cement_co2`] ? 'highlight' : ''
+                }
+              >
+                {row.cement_co2?.toLocaleString() ?? 'N/A'}
+              </td>
+              <td
+                className={
+                  highlightedCells[`${i}-cement_co2_per_capita`]
+                    ? 'highlight'
+                    : ''
+                }
+              >
+                {row.cement_co2_per_capita ?? 'N/A'}{' '}
+              </td>
               {extraColumns.map((col) => (
-                <td key={col}>{row[col as keyof Row] ?? 'N/A'}</td>
+                <td
+                  key={col}
+                  className={highlightedCells[`${i}-${col}`] ? 'highlight' : ''}
+                >
+                  {row[col as keyof Row] ?? 'N/A'}
+                </td>
               ))}
             </tr>
           ))}

@@ -14,11 +14,13 @@ function App() {
   const [error, setError] = useState('');
 
   const [filtredYear, setFiltredYear] = useState(0);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         setError('');
+        setLoading(true);
         const { maxYear, rows } = searchWord
           ? await fetchCountryByName(searchWord)
           : await fetchAllCountries();
@@ -30,6 +32,8 @@ function App() {
         } else {
           setError('Something went wrong');
         }
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -40,7 +44,9 @@ function App() {
     <>
       <Search setSearchWord={setSearchWord} />
       <Suspense fallback={<Spinner />}>
-        {!error ? (
+        {loading ? (
+          <Spinner />
+        ) : !error ? (
           <Table
             rows={rows}
             maxYear={maxYear}

@@ -12,3 +12,8 @@ th, td {
 .add-columns_button{
   color: white;
 }
+
+.highlight {
+  background-color: #6a8761; 
+  transition: background-color 2s ease;
+}
