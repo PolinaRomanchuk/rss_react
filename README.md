@@ -5,12 +5,12 @@ search
 ![search2](./public/before/search2.png)
 
 filter
-![filter](./public/before/filter1.PNG)
-![filter2](./public/before/filter2.PNG)
+![filter](./public/before/filter1.png)
+![filter2](./public/before/filter2.png)
 
 sort
-![sort](./public/before/sort.PNG)
-![sort](./public/before/sort2.PNG)
+![sort](./public/before/sort.png)
+![sort](./public/before/sort2.png)
 
 
 After
@@ -20,10 +20,9 @@ search
 ![search2](./public/after/search2.png)
 
 filter
-![filter](./public/after/filter.PNG)
-![filter2](./public/after/filter2.PNG)
+![filter](./public/after/filter.png)
+![filter2](./public/after/filter2.png)
 
 sort
-
-![sort](./public/after/sort.PNG)
-![sort](./public/after/sort2.PNG)
+![sort](./public/after/sort.png)
+![sort](./public/after/sort2.png)
