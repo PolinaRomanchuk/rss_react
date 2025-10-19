@@ -114,7 +114,7 @@ const CardList = ({ searchName }: CardListProps): ReactElement => {
                 pokemons?.map((pokemon) => (
                   <Card
                     name={pokemon.name}
-                    description={pokemon.description}
+                    image={pokemon.image}
                     key={pokemon.name}
                     onClick={() => {
                       searchParams.set('details', pokemon.name);

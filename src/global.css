@@ -11,7 +11,8 @@
   --color-accent-orange: #f87c08;
 
   --color-accent: #961c04;
-  --color-base: #fccc94;
+  --color-base: white;
+  --color-card-bg: #fce48c;
 }
 
 .dark {
@@ -23,6 +24,7 @@
 
   --color-base: #3a2c1f;
   --color-base-contrast: #f3d9b6;
+  --color-card-bg: #4f4032;
 }
 
 @layer base {
