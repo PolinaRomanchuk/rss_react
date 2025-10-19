@@ -45,7 +45,7 @@ const CardList = ({ searchName }: CardListProps): ReactElement => {
     data: searchedPokemon,
     error: searchError,
     isFetching: searchLoading,
-  } = useGetPokemonByNameQuery(searchName!, { skip: !searchName });
+  } = useGetPokemonByNameQuery(searchName ?? '', { skip: !searchName });
 
   const loading = searchName ? searchLoading : allLoading;
   const error = searchName ? searchError : allError;

@@ -13,7 +13,7 @@ const Details = ({ name, onClose }: Props): ReactElement => {
     data: pokemonDetails,
     error: pokemonDetailsError,
     isFetching: pokemonDetailsLoading,
-  } = useGetPokemonByNameQuery(name!, { skip: !name });
+  } = useGetPokemonByNameQuery(name ?? '', { skip: !name });
 
   const pokemon = pokemonDetails;
 
