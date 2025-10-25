@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type ReactElement } from 'react';
 import Card from '../card/Card';
-import { getTotalPages, productsPerPage } from '../../services/pagination';
+import { totalPage } from '../../services/pagination';
 import loadingGif from '../../assets/Loading animation.gif';
 import type { Pokemon } from '../../type/pokemon';
 import { useSearchParams } from 'react-router';
@@ -35,10 +35,10 @@ const CardList = ({ searchName }: CardListProps): ReactElement => {
   const dispatch = useDispatch();
 
   const {
-    data: allPokemons,
+    data: allData,
     error: allError,
     isFetching: allLoading,
-  } = useGetAllPokemonsQuery(undefined, { skip: !!searchName });
+  } = useGetAllPokemonsQuery(currentPage, { skip: !!searchName });
 
   const {
     data: searchedPokemon,
@@ -65,20 +65,6 @@ const CardList = ({ searchName }: CardListProps): ReactElement => {
     }
   };
 
-  const { data: paginatedPokemons } = useGetAllPokemonsQuery(undefined, {
-    selectFromResult: ({ data }) => {
-      if (!data) return { data: undefined };
-
-      const start = (currentPage - 1) * productsPerPage;
-      const end = start + productsPerPage;
-      return {
-        data: data.slice(start, end),
-      };
-    },
-  });
-
-  const totalPage = allPokemons ? getTotalPages(allPokemons.length) : 1;
-
   useEffect(() => {
     if (pageFromUrl >= 1 && pageFromUrl <= totalPage) {
       setCurrentPage(pageFromUrl);
@@ -86,7 +72,7 @@ const CardList = ({ searchName }: CardListProps): ReactElement => {
       setCurrentPage(1);
       setSearchParams({ page: '1' });
     }
-  }, [pageFromUrl, setSearchParams, totalPage]);
+  }, [pageFromUrl, setSearchParams]);
 
   const goToPage = (page: number) => {
     setSearchParams({ page: String(page) });
@@ -94,8 +80,7 @@ const CardList = ({ searchName }: CardListProps): ReactElement => {
 
   const pokemons: Pokemon[] | undefined = searchName
     ? searchedPokemon
-    : paginatedPokemons;
-  console.log(pokemons);
+    : allData;
 
   return (
     <>
@@ -118,13 +103,7 @@ const CardList = ({ searchName }: CardListProps): ReactElement => {
 
         {pokemons && !loading && (
           <div className="flex flex-col items-center gap-5 size-full">
-            <div
-              className={
-                detailName
-                  ? 'grid grid-flow-col grid-rows-3 gap-5'
-                  : 'grid grid-flow-col grid-rows-2 gap-5'
-              }
-            >
+            <div className="grid grid-flow-col grid-rows-2 gap-5">
               {pokemons &&
                 pokemons?.map((pokemon) => (
                   <Card
@@ -160,24 +139,6 @@ const CardList = ({ searchName }: CardListProps): ReactElement => {
                 </div>
               </div>
             )}
-
-            {pokemons && pokemons.length > 1 && (
-              <div className="flex items-center gap-3">
-                <button
-                  onClick={() => goToPage(Math.max(currentPage - 1, 1))}
-                  disabled={currentPage === 1}
-                >
-                  {'<'}
-                </button>
-                <span>{currentPage}</span>
-                <button
-                  onClick={() => goToPage(Math.min(currentPage + 1, totalPage))}
-                  disabled={currentPage === totalPage}
-                >
-                  {'>'}
-                </button>
-              </div>
-            )}
           </div>
         )}
 
@@ -191,6 +152,23 @@ const CardList = ({ searchName }: CardListProps): ReactElement => {
           />
         )}
       </div>
+      {pokemons && pokemons.length > 1 && (
+        <div className="flex items-center gap-3">
+          <button
+            onClick={() => goToPage(Math.max(currentPage - 1, 1))}
+            disabled={currentPage === 1}
+          >
+            {'<'}
+          </button>
+          <span>{currentPage}</span>
+          <button
+            onClick={() => goToPage(Math.min(currentPage + 1, totalPage))}
+            disabled={currentPage === totalPage}
+          >
+            {'>'}
+          </button>
+        </div>
+      )}
     </>
   );
 };
