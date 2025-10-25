@@ -1,27 +1,22 @@
 import type { ReactElement } from 'react';
 import Pokeball from '../../assets/pokeball.png';
-import './error-page.css';
 import { Link } from 'react-router';
 
 const ErrorPage = (): ReactElement => {
   return (
-    <div className="error-page">
-      <div className="error-page_error-text-container">
-        <p>4</p>
-        <div className="error-page_image-container">
+    <div className="flex flex-col items-center justify-center h-screen gap-3">
+      <div className="flex items-center gap-3">
+        <p className="text-9xl">4</p>
+        <div className="w-50">
           <img src={Pokeball} alt="0" />
         </div>
-        <p>4</p>
+        <p className="text-9xl">4</p>
       </div>
-      <p className="error-page_title">Not found</p>
-      <p className="error-page_subtitle">
-        The page you are looking for does not exist
-      </p>
-      <div className="error-page_link-container">
-        <Link to="/" className="error-page_link">
-          Go home
-        </Link>
-      </div>
+      <p className="text-5xl">Not found</p>
+      <p className="text-xl">The page you are looking for does not exist</p>
+      <button>
+        <Link to="/">Go home</Link>
+      </button>
     </div>
   );
 };

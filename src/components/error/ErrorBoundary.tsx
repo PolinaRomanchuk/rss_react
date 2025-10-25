@@ -1,5 +1,4 @@
 import React from 'react';
-import './error.css';
 
 class ErrorBoundary extends React.Component<
   { children: React.ReactNode },
@@ -21,7 +20,7 @@ class ErrorBoundary extends React.Component<
   render() {
     if (this.state.hasError) {
       return (
-        <div className="error-message">
+        <div className="flex flex-col items-center justify-center h-screen gap-3">
           <p>Something went wrong</p>
           <button onClick={() => this.setState({ hasError: false })}>
             Reload

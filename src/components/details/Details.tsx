@@ -1,5 +1,4 @@
 import { type ReactElement } from 'react';
-import './details.css';
 import loadingGif from '../../assets/Pokeball.gif';
 import { useGetPokemonByNameQuery } from '../../services/pokemonApi';
 
@@ -18,30 +17,32 @@ const Details = ({ name, onClose }: Props): ReactElement => {
   const pokemon = pokemonDetails;
 
   return (
-    <div className="details">
+    <div className="flex flex-col items-center justify-center m-5 w-90">
       {pokemonDetailsLoading && (
-        <img
-          src={loadingGif}
-          alt="Loading..."
-          className="loading-details-gif"
-        />
+        <img src={loadingGif} alt="Loading..." className="w-20" />
       )}
 
-      {pokemonDetailsError && <p className="error">Something went wrong</p>}
+      {pokemonDetailsError && <p>Something went wrong</p>}
 
       {pokemon && !pokemonDetailsLoading && (
-        <>
-          <button onClick={onClose} className="close_button">
+        <div className="relative flex flex-col p-3 border rounded-md border-main bg-card-bg">
+          <button
+            onClick={onClose}
+            className="absolute flex items-center justify-center w-5 h-5 p-0 top-1 right-1"
+          >
             x
           </button>
           {pokemon.map((poke) => (
-            <div className="details_card" key={poke.name}>
+            <div
+              className="flex flex-col items-center gap-3 w-60 h-90"
+              key={poke.name}
+            >
               <img src={poke.image} alt={poke.image} />
-              <div className="details-name">{poke.name}</div>
-              <div className="details-description">{poke.description}</div>
+              <div>{poke.name}</div>
+              <div>{poke.description}</div>
             </div>
           ))}
-        </>
+        </div>
       )}
     </div>
   );

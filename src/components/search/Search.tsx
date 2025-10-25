@@ -1,5 +1,4 @@
 import React, { type ReactElement } from 'react';
-import '../search/search.css';
 import { useLocalStorage } from '../../utils/useLocalStorage';
 
 interface SearchProps {
@@ -23,16 +22,14 @@ const Search = ({ onSearch }: SearchProps): ReactElement => {
   };
 
   return (
-    <div className="search">
+    <div className="flex justify-center gap-1 w-96">
       <input
-        className="search_input"
+        className="w-100"
         value={searchInput}
         onChange={handleSearchInputChange}
         placeholder="enter full name, eg bulbasaur"
       />
-      <button className="search_button" onClick={handleSearch}>
-        search
-      </button>
+      <button onClick={handleSearch}>search</button>
     </div>
   );
 };
