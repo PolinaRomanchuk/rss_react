@@ -12,7 +12,7 @@ const Main = (): ReactElement => {
   );
   const [hasError, setHasError] = useState(false);
 
-  const { refetch } = useGetAllPokemonsQuery(undefined);
+  const { refetch } = useGetAllPokemonsQuery(1);
 
   const handleSearch = (value: string) => {
     setSearchInput(value);

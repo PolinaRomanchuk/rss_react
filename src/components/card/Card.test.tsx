@@ -12,7 +12,6 @@ describe('Card component', () => {
         onClick={() => {}}
         isChecked={false}
         onToggleCheckbox={() => {}}
-        q
       />
     );
     expect(screen.getByText('Test name')).toBeInTheDocument();
