@@ -8,6 +8,16 @@ interface PokemonApiResponse {
   sprites: {
     front_default: string;
   };
+  order: number;
+  abilities?: [{ ability: { name: string } }];
+  stats?: [
+    {
+      base_stat: number;
+      stat: {
+        name: string;
+      };
+    },
+  ];
 }
 
 export const pokemonApi = createApi({
@@ -29,6 +39,7 @@ export const pokemonApi = createApi({
                 name: info.name,
                 description: `Height: ${info.height}, Weight: ${info.weight}`,
                 image: info.sprites.front_default,
+                order: info.order,
               };
             }
           )
@@ -45,6 +56,9 @@ export const pokemonApi = createApi({
           name: data.name,
           description: `Height: ${data.height}, Weight: ${data.weight}`,
           image: data.sprites.front_default,
+          order: data.order,
+          abilities: data.abilities,
+          stats: data.stats,
         },
       ],
       providesTags: (_result, _error, name) => [{ type: 'Pokemon', id: name }],

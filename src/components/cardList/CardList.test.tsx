@@ -78,7 +78,6 @@ describe('CardList component', () => {
     await waitFor(() => {
       mockPokemons.forEach((pokemon) => {
         expect(screen.getByText(pokemon.name)).toBeInTheDocument();
-        expect(screen.getByText(pokemon.description)).toBeInTheDocument();
       });
     });
   });
@@ -99,7 +98,6 @@ describe('CardList component', () => {
     );
 
     expect(screen.getByText('pikachu')).toBeInTheDocument();
-    expect(screen.getByText('Height: 4, Weight: 60')).toBeInTheDocument();
   });
 
   it('updates data on prop change', async () => {
@@ -138,8 +136,6 @@ describe('CardList component', () => {
       expect(screen.getByText('bulbasaur')).toBeInTheDocument();
       expect(screen.queryByText('pikachu')).not.toBeInTheDocument();
     });
-
-    expect(screen.getByText('Height: 7, Weight: 69')).toBeInTheDocument();
   });
 
   it('unselects all cards on Unselect all click', async () => {

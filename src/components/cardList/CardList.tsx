@@ -103,7 +103,7 @@ const CardList = ({ searchName }: CardListProps): ReactElement => {
 
         {pokemons && !loading && (
           <div className="flex flex-col items-center gap-5 size-full">
-            <div className="grid grid-flow-col grid-rows-2 gap-5">
+            <div className="grid grid-flow-col grid-rows-4 gap-5 xl:grid-rows-2">
               {pokemons &&
                 pokemons?.map((pokemon) => (
                   <Card
