@@ -1,9 +1,8 @@
 import { type ReactElement } from 'react';
-import './card.css';
 
 type Props = {
   name: string;
-  description: string;
+  image: string;
   onClick: () => void;
   isChecked: boolean;
   onToggleCheckbox: () => void;
@@ -11,21 +10,23 @@ type Props = {
 
 const Card = ({
   name,
-  description,
+  image,
   onClick,
   isChecked,
   onToggleCheckbox,
 }: Props): ReactElement => {
   return (
-    <div className="card">
-      <div className="card-name">{name}</div>
-      <div className="card-description">{description}</div>
+    <div className="relative flex flex-col gap-2 p-5 border rounded-sm border-card-bg bg-card-bg w-50">
+      <img src={image} alt="pokemon" className="size-40" />
+      <div>{name}</div>
+
       <button onClick={onClick}>see more</button>
       <input
         type="checkbox"
         checked={isChecked}
         onChange={onToggleCheckbox}
         aria-label={name}
+        className="absolute cursor-pointer right-1 top-1 bg-card-bg accent-white"
       />
     </div>
   );

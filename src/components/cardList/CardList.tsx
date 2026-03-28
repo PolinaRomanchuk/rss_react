@@ -1,8 +1,6 @@
 import { useEffect, useRef, useState, type ReactElement } from 'react';
 import Card from '../card/Card';
-import './card-list.css';
-import { fetchAllPokemons, fetchPokemonByName } from '../../services/API';
-import { getTotalPages, productsPerPage } from '../../services/pagination';
+import { totalPage } from '../../services/pagination';
 import loadingGif from '../../assets/Loading animation.gif';
 import type { Pokemon } from '../../type/pokemon';
 import { useSearchParams } from 'react-router';
@@ -14,15 +12,16 @@ import {
   type RootState,
 } from '../../store/store';
 import { getDownloadUrl } from '../../services/download';
+import {
+  useGetAllPokemonsQuery,
+  useGetPokemonByNameQuery,
+} from '../../services/pokemonApi';
 
 interface CardListProps {
   searchName?: string;
 }
 
 const CardList = ({ searchName }: CardListProps): ReactElement => {
-  const [pokemons, setPokemons] = useState<Pokemon[]>();
-  const [totalpage, setTotalPage] = useState(1);
-
   const [searchParams, setSearchParams] = useSearchParams();
   const pageFromUrl = Number(searchParams.get('page')) || 1;
   const [currentPage, setCurrentPage] = useState(pageFromUrl);
@@ -30,51 +29,32 @@ const CardList = ({ searchName }: CardListProps): ReactElement => {
 
   const downloadLinkRef = useRef<HTMLAnchorElement | null>(null);
 
-  const selectedCards = useSelector((state: RootState) => state.selectedCards);
+  const selectedCards = useSelector(
+    (state: RootState) => state.cards.selectedCards
+  );
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    if (pageFromUrl >= 1 || pageFromUrl < totalpage) {
-      setCurrentPage(pageFromUrl);
-    } else {
-      setCurrentPage(1);
-      setSearchParams({ page: '1' });
-    }
-  }, [pageFromUrl, setSearchParams, totalpage]);
+  const {
+    data: allData,
+    error: allError,
+    isFetching: allLoading,
+  } = useGetAllPokemonsQuery(currentPage, { skip: !!searchName });
 
-  const loadPokemon = async () => {
-    try {
-      if (searchName) {
-        const result = await fetchPokemonByName(searchName);
-        setPokemons(result);
-        setTotalPage(1);
-      } else {
-        const result = await fetchAllPokemons();
-        setPokemons(result);
-        setTotalPage(getTotalPages(result.length));
-      }
-    } catch (error: unknown) {
-      localStorage.setItem('searchInput', '');
-      void error;
-    }
-  };
+  const {
+    data: searchedPokemon,
+    error: searchError,
+    isFetching: searchLoading,
+  } = useGetPokemonByNameQuery(searchName ?? '', { skip: !searchName });
+
+  const loading = searchName ? searchLoading : allLoading;
+  const error = searchName ? searchError : allError;
 
   useEffect(() => {
-    loadPokemon();
     if (searchName) {
       setCurrentPage(1);
       setSearchParams({ page: '1' });
     }
   }, [searchName]);
-
-  const startIndex = (currentPage - 1) * productsPerPage;
-  const paginatedPokemons = pokemons
-    ? pokemons.slice(startIndex, startIndex + productsPerPage)
-    : [];
-
-  const goToPage = (page: number) => {
-    setSearchParams({ page: String(page) });
-  };
 
   const handleDownload = async () => {
     const { href, filename } = await getDownloadUrl(selectedCards);
@@ -85,62 +65,78 @@ const CardList = ({ searchName }: CardListProps): ReactElement => {
     }
   };
 
+  useEffect(() => {
+    if (pageFromUrl >= 1 && pageFromUrl <= totalPage) {
+      setCurrentPage(pageFromUrl);
+    } else {
+      setCurrentPage(1);
+      setSearchParams({ page: '1' });
+    }
+  }, [pageFromUrl, setSearchParams]);
+
+  const goToPage = (page: number) => {
+    setSearchParams({ page: String(page) });
+  };
+
+  const pokemons: Pokemon[] | undefined = searchName
+    ? searchedPokemon
+    : allData;
+
   return (
     <>
-      <div className="card-list">
-        {!pokemons && (
-          <img src={loadingGif} alt="Loading..." className="loading-gif" />
+      <div className="flex w-full gap-5 mx-10">
+        {loading && (
+          <div className="flex justify-center size-full">
+            <img
+              src={loadingGif}
+              alt="Loading..."
+              className="object-cover w-40 "
+            />
+          </div>
         )}
 
-        {pokemons && (
-          <div className="card-list-with-pagination">
-            <div className="cards">
-              {pokemons.length > 0 &&
-                paginatedPokemons.map((pokemon) => (
+        {error && (
+          <p className="flex justify-center size-full">
+            This pokemon does not found
+          </p>
+        )}
+
+        {pokemons && !loading && (
+          <div className="flex flex-col items-center gap-5 size-full">
+            <div className="grid grid-flow-col grid-rows-4 gap-5 xl:grid-rows-2">
+              {pokemons &&
+                pokemons?.map((pokemon) => (
                   <Card
                     name={pokemon.name}
-                    description={pokemon.description}
+                    image={pokemon.image}
                     key={pokemon.name}
                     onClick={() => {
                       searchParams.set('details', pokemon.name);
                       setSearchParams(searchParams);
                     }}
-                    isChecked={selectedCards.includes(pokemon.name)}
+                    isChecked={selectedCards?.includes(pokemon.name)}
                     onToggleCheckbox={() => dispatch(toggleCard(pokemon.name))}
                   />
                 ))}
             </div>
 
-            {selectedCards.length > 0 && (
-              <div className="flyout-element">
-                <p>{selectedCards.length} items are selected</p>
-                <div className="flyout-element_button-container">
+            {selectedCards?.length > 0 && (
+              <div className="fixed z-10 flex flex-col items-center p-2 border rounded-sm bottom-5 left-5 border-main bg-base">
+                <div className="flex gap-1">
+                  {selectedCards.length}{' '}
+                  {selectedCards.length == 1 ? (
+                    <p>item is selected</p>
+                  ) : (
+                    <p>items are selected</p>
+                  )}
+                </div>
+                <div className="flex gap-3">
                   <button onClick={() => dispatch(resetSelectedCards())}>
                     Unselect all
                   </button>
                   <button onClick={handleDownload}>Download</button>
-                  <a ref={downloadLinkRef} className="hidden_link" />
+                  <a ref={downloadLinkRef} className="hidden" />
                 </div>
-              </div>
-            )}
-
-            {pokemons && pokemons.length > 1 && (
-              <div className="pagination_container">
-                <button
-                  className="pagination_button"
-                  onClick={() => goToPage(Math.max(currentPage - 1, 1))}
-                  disabled={currentPage === 1}
-                >
-                  {'<'}
-                </button>
-                <span>{currentPage}</span>
-                <button
-                  className="pagination_button"
-                  onClick={() => goToPage(Math.min(currentPage + 1, totalpage))}
-                  disabled={currentPage === totalpage}
-                >
-                  {'>'}
-                </button>
               </div>
             )}
           </div>
@@ -156,6 +152,23 @@ const CardList = ({ searchName }: CardListProps): ReactElement => {
           />
         )}
       </div>
+      {pokemons && pokemons.length > 1 && (
+        <div className="flex items-center gap-3">
+          <button
+            onClick={() => goToPage(Math.max(currentPage - 1, 1))}
+            disabled={currentPage === 1}
+          >
+            {'<'}
+          </button>
+          <span>{currentPage}</span>
+          <button
+            onClick={() => goToPage(Math.min(currentPage + 1, totalPage))}
+            disabled={currentPage === totalPage}
+          >
+            {'>'}
+          </button>
+        </div>
+      )}
     </>
   );
 };

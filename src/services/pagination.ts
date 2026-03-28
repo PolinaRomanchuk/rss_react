@@ -1,5 +1,2 @@
-export const productsPerPage = 10;
-
-export function getTotalPages(totalProducts: number): number {
-  return Math.ceil(totalProducts / productsPerPage);
-}
+export const productsPerPage = 8;
+export const totalPage = 1300;

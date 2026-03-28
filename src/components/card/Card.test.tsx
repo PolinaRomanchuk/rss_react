@@ -8,13 +8,12 @@ describe('Card component', () => {
     render(
       <Card
         name="Test name"
-        description="Test description"
+        image="Test image"
         onClick={() => {}}
         isChecked={false}
         onToggleCheckbox={() => {}}
       />
     );
     expect(screen.getByText('Test name')).toBeInTheDocument();
-    expect(screen.getByText('Test description')).toBeInTheDocument();
   });
 });

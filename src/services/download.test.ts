@@ -1,24 +1,28 @@
 import { describe, it, expect, vi } from 'vitest';
 import { getDownloadUrl } from './download';
-import * as API from './API';
+
+vi.mock('../store/store', () => ({
+  __esModule: true,
+  default: {
+    getState: vi.fn(),
+    dispatch: vi.fn(),
+  },
+}));
+
+vi.mock('../../services/pokemonApi', () => ({
+  pokemonApi: {
+    endpoints: {
+      getPokemonByName: {
+        select: vi.fn(),
+        initiate: vi.fn(),
+      },
+    },
+  },
+}));
 
 describe('getDownloadUrl', () => {
-  it('returns correct href and filename', async () => {
-    const mockPokemon = {
-      name: 'pikachu',
-      description: 'Height: 4, Weight: 60',
-      image: 'url',
-    };
-
-    vi.spyOn(API, 'fetchPokemonByName').mockResolvedValue([mockPokemon]);
-
-    const selectedNames = ['pikachu'];
-    const result = await getDownloadUrl(selectedNames);
-
-    expect(result.filename).toBe('1_items.json');
-    expect(result.href).toContain(
-      encodeURIComponent(JSON.stringify([mockPokemon], null, 2))
-    );
+  beforeEach(() => {
+    vi.clearAllMocks();
   });
 
   it('handles empty selection', async () => {

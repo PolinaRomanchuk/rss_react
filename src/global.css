@@ -1,20 +1,52 @@
-body {
-  margin: 0;
-  font-family: 'Dosis', sans-serif;
-  font-size: large;
+@import 'tailwindcss';
 
-  &.dark {
-    background-color: black;
-    color: white;
+@theme {
+  --color-main: #a8846c;
+  --color-main-contrast: #d0b2a0;
+
+  --color-support: #8c6949;
+  --color-support-contrast: #f87c08;
+
+  --color-accent-red: #b1391e;
+  --color-accent-orange: #f87c08;
+
+  --color-accent: #961c04;
+  --color-base: white;
+  --color-card-bg: #fce48c;
+}
+
+.dark {
+  --color-main: #6b4f3a;
+  --color-main-contrast: #d8bba8;
+
+  --color-support: #5c3e29;
+  --color-support-contrast: #f28a2e;
+
+  --color-base: #3a2c1f;
+  --color-base-contrast: #f3d9b6;
+  --color-card-bg: #4f4032;
+}
+
+@layer base {
+  body {
+    @apply font-sans text-lg bg-[var(--color-base)] text-[var(--color-main)];
+    font-family: 'Dosis', sans-serif;
+    transition:
+      background-color 0.3s ease,
+      color 0.3s ease;
   }
-}
 
-button {
-  cursor: pointer;
-  font-family: inherit;
-}
+  button {
+    @apply px-4 py-2 rounded-md cursor-pointer 
+           bg-[var(--color-main)] text-[var(--color-main-contrast)]
+           transition hover:opacity-90;
+    font-family: inherit;
+  }
 
-input {
-  font-family: inherit;
-  padding: 5px;
+  input {
+    @apply px-3 py-2 rounded-md border border-[var(--color-main)]
+           bg-[var(--color-base)] text-[var(--color-main)]
+           outline-none;
+    font-family: inherit;
+  }
 }
